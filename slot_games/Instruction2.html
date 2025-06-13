@@ -1,0 +1,117 @@
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+
+{{ block title }}
+    <title>Instruksi 2</title>
+{{ endblock }}
+
+{{ block content }}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="m-0">Instruksi Eksperimen</h3>
+        </div>
+        <div class="card-body" style="text-align: justify;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h4>Konsumsi Tambahan</h4>
+                    <p class="m-0">
+                        Peserta memiliki kemungkinan untuk melakukan konsumsi tambahan dari daftar konsumsi yang
+                        tersedia. Konsumsi tambahan ini memberikan utilitas ekstra berdasarkan masing-masing jenis
+                        barang yang dibeli. Terdapat dua jenis barang untuk konsumsi tambahan ini:
+                    </p>
+                    <ol style="list-style-type: lower-alpha;">
+                       <li>
+                           Barang konsumsi yang berupa pangan dan sandang yang keduanya berpotensi memberikan utilitas
+                           ekstra. Sebagai contoh Anda membeli produk makanan yang tersedia seharga Rp50.000, maka Anda
+                           akan memiliki kesempatan untuk mendapatkan utilitas sebesar Rp50.000 atau Rp52.000
+                           berdasarkan peluang yang ada. Representasi untuk contoh ini adalah: 90% peluang untuk
+                           mendapatkan utilitas sebesar Rp50.000 atau 10% peluang untuk mendapatkan utilitas sebesar
+                           Rp52.000.
+                       </li>
+                        <li>
+                            Barang investasi yang berupa medium investasi berisiko tinggi dan berisiko rendah. Untuk
+                            investasi berisiko tinggi, peserta akan memainkan sebuah game yang berpeluang untuk
+                            memberikan utilitas ekstra tinggi atau kehilangan seluruh uang yang diinvestasikan. Untuk
+                            investasi berisiko rendah, peserta dapat memilih berbagai alternatif yang tersedia yang
+                            memungkinkan untuk mendapatkan utilitas ekstra atau kehilangan sebagian uang yang
+                            diinvestasikan.
+                        </li>
+                    </ol>
+                    <p class="m-0">
+                        Kedua jenis barang ini dapat diakses/dibeli dari dua jenis platform pembelian yang tersedia:
+                        1) platform pasar digital (misal e-commerce), dan 2) platform pasar riil.
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <h4>Platform Pembelian Bagi Peserta</h4>
+                    <p class="m-0">
+                        Platform pembelian ini digunakan untuk membeli barang konsumsi tambahan.
+                    </p>
+                    <ol style="list-style-type: lower-alpha;">
+                       <li>
+                           Platform pasar riil menyediakan berbagai barang konsumsi dengan daftar harga untuk
+                           masing-masing barang konsumsi tersebut. Peserta dapat membeli barang konsumsi di platform
+                           pasar riil ini melalui dompet tunai.
+                       </li>
+                        <li>
+                            Platform pasar digital menyediakan berbagai barang konsumsi dan barang investasi dengan
+                            daftar harga maupun besaran investasi masing-masing barang. Peserta dapat membeli barang
+                            konsumsi dan barang investasi di platfom pasar digital ini melalui dompet digital.
+                        </li>
+                    </ol>
+                </li>
+                <li class="list-group-item">
+                    <h4>Pengukuran Utilitas</h4>
+                    <p class="m-0">
+                        Utilitas masing-masing peserta diukur dari keputusan yang dilakukan sebagai berikut:
+                    </p>
+                    <ol style="list-style-type: lower-alpha;">
+                       <li>
+                           Utilitas konsumsi dasar = besaran konsumsi dasar. Jika konsumsi dasar adalah Rp100.000,
+                           maka utilitas yang diperoleh adalah Rp100.000.
+                       </li>
+                        <li>
+                            Utilitas barang konsumsi = 1.05 kali dari besaran pengeluaran untuk barang konsumsi. Jika
+                            pengeluaran untuk barang konsumsi adalah Rp100.000, maka utilitas yang diperoleh adalah
+                            Rp105.000.
+                        </li>
+                        <li>
+                            Utilitas investasi berisiko tinggi = 2 kali pengeluaran atau 0 dari pengeluaran yang
+                            dilakukan dengan kemungkinan 50:50. Jika pengeluaran untuk investasi berisiko tinggi adalah
+                            Rp100.000, maka utilitas yang diperoleh adalah Rp100.000 jika beruntung atau Rp0 jika tidak
+                            beruntung.
+                        </li>
+                        <li>
+                            Utilitas investasi berisiko rendah = 1.25 kali pengeluaran atau 0.75 kali pengeluaran yang
+                            dilakukan dengan kemungkinan 75:25. Jika pengeluaran untuk investasi berisiko rendah adalah
+                            Rp100.000, maka utilitas yang diperoleh adalah Rp125.000 jika beruntung atau Rp75.000 jika
+                            tidak beruntung.
+                        </li>
+                        <li>
+                            Utilitas sisa uang yang tidak digunakan untuk konsumsi maupun investasi = besaran sisa
+                            uang. Jika sisa uang yang tidak digunakan adalah Rp100.000, maka utilitas yang diperoleh
+                            adalah Rp.100.000.
+                        </li>
+                    </ol>
+                </li>
+                <li class="list-group-item">
+                    <h4>Nilai yang Diperoleh Peserta di Setiap Ronde</h4>
+                    <p class="m-0">
+                        Peserta akan mendapatkan payoff di masing-masing ronde dari utilitas yang diperoleh atas
+                        keputusan yang dilakukan. Payoff ini akan menjadi basis pembayaran yang akan diperoleh oleh
+                        peserta dari eksperimen ini.
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <button class="otree-btn-next btn btn-outline-primary">
+                <span>Lanjut</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+{{ endblock }}

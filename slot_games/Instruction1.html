@@ -1,0 +1,90 @@
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+
+{{ block title }}
+    <title>Instruksi 1</title>
+{{ endblock }}
+
+{{ block content }}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="m-0">Instruksi Eksperimen</h3>
+        </div>
+        <div class="card-body" style="text-align: justify;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h4>Pelaksanaan dan Peserta Eksperimen</h4>
+                    <ol style="list-style-type: lower-alpha;">
+                       <li>
+                           Eksperimen ini menggunakan <span class="fst-italic">lab-in-the-field method</span> dimana
+                           partisipan diundang ke suatu tempat untuk menyelesaikan permainan. Peserta eksperimen adalah
+                           penerima PKH sehingga satu rumah tangga diwakili oleh satu orang anggota rumah tangga
+                           tersebut. Peserta akan memainkan sejumlah ronde secara independen.
+                       </li>
+                        <li>
+                            Peserta akan dibagi ke dalam dua grup: 1) grup penerima bantuan sosial melalui pembayaran
+                            tunai, dan 2) grup penerima bantuan sosial melalui pembayaran digital. Penentuan grup ini
+                            dimaksudkan untuk mengidentifikasi efektivitas bentuk pembayaran bantuan sosial berdasarkan
+                            pola konsumsi peserta.
+                        </li>
+                    </ol>
+                </li>
+                <li class="list-group-item">
+                    <h4>Endowment Peserta</h4>
+                    <p class="m-0">
+                        Peserta memperoleh endowment yang merepresentasikan uang yang dimiliki pada ronde tersebut.
+                        Endowment diberikan secara random dengan nilai relatif kecil melalui sebuah acakan distribusi.
+                        <span class="fst-italic">Endowment = nilai tengah * σ</span>.
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <h4>Konsumsi Dasar dan Bantuan Sosial</h4>
+                    <ol style="list-style-type: lower-alpha;">
+                       <li>
+                           Peserta memiliki tingkat konsumsi dasar per periode sebesar
+                           <span class="fst-italic">x%</span> dari endowment yang dimiliki. Nilai
+                           <span class="fst-italic">x</span> ditentukan secara random dengan rentang 70 ≤ x ≤ 85.
+                           Besaran konsumsi ini akan mengurangi secara langsung uang yang dimiliki oleh peserta pada
+                           akhir setiap ronde dari uang yang tersisa, baik dari hasil investasi maupun yang tidak
+                           digunakan untuk apapun. Konsumsi dasar ini memberikan utilitas sesuai besaran konsumsi dasar.
+                       </li>
+                        <li>
+                            Peserta mendapatkan bantuan sosial sebesar <span class="fst-italic">z</span> yang akan
+                            ditambahkan pada endowment peserta. Keseluruhan uang yang dimiliki peserta ini digunakan
+                            untuk membiayai konsumsi dasar dan konsumsi tambahan.
+                        </li>
+                        <li>
+                            Pemberian bantuan sosial dalam eksperimen ini melalui dua dompet: 1) dompet tunai (DT), dan
+                            2) dompet digital (DD).
+                        </li>
+                    </ol>
+                </li>
+                <li class="list-group-item">
+                    <h4>Dompet Peserta</h4>
+                    <ol style="list-style-type: lower-alpha;">
+                       <li>
+                           Peserta memiliki dompet tunai maupun dompet digital sebagai tempat untuk menaruh uangnya.
+                           Khusus untuk <span class="fst-italic">endowment</span> peserta akan masuk ke dompet tunai,
+                           sedangkan bantuan sosial akan masuk ke dompet tunai maupun dompet digital tergantung
+                           penempatan grup bagi masing-masing peserta.
+                       </li>
+                        <li>
+                            Peserta dapat memindahkan uangnya dari dompet tunai ke dompet digital ataupun sebaliknya
+                            dengan biaya rendah. Hal ini dimaksudkan supaya peserta dapat membeli konsumsi tambahan di
+                            platform pembelian tertentu sesuai keinginannya.
+                        </li>
+                    </ol>
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <button class="otree-btn-next btn btn-outline-primary">
+                <span>Lanjut</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+{{ endblock }}

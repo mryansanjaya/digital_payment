@@ -1,0 +1,55 @@
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+
+{{ block title }}
+    <title>Instruksi 3</title>
+{{ endblock }}
+
+{{ block content }}
+    <div class="card">
+        <div class="card-header">
+            <h3 class="m-0">Instruksi Eksperimen</h3>
+        </div>
+        <div class="card-body" style="text-align: justify;">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <h4>Kemungkinan Peserta Tidak Mampu Membayar Konsumsi Dasar</h4>
+                    <p class="m-0">
+                        Peserta memiliki kemungkinan untuk tidak mampu membayar konsumsi dasar yang telah ditetapkan di
+                        masing-masing ronde. Kemungkinan ini bisa terjadi ketika peserta menghabiskan uangnya untuk
+                        membeli konsumsi tambahan dan investasi yang tidak memberikan hasil, Dalam hal ini, kekurangan
+                        bayar untuk konsumsi dasar ini akan diambilkan dari uang kehadiran.
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <h4>Pembayaran Peserta dari Eksperimen</h4>
+                    <p class="m-0">
+                        Salah satu dari sejumlah ronde dalam eksperimen ini akan diacak untuk menjadi pembayaran bagi
+                        peserta. Selain itu, peserta akan mendapatkan uang kehadiran sebesar Rp.100.000 yang bisa
+                        berkurang jika ronde terpilih adalah ketika peserta tidak mampu membayar konsumsi dasar.
+                        Pembayaran dilakukan segera setelah peserta menyelesaikan seluruh rangkaian eksperimen.
+                    </p>
+                </li>
+                <li class="list-group-item">
+                    <h4>Catatan Penting</h4>
+                    <p class="m-0">
+                        Peserta akan diminta untuk mengisi kuesioner demografi singkat setelah menyelesaikan sesi
+                        eksperimen. Total pengerjaan seluruh rangkaian eksperimen ini lebih kurang adalah 90 menit.
+                        Eksperimenter dipastikan tidak mengetahui keputusan peserta sebelum peserta menyelesaikan
+                        seluruh rangkaian eksperimen. Eksperimenter juga dipastikan tidak dapat mempengaruhi keputusan
+                        peserta.
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="card-footer">
+            <button class="otree-btn-next btn btn-outline-primary">
+                <span>Lanjut</span>
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+    </div>
+{{ endblock }}
