@@ -30,7 +30,28 @@ class Player(BasePlayer):
     win = models.BooleanField(initial=False)
 
 
-# PAGE 1: Slot Machine Game
+# Welcome & Instruction Page
+class Welcome(Page):
+    pass
+
+
+class Instruction1(Page):
+    pass
+
+
+class Instruction2(Page):
+    pass
+
+
+class Instruction3(Page):
+    pass
+
+
+class Illustration(Page):
+    pass
+
+
+# Slot Machine Game Page
 class Coba(Page):
     def vars_for_template(player: Player):
         symbols = C.SLOT_SYMBOLS
@@ -75,4 +96,4 @@ class Results(Page):
         return {'total': total}
 
 
-page_sequence = [Coba, Results]
+page_sequence = [Welcome, Instruction1, Instruction2, Instruction3, Illustration]
