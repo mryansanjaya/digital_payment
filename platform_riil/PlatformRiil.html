@@ -1,0 +1,81 @@
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+
+{{ block title }}
+    <title>Platform Riil</title>
+{{ endblock }}
+
+{{ block content }}
+    <div class="card">
+        <div class="card-header">
+            Platform Riil
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row row-cols-1 row-cols-md-2 g-4">
+                    {% for produk in produk_list %}
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            <img src="..." class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{ forloop.counter0 }}"
+                                           id="produk{{ forloop.counter }}" name="produk">
+                                    <label class="form-check-label" for="produk{{ forloop.counter }}">
+                                        <h5 class="card-title mb-1">{{ produk.nama }}</h5>
+                                    </label>
+                                </div>
+                                <p class="card-text text-muted mb-1">Rp{{ produk.harga }}</p>
+                                <p class="card-text"><small>{{ produk.deskripsi }}</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <input type="hidden" name="selected_products" id="selected_products">
+                    <div class="mt-4 d-flex justify-content-between align-items-center">
+                <!--        <span class="fw-bold" id="totalHarga">Total: Rp0</span>-->
+                        <button class="btn btn-primary" type="submit">Lanjut</button>
+                    </div>
+            </form>
+        </div>
+    </div>
+<script>
+    const form = document.querySelector('form');
+    const checkboxes = document.querySelectorAll('input[name="produk"]');
+    const hiddenInput = document.getElementById('selected_products');
+    const totalHargaText = document.getElementById('totalHarga');
+
+    // Harga produk langsung dirender dari Python loop
+    const hargaProduk = [
+        {% for produk in produk_list %}
+            {{ produk.harga }}{% if not forloop %}, {% endif %}
+        {% endfor %}
+    ];
+
+    function updateTotal() {
+        let total = 0;
+        checkboxes.forEach((cb, i) => {
+            if (cb.checked) {
+                total += hargaProduk[i];
+            }
+        });
+        totalHargaText.innerText = "Total: Rp" + total.toLocaleString('id-ID');
+    }
+
+    checkboxes.forEach(cb => cb.addEventListener('change', updateTotal));
+
+    form.addEventListener('submit', function(e) {
+        let selected = [];
+        checkboxes.forEach((cb) => {
+            if (cb.checked) {
+                selected.push(parseInt(cb.value));
+            }
+        });
+        hiddenInput.value = JSON.stringify(selected);
+    });
+</script>
+{{ endblock }}

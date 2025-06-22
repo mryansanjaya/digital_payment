@@ -3,10 +3,10 @@ from os import environ
 
 SESSION_CONFIGS = [
     {
-        'name': 'slot_games',
-        'display_name': "Slot Game",
+        'name': 'digital_payment',
+        'display_name': "Digital Payment Experiment",
         'num_demo_participants': 1,
-        'app_sequence': ['slot_games'],
+        'app_sequence': ['welcome_page', 'platform_riil', 'platform_digital', 'low_risk_investment'],
     },
 ]
 

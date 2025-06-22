@@ -1,0 +1,23 @@
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+
+{{ block title }}
+    <title>Investasi Risiko Rendah</title>
+{{ endblock }}
+
+{% block content %}
+    <h2>Simulasi Investasi Risiko Rendah</h2>
+
+    <form method="post">
+        {{ formfield_errors 'investasi' }}
+        {{ formfield 'investasi' }}
+        <button type="submit">Submit</button>
+    </form>
+
+    <div class="note">
+        Masukkan jumlah investasi dalam Rupiah.
+    </div>
+{% endblock %}

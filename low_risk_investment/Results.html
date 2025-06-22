@@ -1,0 +1,10 @@
+{% extends "global/Page.html" %}
+{% block content %}
+    <h3 style="color:red;">
+        Anda <strong>[{{ status }}]</strong> dari investasi ini.<br>
+        Uang dari alokasi Anda menjadi <strong>Rp{{ hasil }}</strong>
+    </h3>
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+        <button class="btn btn-primary" type="submit">Lanjut</button>
+    </div>
+{% endblock %}
