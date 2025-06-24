@@ -1,0 +1,168 @@
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+
+{{ block title }}
+    <title>Platform Riil</title>
+{{ endblock }}
+
+{{ block content }}
+    <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
+        Ronde: {{ player.round_number }}
+    </span>
+    <div class="card">
+        <div class="card-header bg-transparent">
+            <div class="row">
+                <div class="col-6">
+                    <h3>P1. Platform Pasar Riil</h3>
+                </div>
+                <div class="col-6">
+                    <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
+                        Dompet Tunai Anda: Rp. 100.000
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
+                    <span class="fw-bold">Total Belanja Anda:</span>
+                    <span class="fw-bold" id="totalHarga">Rp0</span>
+                </div>
+                <div id="produkContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
+                <div class="d-flex flex-column align-items-end mt-3">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination flex-wrap mb-2" id="paginationNav"></ul>
+                    </nav>
+                    <span class="float-end text-muted" id="paginationInfo"></span>
+                </div>
+                <button class="btn btn-primary" type="submit">Selesaikan Pembelian</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const produk_list = {{ produk_list|safe }};
+        const hargaProduk = produk_list.map(p => p.harga);
+        const form = document.querySelector('form');
+        const hiddenInput = document.getElementById('selected_products_produk_riil');
+        const totalHargaText = document.getElementById('totalHarga');
+        const produkContainer = document.getElementById('produkContainer');
+        const paginationNav = document.getElementById('paginationNav');
+
+        const selectedStatus = Array(produk_list.length).fill(false);
+        const perPage = 9;
+        const totalPages = Math.ceil(produk_list.length / perPage);
+        let currentPage = 0;
+
+        function renderPage(page) {
+            currentPage = page;
+            produkContainer.innerHTML = '';
+            const start = page * perPage;
+            const end = Math.min(start + perPage, produk_list.length);
+
+            for (let i = start; i < end; i++) {
+                const p = produk_list[i];
+
+                const col = document.createElement('div');
+                col.className = 'col';
+                col.innerHTML = `
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input produk-checkbox" type="checkbox"
+                                       value="${i}" id="produk${i}" ${selectedStatus[i] ? 'checked' : ''}>
+                                <label class="form-check-label" for="produk${i}">
+                                    <h5 class="card-title mb-1">${p.nama}</h5>
+                                </label>
+                            </div>
+                            <p class="card-text text-muted mb-1">Rp${p.harga}</p>
+                            <p class="card-text"><small>${p.deskripsi}</small></p>
+                        </div>
+                    </div>
+                `;
+                produkContainer.appendChild(col);
+            }
+
+            attachCheckboxEvents();
+            renderPaginationButtons();
+            updatePaginationInfo();
+        }
+
+        function attachCheckboxEvents() {
+            document.querySelectorAll('.produk-checkbox').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const index = parseInt(this.value);
+                    selectedStatus[index] = this.checked;
+                    updateTotal();
+                });
+            });
+        }
+
+        function updateTotal() {
+            let total = 0;
+            selectedStatus.forEach((checked, i) => {
+                if (checked) total += hargaProduk[i];
+            });
+            totalHargaText.innerText = "Rp" + total.toLocaleString('id-ID');
+        }
+
+        function renderPaginationButtons() {
+            paginationNav.innerHTML = '';
+
+            // Previous
+            const prevItem = document.createElement('li');
+            prevItem.className = `page-item ${currentPage === 0 ? 'disabled' : ''}`;
+            prevItem.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+            prevItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage > 0) renderPage(currentPage - 1);
+            });
+            paginationNav.appendChild(prevItem);
+
+            // Page numbers
+            for (let i = 0; i < totalPages; i++) {
+                const pageItem = document.createElement('li');
+                pageItem.className = `page-item ${i === currentPage ? 'active' : ''}`;
+                pageItem.innerHTML = `<a class="page-link" href="#">${i + 1}</a>`;
+                pageItem.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    renderPage(i);
+                });
+                paginationNav.appendChild(pageItem);
+            }
+
+            // Next
+            const nextItem = document.createElement('li');
+            nextItem.className = `page-item ${currentPage === totalPages - 1 ? 'disabled' : ''}`;
+            nextItem.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            nextItem.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (currentPage < totalPages - 1) renderPage(currentPage + 1);
+            });
+            paginationNav.appendChild(nextItem);
+        }
+
+        function updatePaginationInfo() {
+            const start = currentPage * perPage + 1;
+            const end = Math.min((currentPage + 1) * perPage, produk_list.length);
+            const infoText = `Menampilkan ${end - start + 1} dari ${produk_list.length} produk`;
+            document.getElementById('paginationInfo').innerText = infoText;
+        }
+
+        form.addEventListener('submit', function () {
+            const selectedIndexes = [];
+            selectedStatus.forEach((checked, i) => {
+                if (checked) selectedIndexes.push(i);
+            });
+            hiddenInput.value = JSON.stringify(selectedIndexes);
+        });
+
+        // Inisialisasi
+        renderPage(currentPage);
+        updateTotal();
+    </script>
+{{ endblock }}
