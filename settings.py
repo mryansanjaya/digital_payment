@@ -6,7 +6,7 @@ SESSION_CONFIGS = [
         'name': 'digital_payment',
         'display_name': "Digital Payment Experiment",
         'num_demo_participants': 1,
-        'app_sequence': ['welcome_page', 'platform_riil', 'platform_digital', 'low_risk_investment'],
+        'app_sequence': ['digital_payment'],
     },
 ]
 
