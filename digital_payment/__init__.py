@@ -9,7 +9,7 @@ Digital Payment Experiment
 class C(BaseConstants):
     NAME_IN_URL = 'digital_payment'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 4
 
 # Daftar produk pasar
     PRODUK_TRADISIONAL = [
@@ -107,6 +107,8 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    menu_choice = models.StringField()
+    back_to_menu = models.BooleanField(initial=False)
     selected_products_produk_riil = models.LongStringField(blank=True)
     selected_products_produk_digital = models.LongStringField(blank=True)
     total_belanja_pasar_riil = models.CurrencyField(initial=0)
@@ -118,9 +120,35 @@ class Player(BasePlayer):
     untungrugi_lowinvest = models.StringField()  # UNTUNG atau RUGI
 
 
+class MenuUtama(Page):
+    form_model = 'player'
+    form_fields = ['menu_choice']
+
+    @staticmethod
+    def is_displayed(player):
+        # Tampilkan jika:
+        # - Ronde pertama (awal eksperimen)
+        # - Peserta sebelumnya menekan tombol "Back" dari platform (flag disimpan)
+        return player.round_number == 1 or player.participant.vars.get('kembali_ke_menu') is True
+
+    @staticmethod
+    def vars_for_template(player):
+        return {}
+
+    @staticmethod
+    def before_next_page(player: Player, timeout_happened):
+        # Simpan pilihan platform yang dipilih
+        player.participant.vars['menu_choice'] = player.menu_choice
+        # Reset flag kembali agar tidak terus tampil
+        player.participant.vars['kembali_ke_menu'] = False
+
+
 class PlatformRiil(Page):
     form_model = 'player'
-    form_fields = ['selected_products_produk_riil']
+    form_fields = ['selected_products_produk_riil', 'back_to_menu']
+
+    def is_displayed(player):
+        return player.participant.vars.get('menu_choice') == 'pasar_riil'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -130,15 +158,21 @@ class PlatformRiil(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        selected_indexes = json.loads(player.selected_products_produk_riil or "[]")
-        produk_acak = player.participant.vars.get('produk_riil_acak', [])
-        total = sum(produk_acak[i]['harga'] for i in selected_indexes)
-        player.total_belanja_pasar_riil = total
+        if player.back_to_menu:
+            player.participant.vars['kembali_ke_menu'] = True
+        else:
+            selected_indexes = json.loads(player.selected_products_produk_riil or "[]")
+            produk_acak = player.participant.vars.get('produk_riil_acak', [])
+            total = sum(produk_acak[i]['harga'] for i in selected_indexes)
+            player.total_belanja_pasar_riil = total
 
 
 class PlatformDigital(Page):
     form_model = 'player'
     form_fields = ['selected_products_produk_digital']
+
+    def is_displayed(player):
+        return player.participant.vars.get('menu_choice') == 'pasar_digital'
 
     @staticmethod
     def vars_for_template(player: Player):
@@ -157,6 +191,9 @@ class LowInvestment(Page):
     form_model = 'player'
     form_fields = ['lowinvest']
 
+    def is_displayed(player):
+        return player.participant.vars.get('menu_choice') == 'investasi'
+
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
         investasi = player.lowinvest
@@ -174,6 +211,9 @@ class LowInvestment(Page):
 
 
 class LowResults(Page):
+    def is_displayed(player):
+        return player.participant.vars.get('menu_choice') == 'investasi'
+
     @staticmethod
     def vars_for_template(player: Player):
         return dict(
@@ -182,4 +222,4 @@ class LowResults(Page):
         )
 
 
-page_sequence = [PlatformRiil, PlatformDigital, LowInvestment, LowResults]
+page_sequence = [MenuUtama, PlatformRiil, PlatformDigital, LowInvestment, LowResults]
