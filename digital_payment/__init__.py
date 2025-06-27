@@ -124,12 +124,8 @@ class MenuUtama(Page):
     form_model = 'player'
     form_fields = ['menu_choice']
 
-    @staticmethod
     def is_displayed(player):
-        # Tampilkan jika:
-        # - Ronde pertama (awal eksperimen)
-        # - Peserta sebelumnya menekan tombol "Back" dari platform (flag disimpan)
-        return player.round_number == 1 or player.participant.vars.get('kembali_ke_menu') is True
+        return player.round_number == 1 or player.participant.vars.get('back_to_menu') == True
 
     @staticmethod
     def vars_for_template(player):
@@ -140,7 +136,7 @@ class MenuUtama(Page):
         # Simpan pilihan platform yang dipilih
         player.participant.vars['menu_choice'] = player.menu_choice
         # Reset flag kembali agar tidak terus tampil
-        player.participant.vars['kembali_ke_menu'] = False
+        player.participant.vars['back_to_menu'] = False
 
 
 class PlatformRiil(Page):
@@ -156,11 +152,16 @@ class PlatformRiil(Page):
         player.participant.vars['produk_riil_acak'] = produk_acak
         return dict(produk_list=produk_acak)
 
-    @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        if player.back_to_menu:
-            player.participant.vars['kembali_ke_menu'] = True
+        # ambil dari form langsung
+        is_back = player.back_to_menu
+        if is_back:
+            player.participant.vars['back_to_menu'] = True
         else:
+            player.participant.vars['back_to_menu'] = False
+
+        # proses belanja kalau bukan kembali
+        if not is_back:
             selected_indexes = json.loads(player.selected_products_produk_riil or "[]")
             produk_acak = player.participant.vars.get('produk_riil_acak', [])
             total = sum(produk_acak[i]['harga'] for i in selected_indexes)
@@ -169,7 +170,7 @@ class PlatformRiil(Page):
 
 class PlatformDigital(Page):
     form_model = 'player'
-    form_fields = ['selected_products_produk_digital']
+    form_fields = ['selected_products_produk_digital', 'back_to_menu']
 
     def is_displayed(player):
         return player.participant.vars.get('menu_choice') == 'pasar_digital'
@@ -182,32 +183,50 @@ class PlatformDigital(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        selected = json.loads(player.selected_products_produk_digital or "[]")
-        total = sum(C.PRODUK_DIGITAL[i]["harga"] for i in selected)
-        player.total_belanja_pasar_digital = total
+        # ambil dari form langsung
+        is_back = player.back_to_menu
+        if is_back:
+            player.participant.vars['back_to_menu'] = True
+        else:
+            player.participant.vars['back_to_menu'] = False
+
+        # proses belanja kalau bukan kembali
+        if not is_back:
+            selected = json.loads(player.selected_products_produk_digital or "[]")
+            total = sum(C.PRODUK_DIGITAL[i]["harga"] for i in selected)
+            player.total_belanja_pasar_digital = total
 
 
 class LowInvestment(Page):
     form_model = 'player'
-    form_fields = ['lowinvest']
+    form_fields = ['lowinvest', 'back_to_menu']
 
     def is_displayed(player):
         return player.participant.vars.get('menu_choice') == 'investasi'
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
-        investasi = player.lowinvest
-
-        # Simulasi hasil acak: 70% untung, 30% rugi
-        is_untung = random.random() < 0.7
-        if is_untung:
-            hasil = investasi * 1.2  # naik 20%
-            player.untungrugi_lowinvest = "UNTUNG"
+        # ambil dari form langsung
+        is_back = player.back_to_menu
+        if is_back:
+            player.participant.vars['back_to_menu'] = True
         else:
-            hasil = investasi * 0.8  # turun 20%
-            player.untungrugi_lowinvest = "RUGI"
+            player.participant.vars['back_to_menu'] = False
 
-        player.hasil_akhir_lowinvest = hasil
+        # proses investasi kalau bukan kembali
+        if not is_back:
+            investasi = player.lowinvest
+
+            # Simulasi hasil acak: 70% untung, 30% rugi
+            is_untung = random.random() < 0.7
+            if is_untung:
+                hasil = investasi * 1.2  # naik 20%
+                player.untungrugi_lowinvest = "UNTUNG"
+            else:
+                hasil = investasi * 0.8  # turun 20%
+                player.untungrugi_lowinvest = "RUGI"
+
+            player.hasil_akhir_lowinvest = hasil
 
 
 class LowResults(Page):

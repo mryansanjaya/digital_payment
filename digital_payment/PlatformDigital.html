@@ -27,6 +27,7 @@
         </div>
         <div class="card-body">
             <form method="post">
+                <input type="hidden" name="back_to_menu" id="back_to_menu_input" value="0">
                 <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
                     <span class="fw-bold">Total Belanja Anda:</span>
                     <span class="fw-bold" id="totalHarga">Rp0</span>
@@ -40,8 +41,8 @@
                     <span class="float-end text-muted" id="paginationInfo"></span>
                 </div>
                 <button class="btn btn-primary" type="submit">Selesaikan Pembelian</button>
+    <button type="submit" class="btn btn-secondary" onclick="document.getElementById('back_to_menu_input').value = 1;">Back ke Menu Utama</button>
             </form>
-            <a class="btn btn-secondary mt-3" href="?">Back ke Menu Utama</a>
 
         </div>
     </div>
