@@ -1,0 +1,418 @@
+{% extends "global/Page.html" %}
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+{% block title  %}
+    <title>Digital Payment Experiment</title>
+{% endblock %}
+{% block content %}
+    <!-- MENU UTAMA -->
+    <div id="menu_utama">
+        <div class="card">
+            <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                <h5 class="m-0">Digital Payment - Menu Utama</h5>
+                <span class="badge fs-5 bg-success bg-gradient">Ronde: {{ player.round_number }}</span>
+            </div>
+            <div class="card-body">
+                <div class="alert p-0" role="alert">
+                    <h4 class="alert-heading">Informasi Pendapatan Anda</h4>
+                    <p></p>
+                    <hr>
+                    <h2 class="m-0">Silahkan pilih platform yang tersedia:</h2>
+                    <div class="btn-group btn-group-lg mt-3" role="group" aria-label="Basic mixed styles example">
+                        <button type="button" class="btn btn-danger" onclick="showForm('pasar_riil')">
+                            <i class="fa-solid fa-shop"></i>
+                            <span>Platform Pasar Tradisional</span>
+                        </button>
+                        <button type="button" class="btn btn-warning" onclick="showForm('pasar_digital')">
+                            <i class="fa-solid fa-shop"></i>
+                            <span>Platform Pasar Digital</span>
+                        </button>
+                        <button type="button" class="btn btn-success" onclick="showForm('all_investasi')">
+                            <i class="fa-solid fa-money-bill-trend-up"></i>
+                            <span>Platform Investasi</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-success bg-gradient">
+                    <span>Lanjut menuju Ronde selanjutnya</span>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASAR RIIL -->
+    <div id="pasar_riil" style="display: none;">
+        <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
+            Ronde: {{ player.round_number }}
+        </span>
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="row">
+                    <div class="col-6">
+                        <h3>P1. Platform Pasar Riil</h3>
+                    </div>
+                    <div class="col-6">
+                        <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
+                            Dompet Tunai Anda: Rp. 100.000
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <!-- Total Belanja -->
+                    <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
+                        <span class="fw-bold">Total Belanja Anda:</span>
+                        <span class="fw-bold" id="totalHargaRiil">Rp0</span>
+                    </div>
+
+                    <!-- Daftar Produk -->
+                    <div id="produkRiilContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                    <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
+
+                    <!-- Navigasi Halaman -->
+                    <div class="d-flex flex-column align-items-end mt-3">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination flex-wrap mb-2" id="paginationRiilNav"></ul>
+                        </nav>
+                        <span class="float-end text-muted" id="paginationInfoRiil"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                    Kembali ke Menu Utama
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PASAR DIGITAL -->
+    <div id="pasar_digital" style="display: none;">
+        <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
+            Ronde: {{ player.round_number }}
+        </span>
+        <div class="card">
+            <div class="card-header bg-transparent">
+                <div class="row">
+                    <div class="col-6">
+                        <h3>P1. Platform Pasar Digital</h3>
+                    </div>
+                    <div class="col-6">
+                        <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
+                            Dompet Digital Anda: Rp. 100.000
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
+                        <span class="fw-bold">Total Belanja Digital Anda:</span>
+                        <span class="fw-bold" id="totalHargaDigital">Rp0</span>
+                    </div>
+                    <div id="produkDigitalContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                    <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
+                    <div class="d-flex flex-column align-items-end mt-3">
+                        <nav aria-label="Page navigation digital">
+                            <ul class="pagination flex-wrap mb-2" id="paginationNavDigital"></ul>
+                        </nav>
+                        <span class="float-end text-muted" id="paginationInfoDigital"></span>
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                    Kembali ke Menu Utama
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLATFORM INVESTASI (RENDAH & TINGGI) -->
+    <div id="all_investasi" style="display: none;">
+        <h2>Simulasi Investasi Risiko Rendah</h2>
+        <form method="post">
+            <div class="mb-3">
+                <label for="id_lowinvest" class="form-label fw-bold">Berapa rupiah yang ingin Anda investasikan?</label>
+                <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" required min="0" step="1">
+            </div>
+        </form>
+        <div class="note mt-2 text-muted">
+        Masukkan jumlah investasi dalam Rupiah.
+        </div>
+        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+            Kembali ke Menu Utama
+        </button>
+    </div>
+
+    <script>
+        function showForm(formIdToShow) {
+            // Sembunyikan semua formulir
+            const forms = ['menu_utama', 'pasar_riil', 'pasar_digital', 'all_investasi'];
+            forms.forEach(function(formId) {
+                document.getElementById(formId).style.display = 'none';
+            });
+
+            // Tampilkan formulir yang dipilih
+            document.getElementById(formIdToShow).style.display = 'block';
+        }
+
+         // Data produk dari server
+        const produk_riil_list = {{ produk_riil_list|safe }};
+        const hargaProdukRiil = produk_riil_list.map(p => p.harga);
+
+        // Element HTML
+        const formRiil = document.querySelector('form');
+        const inputTerpilihRiil = document.getElementById('selected_products_produk_riil');
+        const totalHargaRiilText = document.getElementById('totalHargaRiil');
+        const containerProdukRiil = document.getElementById('produkRiilContainer');
+        const paginationRiilNav = document.getElementById('paginationRiilNav');
+        const paginationInfoRiil = document.getElementById('paginationInfoRiil');
+
+        // Status pilihan
+        const statusTerpilihRiil = Array(produk_riil_list.length).fill(false);
+        const perHalamanRiil = 9;
+        const totalHalamanRiil = Math.ceil(produk_riil_list.length / perHalamanRiil);
+        let halamanSekarangRiil = 0;
+
+        // Tampilkan produk per halaman
+        function renderHalamanRiil(halaman) {
+            halamanSekarangRiil = halaman;
+            containerProdukRiil.innerHTML = '';
+
+            const awal = halaman * perHalamanRiil;
+            const akhir = Math.min(awal + perHalamanRiil, produk_riil_list.length);
+
+            for (let i = awal; i < akhir; i++) {
+                const p = produk_riil_list[i];
+
+                const kolom = document.createElement('div');
+                kolom.className = 'col';
+                kolom.innerHTML = `
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input produk-riil-checkbox" type="checkbox"
+                                       value="${i}" id="produkRiil${i}" ${statusTerpilihRiil[i] ? 'checked' : ''}>
+                                <label class="form-check-label" for="produkRiil${i}">
+                                    <h5 class="card-title mb-1">${p.nama}</h5>
+                                </label>
+                            </div>
+                            <p class="card-text text-muted mb-1">Rp${p.harga.toLocaleString('id-ID')}</p>
+                            <p class="card-text"><small>${p.deskripsi}</small></p>
+                        </div>
+                    </div>
+                `;
+                containerProdukRiil.appendChild(kolom);
+            }
+
+            pasangEventCheckboxRiil();
+            renderNavigasiRiil();
+            updateInfoPaginationRiil();
+        }
+
+        // Event checkbox
+        function pasangEventCheckboxRiil() {
+            document.querySelectorAll('.produk-riil-checkbox').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const index = parseInt(this.value);
+                    statusTerpilihRiil[index] = this.checked;
+                    updateTotalRiil();
+                });
+            });
+        }
+
+        // Hitung total
+        function updateTotalRiil() {
+            let total = 0;
+            statusTerpilihRiil.forEach((checked, i) => {
+                if (checked) total += hargaProdukRiil[i];
+            });
+            totalHargaRiilText.innerText = "Rp" + total.toLocaleString('id-ID');
+        }
+
+        // Navigasi
+        function renderNavigasiRiil() {
+            paginationRiilNav.innerHTML = '';
+
+            // Prev
+            const tombolSebelumnya = document.createElement('li');
+            tombolSebelumnya.className = `page-item ${halamanSekarangRiil === 0 ? 'disabled' : ''}`;
+            tombolSebelumnya.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+            tombolSebelumnya.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (halamanSekarangRiil > 0) renderHalamanRiil(halamanSekarangRiil - 1);
+            });
+            paginationRiilNav.appendChild(tombolSebelumnya);
+
+            // Nomor halaman
+            for (let i = 0; i < totalHalamanRiil; i++) {
+                const itemHalaman = document.createElement('li');
+                itemHalaman.className = `page-item ${i === halamanSekarangRiil ? 'active' : ''}`;
+                itemHalaman.innerHTML = `<a class="page-link" href="#">${i + 1}</a>`;
+                itemHalaman.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    renderHalamanRiil(i);
+                });
+                paginationRiilNav.appendChild(itemHalaman);
+            }
+
+            // Next
+            const tombolBerikutnya = document.createElement('li');
+            tombolBerikutnya.className = `page-item ${halamanSekarangRiil === totalHalamanRiil - 1 ? 'disabled' : ''}`;
+            tombolBerikutnya.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            tombolBerikutnya.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (halamanSekarangRiil < totalHalamanRiil - 1) renderHalamanRiil(halamanSekarangRiil + 1);
+            });
+            paginationRiilNav.appendChild(tombolBerikutnya);
+        }
+
+        // Info tampilan
+        function updateInfoPaginationRiil() {
+            const awal = halamanSekarangRiil * perHalamanRiil + 1;
+            const akhir = Math.min((halamanSekarangRiil + 1) * perHalamanRiil, produk_riil_list.length);
+            const infoText = `Menampilkan ${akhir - awal + 1} dari ${produk_riil_list.length} produk`;
+            paginationInfoRiil.innerText = infoText;
+        }
+
+        // Saat submit form
+        formRiil.addEventListener('submit', function () {
+            const indexTerpilih = [];
+            statusTerpilihRiil.forEach((checked, i) => {
+                if (checked) indexTerpilih.push(i);
+            });
+            inputTerpilihRiil.value = JSON.stringify(indexTerpilih);
+        });
+
+        // Inisialisasi
+        renderHalamanRiil(halamanSekarangRiil);
+        updateTotalRiil();
+
+        const produk_digital = {{ produk_digital_json|safe }};
+        const hargaDigital = produk_digital.map(p => p.harga);
+        const formDigital = document.querySelector('form');
+        const hiddenDigital = document.getElementById('selected_products_produk_digital');
+        const totalHargaDigital = document.getElementById('totalHargaDigital');
+        const containerDigital = document.getElementById('produkDigitalContainer');
+        const paginationNavDigital = document.getElementById('paginationNavDigital');
+        const paginationInfoDigital = document.getElementById('paginationInfoDigital');
+        const selectedDigitalStatus = Array(produk_digital.length).fill(false);
+
+        const perPageDigital = 9;
+        const totalPagesDigital = Math.ceil(produk_digital.length / perPageDigital);
+        let currentPageDigital = 0;
+
+        function renderPageDigital(page) {
+            currentPageDigital = page;
+            containerDigital.innerHTML = '';
+            const start = page * perPageDigital;
+            const end = Math.min(start + perPageDigital, produk_digital.length);
+
+            for (let i = start; i < end; i++) {
+                const p = produk_digital[i];
+                const col = document.createElement('div');
+                col.className = 'col';
+                col.innerHTML = `
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="form-check">
+                                <input class="form-check-input digital-checkbox" type="checkbox"
+                                       value="${i}" id="produkDigital${i}" ${selectedDigitalStatus[i] ? 'checked' : ''}>
+                                <label class="form-check-label" for="produkDigital${i}">
+                                    <h5 class="card-title mb-1">${p.nama}</h5>
+                                </label>
+                            </div>
+                            <p class="card-text text-muted mb-1">Rp${p.harga}</p>
+                            <p class="card-text"><small>${p.deskripsi}</small></p>
+                        </div>
+                    </div>
+                `;
+                containerDigital.appendChild(col);
+            }
+
+            attachDigitalCheckboxEvents();
+            renderPaginationButtonsDigital();
+            updateTotalDigital();
+            updatePaginationInfoDigital();
+        }
+
+        function attachDigitalCheckboxEvents() {
+            document.querySelectorAll('.digital-checkbox').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const index = parseInt(this.value);
+                    selectedDigitalStatus[index] = this.checked;
+                    updateTotalDigital();
+                });
+            });
+        }
+
+        function updateTotalDigital() {
+            let total = 0;
+            selectedDigitalStatus.forEach((checked, i) => {
+                if (checked) total += hargaDigital[i];
+            });
+            totalHargaDigital.innerText = "Rp" + total.toLocaleString('id-ID');
+        }
+
+        function renderPaginationButtonsDigital() {
+            paginationNavDigital.innerHTML = '';
+
+            // Previous
+            const prev = document.createElement('li');
+            prev.className = `page-item ${currentPageDigital === 0 ? 'disabled' : ''}`;
+            prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
+            prev.addEventListener('click', e => {
+                e.preventDefault();
+                if (currentPageDigital > 0) renderPageDigital(currentPageDigital - 1);
+            });
+            paginationNavDigital.appendChild(prev);
+
+            // Page Numbers
+            for (let i = 0; i < totalPagesDigital; i++) {
+                const page = document.createElement('li');
+                page.className = `page-item ${i === currentPageDigital ? 'active' : ''}`;
+                page.innerHTML = `<a class="page-link" href="#">${i + 1}</a>`;
+                page.addEventListener('click', e => {
+                    e.preventDefault();
+                    renderPageDigital(i);
+                });
+                paginationNavDigital.appendChild(page);
+            }
+
+            // Next
+            const next = document.createElement('li');
+            next.className = `page-item ${currentPageDigital === totalPagesDigital - 1 ? 'disabled' : ''}`;
+            next.innerHTML = `<a class="page-link" href="#">Next</a>`;
+            next.addEventListener('click', e => {
+                e.preventDefault();
+                if (currentPageDigital < totalPagesDigital - 1) renderPageDigital(currentPageDigital + 1);
+            });
+            paginationNavDigital.appendChild(next);
+        }
+
+        function updatePaginationInfoDigital() {
+            const start = currentPageDigital * perPageDigital + 1;
+            const end = Math.min((currentPageDigital + 1) * perPageDigital, produk_digital.length);
+            paginationInfoDigital.innerText = `Menampilkan ${end - start + 1} dari ${produk_digital.length} produk`;
+        }
+
+        formDigital.addEventListener('submit', function () {
+            const selectedIndexes = [];
+            selectedDigitalStatus.forEach((checked, i) => {
+                if (checked) selectedIndexes.push(i);
+            });
+            hiddenDigital.value = JSON.stringify(selectedIndexes);
+        });
+
+        // Inisialisasi
+        renderPageDigital(currentPageDigital);
+    </script>
+{% endblock %}
