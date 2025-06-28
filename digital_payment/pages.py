@@ -26,26 +26,26 @@ class DynamicPage(Page):
             produk_digital_json=json.dumps(produk_digital),
         )
 
-    def before_next_page(player: Player, timeout_happened):
-        # Pasar Riil
-        try:
-            selected_riil = json.loads(player.selected_products_produk_riil or "[]")
-        except json.JSONDecodeError:
-            selected_riil = []
-
-        produk_riil = player.participant.vars.get('produk_riil_acak', [])
-        total_riil = sum(produk_riil[i]['harga'] for i in selected_riil if 0 <= i < len(produk_riil))
-        player.total_belanja_pasar_riil = total_riil
-
-        # Pasar Digital
-        try:
-            selected_digital = json.loads(player.selected_products_produk_digital or "[]")
-        except json.JSONDecodeError:
-            selected_digital = []
-
-        produk_digital = player.participant.vars.get('produk_digital_acak', [])
-        total_digital = sum(produk_digital[i]['harga'] for i in selected_digital if 0 <= i < len(produk_digital))
-        player.total_belanja_pasar_digital = total_digital
+    # def before_next_page(player: Player, timeout_happened):
+    #     # Pasar Riil
+    #     try:
+    #         selected_riil = json.loads(player.selected_products_produk_riil or "[]")
+    #     except json.JSONDecodeError:
+    #         selected_riil = []
+    #
+    #     produk_riil = player.participant.vars.get('produk_riil_acak', [])
+    #     total_riil = sum(produk_riil[i]['harga'] for i in selected_riil if 0 <= i < len(produk_riil))
+    #     player.total_belanja_pasar_riil = total_riil
+    #
+    #     # Pasar Digital
+    #     try:
+    #         selected_digital = json.loads(player.selected_products_produk_digital or "[]")
+    #     except json.JSONDecodeError:
+    #         selected_digital = []
+    #
+    #     produk_digital = player.participant.vars.get('produk_digital_acak', [])
+    #     total_digital = sum(produk_digital[i]['harga'] for i in selected_digital if 0 <= i < len(produk_digital))
+    #     player.total_belanja_pasar_digital = total_digital
 
 
 # class PlatformDigital(Page):
