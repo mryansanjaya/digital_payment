@@ -1,0 +1,172 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block title %}
+    <title>Instruksi Eksperimen</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <ul class="nav nav-tabs" id="mytab" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+          type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+          Instruksi Eksperimen
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+          type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+          Ilustrasi Eksperimen
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
+          type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+          Sesi Latihan Eksperimen
+        </button>
+      </li>
+    </ul>
+    <div class="tab-content my-4" id="myTabContent">
+      <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab"
+        tabindex="0">
+        <ol class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-start border-0 p-1 mb-4">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">
+                <h4>Instruksi Halaman Permainan Digital Payment Experiment</h4>
+              </div>
+              <ol class="list-group list-group-numbered">
+                <li class="list-group-item border-0 p-1">
+                  Peserta akan menerima modal awal dalam jumlah tertentu.
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Dari nominal yang diterima, peserta diwajibkan membelanjakan 70-85% dari modal awal
+                  (ditentukan secara acak) untuk belanja kebutuhan dasar.
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Peserta juga akan mendapatkan bantuan sosial untuk tambahan modal awal yang diberikan secara tunai
+                  ataupun digital. Keselurahan modal akan digunakan untuk belanja dasar, belanja tambahan,
+                  dan/investasi.
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Peserta dapat memindahkan uangnya dari dompet tunai ke dompet digital ataupun sebaliknya dengan biaya
+                  rendah untuk menyesuaikan kebutuhan konsumsi.
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Peserta dapat melakukan konsumsi tambahan dari daftar barang yang tersedia. Jenis barang yang dibeli
+                  akan menentukan bonus besaran manfaat yang diterima.
+                </li>
+              </ol>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start border-0 p-0 mb-4">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">
+                <h4>Pengukuran besaran manfaat menentukan uang pembayaran kepada peserta</h4>
+              </div>
+              <ol class="list-group list-group-numbered">
+                <li class="list-group-item border-0 p-1">
+                  Konsumsi Pasar Riil: Jika konsumsi dasar adalah Rp100.000, maka manfaat yang diperoleh adalah
+                  100,000. (1x lipat)
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Konsumsi Pasar Digital: Jika mengeluarkan 100.000 untuk barang konsumsi tambahan, maka manfaat yang
+                  diterima adalah Rp105.000. (1,05x lipat)
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Investasi berisiko tinggi: Jika mengeluarkan 100.000 maka ada 50% kemungkinan untuk mendapatkan
+                  200.000 (2x lipat) atau bahkan kehilangan seluruh uang yang diinvestasikan.
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Investasi berisiko rendah: Jika mengeluarkan 100.000 untuk investasi berisiko rendah, maka ada 75%
+                  kesempatan untuk mendapatkan 125.000 (1,25x lipat) dan 25% kesempatan untuk mendapatkan 75.000
+                  (0,75x lipat)
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Jika sisa uang adalah 100.000 maka besaran manfaat yang diperoleh juga sama.
+                </li>
+              </ol>
+            </div>
+          </li>
+          <li class="list-group-item d-flex justify-content-between align-items-start border-0 p-0">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">
+                <h4>Pembayaran Peserta</h4>
+              </div>
+              Pembayaran akan diperhitungkan berdasarkan dari penggunaan uang peserta. Pembayaran sendiri akan dipilih
+              secara acak dari salah satu ronde. Peserta juga akan mendapatkan 100.000 uang kehadiran yang bisa
+              berkurang jika pada ronde terpilih peserta tidak mampu membayar konsumsi dasar.
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
+        tabindex="0">
+        <ol class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-start border-0 p-1 mb-4">
+            <div class="ms-2 me-auto">
+              <div>
+                <img src="{{ static 'img/ilustrasi.png' }}" class="mb-4">
+                <h5>Penjelasan dari Ilustrasi Ekskperimen:</h5>
+              </div>
+              <ol class="list-group list-group-numbered">
+                <li class="list-group-item border-0 p-1">
+                  Jika peserta tidak membeli apapun di suatu ronde:
+                  <ul>
+                    <li>
+                      1 x (Endowment + Bansos) – biaya pemindahan uang dari DD ke DT atau sebaliknya = mestinya
+                      nilai positif
+                    </li>
+                  </ul>
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Jika peserta membeli barang tambahan di pasar riil atau pasar digital:
+                  <ul>
+                    <li>
+                      Uang tersisa + 1.05 x (total pembelian barang tambahan) – biaya pemindahan uang dari DD ke DT
+                      atau sebaliknya = mestinya nilai positif
+                    </li>
+                  </ul>
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Jika peserta membeli barang investasi (hanya di pasar digital):
+                  <ul>
+                    <li>
+                      Uang tersisa + hasil dari investasi – biaya pemindahan uang dari DD ke DT atau sebalikya =
+                      bisa positif maupun negatif tergantung hasil dari investasi
+                    </li>
+                  </ul>
+                </li>
+                <li class="list-group-item border-0 p-1">
+                  Jika peserta membeli barang investasi (hanya di pasar digital) dan barang tambahan di pasar riil atau
+                  pasar digital:
+                  <ul>
+                    <li>
+                      Uang tersisa + 1.05 x (total pembelian barang tambahan) + hasil dari investasi – biaya pemindahan
+                      uang dari DD ke DT atau sebaliknya = bisa positif maupun negatif tergantung hasil dari investasi
+                    </li>
+                  </ul>
+                  Hal yang krusial di sini adalah investasi yang dilakukan oleh peserta yang dapat menghasilkan payoff
+                  negatif sehingga harus mengambil dari uang kehadiran. Konsumsi dasar peserta memiliki multiplier 1
+                  sehingga akan masuk terhitung sebagai uang tersisa saja.
+                </li>
+              </ol>
+            </div>
+          </li>
+        </ol>
+      </div>
+      <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab"
+        tabindex="0">
+        <button class="btn btn-primary">lanjut</button>
+      </div>
+    </div>
+<!--    <div class="d-flex flex-row justify-content-between">-->
+<!--      <button class="btn btn-primary">Prev</button>-->
+<!--      <button class="btn btn-primary">Next</button>-->
+<!--    </div>-->
+  </div>
+{% endblock %}
+
+
+
