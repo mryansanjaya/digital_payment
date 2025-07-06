@@ -1,4 +1,5 @@
 from otree.api import *
+import json
 
 doc = """
 Digital Payment Experiment
@@ -8,7 +9,7 @@ Digital Payment Experiment
 class C(BaseConstants):
     NAME_IN_URL = 'digital_payment'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 4
+    NUM_ROUNDS = 1
 
 # Daftar produk pasar
     PRODUK_TRADISIONAL = [
@@ -107,11 +108,40 @@ class Group(BaseGroup):
 
 class Player(BasePlayer):
     selected_products_produk_riil = models.LongStringField(blank=True)
+    total_belanja_riil = models.CurrencyField(initial=0)
+
     selected_products_produk_digital = models.LongStringField(blank=True)
-    total_belanja_pasar_riil = models.CurrencyField(initial=0)
-    total_belanja_pasar_digital = models.CurrencyField(initial=0)
+    total_harga_digital = models.CurrencyField(initial=0)
 
     # Investasi Risiko Rendah
     lowinvest = models.CurrencyField(label="Berapa rupiah yang ingin Anda investasikan?", min=0)
     hasil_akhir_lowinvest = models.CurrencyField()
     untungrugi_lowinvest = models.StringField()  # UNTUNG atau RUGI
+
+    def live_handle(self, data):
+        jenis = data.get('jenis')
+
+        if data.get('jenis') == 'belanja_riil':
+            total = data['total_belanja']
+            if total > 100000:
+                return {self.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
+
+            self.selected_products_produk_riil = json.dumps(data['produk_terpilih'])
+            self.total_belanja_riil = total
+
+            return {self.id_in_group: dict(status="success", message="Belanja riil berhasil disimpan.")}
+
+        elif jenis == "digital":
+            produk_terpilih = data.get("produk_terpilih", [])
+            total = data.get("total", 0)
+
+            if total > 100000:
+                return {self.id_in_group: dict(status="error", message="Total belanja digital melebihi saldo.")}
+
+            self.selected_products_produk_digital = json.dumps(produk_terpilih)
+            self.total_harga_digital = total
+
+            return {self.id_in_group: dict(status="success", message="Belanja digital berhasil disimpan.")}
+
+        return {self.id_in_group: dict(error="Jenis data tidak dikenali.")}
+
