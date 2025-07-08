@@ -8,8 +8,8 @@ class DynamicPage(Page):
     live_method = 'live_handle'
 
     def vars_for_template(player):
-        produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 25)
-        produk_digital_list = random.sample(C.PRODUK_DIGITAL, 25)
+        produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 38)
+        produk_digital_list = random.sample(C.PRODUK_DIGITAL, 38)
         return {
             'produk_riil_list': produk_riil_list,
             'produk_digital_json': json.dumps(produk_digital_list),

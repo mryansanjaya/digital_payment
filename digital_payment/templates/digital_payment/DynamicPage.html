@@ -8,272 +8,319 @@
     <title>Digital Payment Experiment</title>
 {% endblock %}
 {% block content %}
-    <!-- MENU UTAMA -->
-    <div id="menu_utama">
-        <div class="card">
-            <div class="card-header d-flex flex-row justify-content-between align-items-center">
-                <h5 class="m-0">Digital Payment - Menu Utama</h5>
-                <span class="badge fs-5 bg-secondary bg-gradient">Ronde: {{ player.round_number }}</span>
-            </div>
-            <div class="card-body">
-                <div class="alert p-0" role="alert">
-                    <h4 class="alert-heading">Informasi Pendapatan Anda</h4>
-                    <p></p>
-                    <hr>
-                    <h2 class="m-0">Silahkan pilih platform yang tersedia:</h2>
-                    <div class="btn-group btn-group-lg mt-3" role="group" aria-label="Basic mixed styles example">
-                        <button type="button" class="btn btn-danger" onclick="showForm('pasar_riil')">
-                            <i class="fa-solid fa-shop"></i>
-                            <span>Platform Pasar Tradisional</span>
-                        </button>
-                        <button type="button" class="btn btn-warning" onclick="showForm('pasar_digital')">
-                            <i class="fa-solid fa-shop"></i>
-                            <span>Platform Pasar Digital</span>
-                        </button>
-                        <button type="button" class="btn btn-success" onclick="showForm('all_investasi')">
-                            <i class="fa-solid fa-money-bill-trend-up"></i>
-                            <span>Platform Investasi</span>
-                        </button>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+                Informasi Ronde
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                Menu Utama - Digital Payment
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
+                type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+                Pertukaran Uang
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+            aria-labelledby="home-tab" tabindex="0"></div>
+        <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+          <!-- MENU UTAMA -->
+            <div id="menu_utama">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Digital Payment - Menu Utama</h5>
+                        <span class="badge fs-5 bg-secondary bg-gradient">Ronde: {{ player.round_number }}</span>
                     </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-success bg-gradient">
-                    <span>Lanjut menuju Ronde selanjutnya</span>
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PASAR RIIL -->
-    <div id="pasar_riil" style="display: none;">
-        <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
-            Ronde: {{ player.round_number }}
-        </span>
-        <div class="card">
-            <div class="card-header bg-transparent">
-                <div class="row">
-                    <div class="col-6">
-                        <h3>P1. Platform Pasar Riil</h3>
-                    </div>
-                    <div class="col-6">
-                        <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
-                            Dompet Tunai Anda: Rp. 100.000
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <form method="post">
-                    <!-- Total Belanja -->
-                    <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
-                        <span class="fw-bold">Total Belanja Anda:</span>
-                        <span class="fw-bold" id="totalHargaRiil">Rp0</span>
-                    </div>
-
-                    <!-- Daftar Produk -->
-                    <div id="produkRiilContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
-                    <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
-
-                    <!-- Navigasi Halaman -->
-                    <div class="d-flex flex-column align-items-end mt-3">
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination flex-wrap mb-2" id="paginationRiilNav"></ul>
-                        </nav>
-                        <span class="float-end text-muted" id="paginationInfoRiil"></span>
-                    </div>
-                </form>
-            </div>
-            <div class="card-footer d-flex flex-row justify-content-between">
-                <button type="button" class="btn btn-success" onclick="tampilkanHasilBelanjaRiil()">
-                    Selesaikan Belanja Anda
-                </button>
-                <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
-                    Kembali ke Menu Utama
-                </button>
-            </div>
-        </div>
-    </div>
-    <div id="result_pasar_riil" style="display: none;">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="m-0">Hasil Belanja Anda</h3>
-            </div>
-            <div class="card-body" id="hasilBelanjaRiilContainer"></div>
-            <div class="card-footer d-flex flex-row justify-content-between">
-                <button type="button" class="btn btn-success" onclick="simpanBelanjaRiil()">
-                    Beli
-                </button>
-                <button type="button" class="btn btn-primary" onclick="showForm('pasar_riil')">
-                    Kembali ke Pasar Riil
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- PASAR DIGITAL -->
-    <div id="pasar_digital" style="display: none;">
-        <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
-            Ronde: {{ player.round_number }}
-        </span>
-        <div class="card">
-            <div class="card-header bg-transparent">
-                <div class="row">
-                    <div class="col-6">
-                        <h3>P2. Platform Pasar Digital</h3>
-                    </div>
-                    <div class="col-6">
-                        <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
-                            Dompet Digital Anda: Rp. 100.000
-                        </span>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body">
-                <form method="post">
-                    <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
-                        <span class="fw-bold">Total Belanja Digital Anda:</span>
-                        <span class="fw-bold" id="totalHargaDigital">Rp0</span>
-                    </div>
-                    <div id="produkDigitalContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
-                    <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
-                    <div class="d-flex flex-column align-items-end mt-3">
-                        <nav aria-label="Page navigation digital">
-                            <ul class="pagination flex-wrap mb-2" id="paginationNavDigital"></ul>
-                        </nav>
-                        <span class="float-end text-muted" id="paginationInfoDigital"></span>
-                    </div>
-                </form>
-            </div>
-            <div class="card-footer d-flex flex-row justify-content-between">
-                <button type="button" class="btn btn-success" onclick="showForm('result_pasar_digital')">
-                    Selesaikan Belanja Digital Anda
-                </button>
-                <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
-                    Kembali ke Menu Utama
-                </button>
-            </div>
-        </div>
-    </div>
-    <div id="result_pasar_digital" style="display: none;">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="m-0">Hasil Belanja Anda (Digital)</h3>
-            </div>
-            <div class="card-body" id="hasilBelanjaDigital"></div>
-            <div class="card-footer d-flex flex-row justify-content-between">
-                <button type="button" class="btn btn-success" onclick="prosesBelanjaDigital()">
-                    Beli Sekarang
-                </button>
-                <button type="button" class="btn btn-primary" onclick="showForm('pasar_digital')">
-                    Kembali ke Pasar Digital
-                </button>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- PLATFORM INVESTASI (RENDAH & TINGGI) -->
-    <div id="all_investasi" style="display: none;">
-        <div class="card">
-            <div class="card-header">
-                <h3>P3. Platform Investasi</h3>
-            </div>
-            <div class="card-body">
-                <div class="row row-cols-1 row-cols-md-2 g-4 text-center">
-                    <div class="col">
-                        <div class="card">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h3 class="card-title">
-                                Investasi Risiko Rendah
-                                </h3>
-                                <!--                        <p class="card-text"></p>-->
-                                <button type="button" class="btn btn-success" onclick="showForm('investasi_rendah')">
-                                    Pilih Investasi Risiko Rendah
-                                </button>
+                    <div class="card-body">
+                        <div class="alert p-0" role="alert">
+                            <h4 class="alert-heading">Informasi Pendapatan Anda</h4>
+                            <p></p>
+                            <hr>
+                            <h2 class="m-0">Silahkan pilih platform yang tersedia:</h2>
+                            <div class="container p-0 mt-3">
+                                <div class="row align-items-start">
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-danger w-100 mb-2" onclick="showForm('pasar_riil')">
+                                            <i class="fa-solid fa-shop"></i>
+                                            <span>Platform Pasar Tradisional</span>
+                                        </button>
+                                        <!-- Card List Belanja Anda di Pasar Riil -->
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <strong>List Belanja - Pasar Tradisional</strong>
+                                            </div>
+                                            <div class="card-body" id="listBelanjaRiilBody"></div>
+                                            <div class="card-footer" id="listBelanjaRiilFooter"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-warning w-100 mb-2" onclick="showForm('pasar_digital')">
+                                            <i class="fa-solid fa-shop"></i>
+                                            <span>Platform Pasar Digital</span>
+                                        </button>
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <strong>List Belanja - Pasar Digital</strong>
+                                            </div>
+                                            <div class="card-body"></div>
+                                            <div class="card-footer"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-4">
+                                        <button type="button" class="btn btn-success w-100 mb-2" onclick="showForm('all_investasi')">
+                                            <i class="fa-solid fa-money-bill-trend-up"></i>
+                                            <span>Platform Investasi</span>
+                                        </button>
+                                        <div class="card">
+                                            <div class="card-header text-center">
+                                                <strong>Investasi Anda</strong>
+                                            </div>
+                                            <div class="card-body"></div>
+                                            <div class="card-footer"></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card">
-                            <img src="..." class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h3 class="card-title">
-                                Investasi Risiko Tinggi
-                                </h3>
-                                <!--                        <p class="card-text"></p>-->
-                                <button type="button" class="btn btn-danger" onclick="showForm('investasi_tinggi')">
-                                    Pilih Investasi Risiko Tinggi
-                                </button>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success bg-gradient">
+                            <span>Lanjut menuju Ronde selanjutnya</span>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASAR RIIL -->
+            <div id="pasar_riil" style="display: none;">
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <div class="row">
+                            <div class="col-6">
+                                <h3 class="m-0">P1. Platform Pasar Riil</h3>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
+                                    Dompet Tunai Anda: Rp. 100.000
+                                </span>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="card-footer">
-                <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
-                    Kembali ke Menu Utama
-                </button>
-            </div>
-        </div>
-    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <!-- Total Belanja -->
+                            <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
+                                <span class="fw-bold">Total Belanja Anda:</span>
+                                <span class="fw-bold" id="totalHargaRiil">Rp. 0</span>
+                            </div>
 
-    <!-- PLATFORM INVESTASI RISIKO RENDAH -->
-    <div id="investasi_rendah" style="display: none;">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="m-0">
-                    Investasi Risiko Rendah
-                </h3>
-            </div>
-            <div class="card-body">
-                <div class="alert p-0" role="alert">
-                    <h4 class="alert-heading">Well done!</h4>
-                    <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
-                    <hr>
-                    <div>
-                        <label for="id_lowinvest" class="form-label fw-bold">
-                            Masukkan jumlah yang ingin Anda invetastikan
-                        </label>
-                        <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" min="0" step="1">
+                            <!-- Daftar Produk -->
+                            <div id="produkRiilContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                            <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
+                        </form>
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="tampilkanHasilBelanjaRiil()">
+                            Selesaikan Belanja Anda
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                            Kembali ke Menu Utama
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="card-footer d-flex flex-row justify-content-between" id="footer_investasi_rendah">
-    <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
-        Proses Investasi Anda
-    </button>
-    <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
-        Kembali ke Menu Investasi
-    </button>
-</div>
+            <div id="result_pasar_riil" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Hasil Belanja Anda</h3>
+                    </div>
+                    <div class="card-body" id="hasilBelanjaRiilContainer"></div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="simpanBelanjaRiil()">
+                            Beli
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('pasar_riil')">
+                            Kembali ke Pasar Riil
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASAR DIGITAL -->
+            <div id="pasar_digital" style="display: none;">
+                <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
+                    Ronde: {{ player.round_number }}
+                </span>
+                <div class="card">
+                    <div class="card-header bg-transparent">
+                        <div class="row">
+                            <div class="col-6">
+                                <h3>P2. Platform Pasar Digital</h3>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
+                                    Dompet Digital Anda: Rp. 100.000
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
+                                <span class="fw-bold">Total Belanja Digital Anda:</span>
+                                <span class="fw-bold" id="totalHargaDigital">Rp0</span>
+                            </div>
+                            <div id="produkDigitalContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                            <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
+                            <div class="d-flex flex-column align-items-end mt-3">
+                                <nav aria-label="Page navigation digital">
+                                    <ul class="pagination flex-wrap mb-2" id="paginationNavDigital"></ul>
+                                </nav>
+                                <span class="float-end text-muted" id="paginationInfoDigital"></span>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="showForm('result_pasar_digital')">
+                            Selesaikan Belanja Digital Anda
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                            Kembali ke Menu Utama
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="result_pasar_digital" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Hasil Belanja Anda (Digital)</h3>
+                    </div>
+                    <div class="card-body" id="hasilBelanjaDigital"></div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="prosesBelanjaDigital()">
+                            Beli Sekarang
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('pasar_digital')">
+                            Kembali ke Pasar Digital
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- PLATFORM INVESTASI (RENDAH & TINGGI) -->
+            <div id="all_investasi" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>P3. Platform Investasi</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-4 text-center">
+                            <div class="col">
+                                <div class="card">
+                                    <img src="..." class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                        Investasi Risiko Rendah
+                                        </h3>
+                                        <!--                        <p class="card-text"></p>-->
+                                        <button type="button" class="btn btn-success" onclick="showForm('investasi_rendah')">
+                                            Pilih Investasi Risiko Rendah
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <img src="..." class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                        Investasi Risiko Tinggi
+                                        </h3>
+                                        <!--                        <p class="card-text"></p>-->
+                                        <button type="button" class="btn btn-danger" onclick="showForm('investasi_tinggi')">
+                                            Pilih Investasi Risiko Tinggi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                            Kembali ke Menu Utama
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLATFORM INVESTASI RISIKO RENDAH -->
+            <div id="investasi_rendah" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">
+                            Investasi Risiko Rendah
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert p-0" role="alert">
+                            <h4 class="alert-heading">Well done!</h4>
+                            <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                            <hr>
+                            <div>
+                                <label for="id_lowinvest" class="form-label fw-bold">
+                                    Masukkan jumlah yang ingin Anda invetastikan
+                                </label>
+                                <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" min="0" step="1">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-between" id="footer_investasi_rendah">
+            <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
+                Proses Investasi Anda
+            </button>
+            <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
+                Kembali ke Menu Investasi
+            </button>
         </div>
-    </div>
-    <div id="result_investasi_rendah" style="display:none;">
-        <div class="card">
-            <div class="card-header">
-                <h3 class="m-0">Hasil Investasi Risiko Rendah</h3>
+                </div>
             </div>
-            <div class="card-body">
-                <p class="fs-4" id="hasil_investasi_rendah_text">Hasil investasi akan muncul di sini.</p>
+            <div id="result_investasi_rendah" style="display:none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Hasil Investasi Risiko Rendah</h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="fs-4" id="hasil_investasi_rendah_text">Hasil investasi akan muncul di sini.</p>
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                            Kembali ke Menu Utama
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer d-flex flex-row justify-content-between">
-                <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
-                    Kembali ke Menu Utama
+
+            <!-- PLATFORM INVESTASI RISIKO RENDAH -->
+            <div id="investasi_tinggi" style="display: none;">
+                <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
+                    Kembali ke Menu Investasi
                 </button>
             </div>
         </div>
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
     </div>
 
-    <!-- PLATFORM INVESTASI RISIKO RENDAH -->
-    <div id="investasi_tinggi" style="display: none;">
-        <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
-            Kembali ke Menu Investasi
-        </button>
-    </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         function showForm(formIdToShow) {
             // Sembunyikan semua formulir
@@ -286,163 +333,338 @@
                 'all_investasi',
                 'investasi_rendah',
                 'result_investasi_rendah',
-                'investasi_tinggi'];
+                'investasi_tinggi'
+            ];
             forms.forEach(function(formId) {
-        document.getElementById(formId).style.display = 'none';
-    });
+                document.getElementById(formId).style.display = 'none';
+            });
 
-    if (formIdToShow === 'menu_utama') {
-        // Reset Pasar Riil
-        for (let i = 0; i < statusTerpilihRiil.length; i++) statusTerpilihRiil[i] = false;
-        updateTotalRiil();
-        renderHalamanRiil(0);
-        document.querySelector('#result_pasar_riil .card-body').innerHTML = '';
+            if (formIdToShow === 'menu_utama') {
+                // Tampilkan List Belanja Riil
+                const listBody = document.getElementById('listBelanjaRiilBody');
+                const listFooter = document.getElementById('listBelanjaRiilFooter');
+                let total = 0;
+                let adaBelanja = false;
+                listBody.innerHTML = '';
+                listFooter.innerHTML = '';
 
-        // Reset Pasar Digital
-        for (let i = 0; i < selectedDigitalStatus.length; i++) selectedDigitalStatus[i] = false;
-        updateTotalDigital();
-        renderPageDigital(0);
-        document.getElementById('hasilBelanjaDigital').innerHTML = '';
-    }
+                produk_riil_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliRiil[i];
+                    if (jumlah > 0) {
+                        adaBelanja = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
+                        const item = document.createElement('p');
+                        item.classList.add('mb-1');
+                        item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                        listBody.appendChild(item);
+                    }
+                });
 
-    if (formIdToShow === 'result_pasar_digital') {
-        tampilkanHasilBelanjaDigital();
-    }
+                if (!adaBelanja) {
+                    listBody.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                } else {
+                    listFooter.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
+                }
 
-    document.getElementById(formIdToShow).style.display = 'block';
+                // Reset Pasar Digital
+                for (let i = 0; i < selectedDigitalStatus.length; i++) selectedDigitalStatus[i] = false;
+                updateTotalDigital();
+                renderPageDigital(0);
+                document.getElementById('hasilBelanjaDigital').innerHTML = '';
+            }
+
+            if (formIdToShow === 'result_pasar_digital') {
+                tampilkanHasilBelanjaDigital();
+            }
+
+            document.getElementById(formIdToShow).style.display = 'block';
         }
 
-         // Data produk dari server
-        const produk_riil_list = {{ produk_riil_list|safe }};
-        const hargaProdukRiil = produk_riil_list.map(p => p.harga);
+        // JavaScript untuk Pasar Riil
+            // Data produk dari server
+            const produk_riil_list = {{ produk_riil_list|safe }};
+            const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'buah', 'lembar',
+                'sisir', 'butir', 'botol'];
 
-        // Element HTML
-        const formRiil = document.querySelector('form');
-        const inputTerpilihRiil = document.getElementById('selected_products_produk_riil');
-        const totalHargaRiilText = document.getElementById('totalHargaRiil');
-        const containerProdukRiil = document.getElementById('produkRiilContainer');
-        const paginationRiilNav = document.getElementById('paginationRiilNav');
-        const paginationInfoRiil = document.getElementById('paginationInfoRiil');
+            function tampilkanListBelanjaRiil() {
+                const listBody = document.getElementById('listBelanjaRiilBody');
+                const listFooter = document.getElementById('listBelanjaRiilFooter');
 
-        // Status pilihan
-        const statusTerpilihRiil = Array(produk_riil_list.length).fill(false);
-        const perHalamanRiil = 9;
-        const totalHalamanRiil = Math.ceil(produk_riil_list.length / perHalamanRiil);
-        let halamanSekarangRiil = 0;
+                listBody.innerHTML = '';
+                listFooter.innerHTML = '';
 
-        // Tampilkan produk per halaman
-        function renderHalamanRiil(halaman) {
-            halamanSekarangRiil = halaman;
-            containerProdukRiil.innerHTML = '';
+                let total = 0;
+                let adaBelanja = false;
 
-            const awal = halaman * perHalamanRiil;
-            const akhir = Math.min(awal + perHalamanRiil, produk_riil_list.length);
+                produk_riil_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliRiil[i];
+                    if (jumlah > 0) {
+                        adaBelanja = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
 
-            for (let i = awal; i < akhir; i++) {
-                const p = produk_riil_list[i];
+                        const item = document.createElement('p');
+                        item.classList.add('mb-1');
+                        item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                        listBody.appendChild(item);
+                    }
+                });
 
-                const kolom = document.createElement('div');
-                kolom.className = 'col';
-                kolom.innerHTML = `
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <div class="form-check">
-                                <input class="form-check-input produk-riil-checkbox" type="checkbox"
-                                       value="${i}" id="produkRiil${i}" ${statusTerpilihRiil[i] ? 'checked' : ''}>
-                                <label class="form-check-label" for="produkRiil${i}">
-                                    <h5 class="card-title mb-1">${p.nama}</h5>
-                                </label>
+                if (!adaBelanja) {
+                    listBody.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                } else {
+                    listFooter.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
+                }
+            }
+
+            // Element HTML
+            const formRiil = document.querySelector('form');
+            const inputTerpilihRiil = document.getElementById('selected_products_produk_riil');
+            const jumlahBeliRiil = Array(produk_riil_list.length).fill(0);
+            const containerProdukRiil = document.getElementById('produkRiilContainer');
+
+            // Status pilihan
+            const statusTerpilihRiil = Array(produk_riil_list.length).fill(false);
+
+            // Tampilkan 15 produk pertama
+            function renderHalamanRiil() {
+                containerProdukRiil.innerHTML = '';
+
+                const akhir = Math.min(15, produk_riil_list.length);
+
+                for (let i = 0; i < akhir; i++) {
+                    const p = produk_riil_list[i];
+
+                    const kolom = document.createElement('div');
+                    kolom.className = 'col';
+                    kolom.innerHTML = `
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input produk-riil-checkbox" type="checkbox" value="${i}"
+                                        id="produkRiilCard${i}" ${statusTerpilihRiil[i] ? 'checked' : ''}>
+                                    <label class="form-check-label" for="produkRiilCard${i}">
+                                        <h5 class="card-title mb-1">${p.nama}</h5>
+                                    </label>
+                                </div>
+                                <p class="card-text text-muted mb-1">Rp${p.harga.toLocaleString('id-ID')}</p>
+                                <p class="card-text"><small>${p.deskripsi}</small></p>
                             </div>
-                            <p class="card-text text-muted mb-1">Rp${p.harga.toLocaleString('id-ID')}</p>
-                            <p class="card-text"><small>${p.deskripsi}</small></p>
+                            <div class="card-footer d-flex flex-row justify-content-between align-items-center">
+                                <span>Jumlah yang dibeli:</span>
+                                <div class="d-flex flex-row align-items-center d-none" id="jumlahDivRiil${i}">
+                                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                                        onclick="ubahJumlahRiil(${i}, 0.5)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <span class="mx-2" id="jumlahRiil${i}">0</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
+                                        onclick="ubahJumlahRiil(${i}, -0.5)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                `;
-                containerProdukRiil.appendChild(kolom);
+                    `;
+                    containerProdukRiil.appendChild(kolom);
+                }
+                pasangEventCheckboxRiil();
             }
 
-            pasangEventCheckboxRiil();
-            renderNavigasiRiil();
-            updateInfoPaginationRiil();
-        }
+            function ubahJumlahRiil(index, delta) {
+                if (!statusTerpilihRiil[index]) return;
 
-        // Event checkbox
-        function pasangEventCheckboxRiil() {
-            document.querySelectorAll('.produk-riil-checkbox').forEach(cb => {
-                cb.addEventListener('change', function () {
-                    const index = parseInt(this.value);
-                    statusTerpilihRiil[index] = this.checked;
-                    updateTotalRiil();
-                });
-            });
-        }
+                const satuan = produk_riil_list[index].satuan;
+                const isBulat = satuanTidakBolehSetengah.includes(satuan);
 
-        // Hitung total
-        function updateTotalRiil() {
-            let total = 0;
-            statusTerpilihRiil.forEach((checked, i) => {
-                if (checked) total += hargaProdukRiil[i];
-            });
-            totalHargaRiilText.innerText = "Rp" + total.toLocaleString('id-ID');
-        }
+                let jumlah = jumlahBeliRiil[index] || 0;
+                jumlah += delta;
 
-        // Navigasi
-        function renderNavigasiRiil() {
-            paginationRiilNav.innerHTML = '';
+                if (jumlah < 0) jumlah = 0;
 
-            // Prev
-            const tombolSebelumnya = document.createElement('li');
-            tombolSebelumnya.className = `page-item ${halamanSekarangRiil === 0 ? 'disabled' : ''}`;
-            tombolSebelumnya.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-            tombolSebelumnya.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (halamanSekarangRiil > 0) renderHalamanRiil(halamanSekarangRiil - 1);
-            });
-            paginationRiilNav.appendChild(tombolSebelumnya);
+                // Validasi untuk satuan yang tidak boleh setengah
+                if (isBulat) {
+                    jumlah = Math.round(jumlah); // bulatkan
+                } else {
+                    jumlah = Math.round(jumlah * 2) / 2; // boleh setengah, pembulatan 0.5
+                }
 
-            // Nomor halaman
-            for (let i = 0; i < totalHalamanRiil; i++) {
-                const itemHalaman = document.createElement('li');
-                itemHalaman.className = `page-item ${i === halamanSekarangRiil ? 'active' : ''}`;
-                itemHalaman.innerHTML = `<a class="page-link" href="#">${i + 1}</a>`;
-                itemHalaman.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    renderHalamanRiil(i);
-                });
-                paginationRiilNav.appendChild(itemHalaman);
+                jumlahBeliRiil[index] = jumlah;
+                document.getElementById(`jumlahRiil${index}`).textContent = jumlah;
+                updateTotalHargaRiil(); // refresh total harga
             }
 
-            // Next
-            const tombolBerikutnya = document.createElement('li');
-            tombolBerikutnya.className = `page-item ${halamanSekarangRiil === totalHalamanRiil - 1 ? 'disabled' : ''}`;
-            tombolBerikutnya.innerHTML = `<a class="page-link" href="#">Next</a>`;
-            tombolBerikutnya.addEventListener('click', (e) => {
-                e.preventDefault();
-                if (halamanSekarangRiil < totalHalamanRiil - 1) renderHalamanRiil(halamanSekarangRiil + 1);
+            // Event checkbox
+            function pasangEventCheckboxRiil() {
+                // Update ketika checkbox dicentang atau di-uncheck
+                document.querySelectorAll('.produk-riil-checkbox').forEach((checkbox, i) => {
+                    checkbox.addEventListener('change', function () {
+                        statusTerpilihRiil[i] = this.checked;
+
+                        const jumlahDiv = document.getElementById(`jumlahDivRiil${i}`);
+                        if (this.checked) {
+                            // Tampilkan tombol jumlah
+                            jumlahDiv.classList.remove('d-none');
+
+                            // Jika sebelumnya jumlah belum di-set, beri default 1
+                            if (jumlahBeliRiil[i] === 0) {
+                                jumlahBeliRiil[i] = 1;
+                                document.getElementById(`jumlahRiil${i}`).textContent = "1";
+                            }
+
+                        } else {
+                            // Sembunyikan tombol jumlah dan reset jumlah
+                            jumlahDiv.classList.add('d-none');
+                            jumlahBeliRiil[i] = 0;
+                            document.getElementById(`jumlahRiil${i}`).textContent = "0";
+                        }
+
+                        updateTotalHargaRiil(); // Re-hit total
+                    });
+                });
+            }
+
+            // Hitung total
+            function updateTotalHargaRiil() {
+                let total = 0;
+                statusTerpilihRiil.forEach((selected, i) => {
+                    if (selected && jumlahBeliRiil[i] > 0) {
+                        total += jumlahBeliRiil[i] * produk_riil_list[i].harga;
+                    }
+                });
+
+                document.getElementById('totalHargaRiil').textContent =
+                    `Rp. ${total.toLocaleString('id-ID')}`;
+            }
+
+            // Saat submit form
+            formRiil.addEventListener('submit', function () {
+                const indexTerpilih = [];
+                statusTerpilihRiil.forEach((checked, i) => {
+                    if (checked) indexTerpilih.push(i);
+                });
+                inputTerpilihRiil.value = JSON.stringify(indexTerpilih);
             });
-            paginationRiilNav.appendChild(tombolBerikutnya);
-        }
 
-        // Info tampilan
-        function updateInfoPaginationRiil() {
-            const awal = halamanSekarangRiil * perHalamanRiil + 1;
-            const akhir = Math.min((halamanSekarangRiil + 1) * perHalamanRiil, produk_riil_list.length);
-            const infoText = `Menampilkan ${akhir - awal + 1} dari ${produk_riil_list.length} produk`;
-            paginationInfoRiil.innerText = infoText;
-        }
+            // Inisialisasi
+            renderHalamanRiil();
+            updateTotalHargaRiil();
 
-        // Saat submit form
-        formRiil.addEventListener('submit', function () {
-            const indexTerpilih = [];
-            statusTerpilihRiil.forEach((checked, i) => {
-                if (checked) indexTerpilih.push(i);
+            function tampilkanHasilBelanjaRiil() {
+                const cardBody = document.querySelector('#result_pasar_riil .card-body');
+                cardBody.innerHTML = '';
+                let total = 0;
+                let adaProduk = false;
+
+                produk_riil_list.forEach((p, i) => {
+                    if (statusTerpilihRiil[i] && jumlahBeliRiil[i] > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlahBeliRiil[i] * p.harga;
+                        total += subtotal;
+
+                        const item = document.createElement('p');
+                        item.innerText = `${p.nama} (${jumlahBeliRiil[i]} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                        cardBody.appendChild(item);
+                    }
+                });
+
+                if (!adaProduk) {
+                    cardBody.innerHTML = `<div class="alert alert-warning">Anda belum memilih produk.</div>`;
+                } else {
+                    cardBody.innerHTML += `<hr><p class="fw-bold fs-5">Total: Rp${total.toLocaleString('id-ID')}</p>`;
+                }
+
+                showForm('result_pasar_riil');
+            }
+
+            // Tambah event ke tombol selesai belanja
+            const tombolSelesai = document.querySelector("#pasar_riil .btn-success");
+            tombolSelesai.addEventListener("click", tampilkanHasilBelanjaRiil);
+
+            // Tombol beli di hasil belanja
+            const tombolBeli = document.querySelector('#result_pasar_riil .btn-success');
+            tombolBeli.addEventListener('click', () => {
+            const selectedIndex = statusTerpilihRiil.map((v, i) => v ? i : null).filter(v => v !== null);
+            const selectedProduk = selectedIndex.map(i => produk_riil_list[i]);
+            const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
+            const payload = {
+                action: 'beli_produk_riil',
+                selected_produk: selectedProduk,
+                total: totalHarga
+            };
+            liveSend(payload);
             });
-            inputTerpilihRiil.value = JSON.stringify(indexTerpilih);
-        });
 
-        // Inisialisasi
-        renderHalamanRiil(halamanSekarangRiil);
-        updateTotalRiil();
+            // Fungsi menerima balasan dari server (live_method)
+            liveRecv = function (data) {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pembelian Berhasil',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        for (let i = 0; i < statusTerpilihRiil.length; i++) statusTerpilihRiil[i] = false;
+                        // Reset jumlah beli
+                        for (let i = 0; i < jumlahBeliRiil.length; i++) {
+                            jumlahBeliRiil[i] = 0;
+                        }
+
+                        // Kosongkan list belanja di menu utama
+                        const listBody = document.getElementById('listBelanjaRiilBody');
+                        const listFooter = document.getElementById('listBelanjaRiilFooter');
+                        if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
+                        if (listFooter) listFooter.innerHTML = '';
+
+                        updateTotalHargaRiil();
+                        renderHalamanRiil(0);
+                        document.querySelector('#result_pasar_riil .card-body').innerHTML = '';
+
+                        // Kembali ke menu utama
+                        showForm('menu_utama');
+                    });
+
+                } else if (data.status === 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Pembelian Gagal',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+
+            function simpanBelanjaRiil() {
+                const produkTerpilih = produk_riil_list.map((p, i) => {
+                    const jumlah = jumlahBeliRiil[i] || 0;
+                    if (jumlah > 0) {
+                        const satuan = p.satuan;
+                        const isBulat = satuanTidakBolehSetengah.includes(satuan);
+                        if (isBulat && jumlah % 1 !== 0) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Jumlah tidak valid',
+                                text: `Produk "${p.nama}" hanya bisa dibeli dalam jumlah bulat.`,
+                            });
+                            throw new Error('Jumlah tidak valid');
+                        }
+                        return { ...p, jumlah };
+                    }
+                    return null;
+                }).filter(p => p !== null);
+
+                const total = produkTerpilih.reduce((sum, p) => sum + (p.harga * p.jumlah), 0);
+
+                liveSend({
+                    jenis: "belanja_riil",
+                    produk_terpilih: produkTerpilih,
+                    total_belanja: total
+                });
+            }
+        // Akhir Source Code - JavaScript untuk Pasar Riil
 
         const produk_digital = {{ produk_digital_json|safe }};
         const hargaDigital = produk_digital.map(p => p.harga);
@@ -480,6 +702,18 @@
                             </div>
                             <p class="card-text text-muted mb-1">Rp${p.harga}</p>
                             <p class="card-text"><small>${p.deskripsi}</small></p>
+                        </div>
+                        <div class="card-footer d-flex flex-row justify-content-between align-items-center">
+                            <span>Jumlah yang dibeli:</span>
+                            <div class="d-flex flex-row align-items-center">
+                                <button type="button" class="btn btn-sm btn-outline-success rounded-3">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                                <span class="mx-2">1</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger rounded-3">
+                                    <i class="fa-solid fa-minus"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `;
@@ -563,105 +797,42 @@
         // Inisialisasi
         renderPageDigital(currentPageDigital);
 
-        function tampilkanHasilBelanjaRiil() {
-            const selectedIndex = statusTerpilihRiil.map((v, i) => v ? i : null).filter(v => v !== null);
-            const selectedProduk = selectedIndex.map(i => produk_riil_list[i]);
-            const cardBody = document.querySelector('#result_pasar_riil .card-body');
-            cardBody.innerHTML = '';
-
-            if (selectedProduk.length === 0) {
-                cardBody.innerHTML = `<div class="alert alert-warning">Anda belum memilih produk.</div>`;
-            } else {
-                selectedProduk.forEach(p => {
-                    const item = document.createElement('p');
-                    item.className = 'm-0';
-                    item.innerText = `${p.nama} - Rp${p.harga.toLocaleString('id-ID')}`;
-                    cardBody.appendChild(item);
-                });
-                const total = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
-                cardBody.innerHTML += `<hr><p class="fw-bold fs-5">Total: Rp${total.toLocaleString('id-ID')}</p>`;
-            }
-            showForm('result_pasar_riil');
+        function tampilkanHasilBelanjaDigital() {
+            const container = document.getElementById('hasilBelanjaDigital');
+            container.innerHTML = '';
+            let total = 0;
+            produk_digital.forEach((produk, i) => {
+                if (selectedDigitalStatus[i]) {
+                    const item = document.createElement('div');
+                    item.innerHTML = `
+                        <p class="m-0"><strong>${produk.nama}</strong> - Rp${produk.harga.toLocaleString('id-ID')}</p>
+                    `;
+                    total += produk.harga;
+                    container.appendChild(item);
+                }
+            });
+            container.innerHTML += `<hr><p><strong>Total Belanja:</strong> Rp${total.toLocaleString('id-ID')}</p>`;
         }
 
-        // Tambah event ke tombol selesai belanja
-        const tombolSelesai = document.querySelector("#pasar_riil .btn-success");
-        tombolSelesai.addEventListener("click", tampilkanHasilBelanjaRiil);
+        function prosesBelanjaDigital() {
+            const produkTerpilih = [];
+            let total = 0;
 
-        // Tombol beli di hasil belanja
-        const tombolBeli = document.querySelector('#result_pasar_riil .btn-success');
-        tombolBeli.addEventListener('click', () => {
-            const selectedIndex = statusTerpilihRiil.map((v, i) => v ? i : null).filter(v => v !== null);
-            const selectedProduk = selectedIndex.map(i => produk_riil_list[i]);
-            const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
-            const payload = {
-                action: 'beli_produk_riil',
-                selected_produk: selectedProduk,
-                total: totalHarga
-            };
-            liveSend(payload);
-        });
+            produk_digital.forEach((produk, i) => {
+                if (selectedDigitalStatus[i]) {
+                    produkTerpilih.push(produk);
+                    total += produk.harga;
+                }
+            });
 
-        // Fungsi menerima balasan dari server (live_method)
-        liveRecv = function (data) {
-            if (data.status === 'success') {
-                alert(data.message);
-                showForm('menu_utama');
-            }
+            liveSend({
+                jenis: 'digital',
+                produk_terpilih: produkTerpilih,
+                total: total
+            });
+
+            showForm('menu_utama');
         }
-
-        function simpanBelanjaRiil() {
-    const indexTerpilih = [];
-    statusTerpilihRiil.forEach((checked, i) => {
-        if (checked) indexTerpilih.push(i);
-    });
-
-    const produkTerpilih = indexTerpilih.map(i => produk_riil_list[i]);
-    const total = produkTerpilih.reduce((sum, p) => sum + p.harga, 0);
-
-    // Kirim ke server via liveSend oTree
-    liveSend({
-        jenis: "belanja_riil",
-        produk_terpilih: produkTerpilih,
-        total_belanja: total
-    });
-}
-
-function tampilkanHasilBelanjaDigital() {
-    const container = document.getElementById('hasilBelanjaDigital');
-    container.innerHTML = '';
-    let total = 0;
-    produk_digital.forEach((produk, i) => {
-        if (selectedDigitalStatus[i]) {
-            const item = document.createElement('div');
-            item.innerHTML = `
-                <p class="m-0"><strong>${produk.nama}</strong> - Rp${produk.harga.toLocaleString('id-ID')}</p>
-            `;
-            total += produk.harga;
-            container.appendChild(item);
-        }
-    });
-    container.innerHTML += `<hr><p><strong>Total Belanja:</strong> Rp${total.toLocaleString('id-ID')}</p>`;
-}
-
-function prosesBelanjaDigital() {
-    const produkTerpilih = [];
-    let total = 0;
-
-    produk_digital.forEach((produk, i) => {
-        if (selectedDigitalStatus[i]) {
-            produkTerpilih.push(produk);
-            total += produk.harga;
-        }
-    });
-
-    liveSend({
-        jenis: 'digital',
-        produk_terpilih: produkTerpilih,
-        total: total
-    });
-
-    showForm('menu_utama');
-}
     </script>
+    <script src="pasar_riil.js"></script>
 {% endblock %}
