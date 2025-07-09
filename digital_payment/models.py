@@ -111,37 +111,37 @@ class Player(BasePlayer):
     total_belanja_riil = models.CurrencyField(initial=0)
 
     selected_products_produk_digital = models.LongStringField(blank=True)
-    total_harga_digital = models.CurrencyField(initial=0)
+    total_belanja_digital = models.CurrencyField(initial=0)
 
     # Investasi Risiko Rendah
     lowinvest = models.CurrencyField(label="Berapa rupiah yang ingin Anda investasikan?", min=0)
     hasil_akhir_lowinvest = models.CurrencyField()
     untungrugi_lowinvest = models.StringField()  # UNTUNG atau RUGI
 
-    def live_handle(self, data):
-        jenis = data.get('jenis')
+    def live_handle(player, data):
+        jenis = data.get("jenis")
 
-        if data.get('jenis') == 'belanja_riil':
-            total = data['total_belanja']
-            if total > 100000:
-                return {self.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
-
-            self.selected_products_produk_riil = json.dumps(data['produk_terpilih'])
-            self.total_belanja_riil = total
-
-            return {self.id_in_group: dict(status="success", message="Belanja riil berhasil disimpan.")}
-
-        elif jenis == "digital":
-            produk_terpilih = data.get("produk_terpilih", [])
-            total = data.get("total", 0)
+        if jenis == "belanja_riil":
+            produk_riil = data.get("produk_terpilih", [])
+            total = data.get("total_belanja", 0)
 
             if total > 100000:
-                return {self.id_in_group: dict(status="error", message="Total belanja digital melebihi saldo.")}
+                return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
 
-            self.selected_products_produk_digital = json.dumps(produk_terpilih)
-            self.total_harga_digital = total
+            player.selected_products_produk_riil = json.dumps(produk_riil)
+            player.total_belanja_riil = total
 
-            return {self.id_in_group: dict(status="success", message="Belanja digital berhasil disimpan.")}
+            return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
 
-        return {self.id_in_group: dict(error="Jenis data tidak dikenali.")}
+        elif jenis == "belanja_digital":
+            produk_digital = data.get("produk_terpilih", [])
+            total = data.get("total_belanja", 0)
+
+            if total > 100000:
+                return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
+
+            player.selected_products_produk_digital = json.dumps(produk_digital)
+            player.total_belanja_digital = total
+
+            return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
 

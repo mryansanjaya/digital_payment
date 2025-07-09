@@ -374,50 +374,53 @@
                 document.getElementById(formId).style.display = 'none';
             });
 
+            // Tindakan khusus saat kembali ke Menu Utama
             if (formIdToShow === 'menu_utama') {
-                // Tampilkan List Belanja Digital
-                const listBody = document.getElementById('listBelanjaRiilBody');
-                const listFooter = document.getElementById('listBelanjaRiilFooter');
-                let total = 0;
-                let adaBelanja = false;
-                listBody.innerHTML = '';
-                listFooter.innerHTML = '';
+                // === Pasar Riil ===
+                const listBodyRiil = document.getElementById('listBelanjaRiilBody');
+                const listFooterRiil = document.getElementById('listBelanjaRiilFooter');
+                listBodyRiil.innerHTML = '';
+                listFooterRiil.innerHTML = '';
+                let totalRiil = 0;
+                let adaBelanjaRiil = false;
 
                 produk_riil_list.forEach((p, i) => {
                     const jumlah = jumlahBeliRiil[i];
                     if (jumlah > 0) {
-                        adaBelanja = true;
+                        adaBelanjaRiil = true;
                         const subtotal = jumlah * p.harga;
-                        total += subtotal;
+                        totalRiil += subtotal;
+
                         const item = document.createElement('p');
                         item.classList.add('mb-1');
                         item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
-                        listBody.appendChild(item);
+                        listBodyRiil.appendChild(item);
                     }
                 });
 
-                if (!adaBelanja) {
-                    listBody.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                if (!adaBelanjaRiil) {
+                    listBodyRiil.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
                 } else {
-                    listFooter.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
+                    listFooterRiil.innerHTML = `<strong>Total Belanja: Rp${totalRiil.toLocaleString('id-ID')}</strong>`;
                 }
 
                 tampilkanListBelanjaRiil();
 
-                // Tampilkan List Belanja Digital
+                // === Pasar Digital ===
                 const listBodyDigital = document.getElementById('listBelanjaDigitalBody');
                 const listFooterDigital = document.getElementById('listBelanjaDigitalFooter');
-                let total_digital = 0;
-                let adaBelanjaDigital = false;
                 listBodyDigital.innerHTML = '';
                 listFooterDigital.innerHTML = '';
+                let totalDigital = 0;
+                let adaBelanjaDigital = false;
 
                 produk_digital_list.forEach((p, i) => {
                     const jumlah = jumlahBeliDigital[i];
                     if (jumlah > 0) {
                         adaBelanjaDigital = true;
                         const subtotal = jumlah * p.harga;
-                        total += subtotal;
+                        totalDigital += subtotal;
+
                         const item = document.createElement('p');
                         item.classList.add('mb-1');
                         item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
@@ -428,12 +431,13 @@
                 if (!adaBelanjaDigital) {
                     listBodyDigital.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
                 } else {
-                    listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
+                    listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${totalDigital.toLocaleString('id-ID')}</strong>`;
                 }
 
                 tampilkanListBelanjaDigital();
             }
 
+            // Tampilkan form yang diminta
             document.getElementById(formIdToShow).style.display = 'block';
         }
 
@@ -649,43 +653,48 @@
             });
 
             // Fungsi menerima balasan dari server (live_method)
-            liveRecv = function (data) {
-                if (data.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Pembelian Berhasil',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        for (let i = 0; i < statusTerpilihRiil.length; i++) statusTerpilihRiil[i] = false;
-                        // Reset jumlah beli
-                        for (let i = 0; i < jumlahBeliRiil.length; i++) {
-                            jumlahBeliRiil[i] = 0;
-                        }
+            function backendRiil() {
+                if (window.liveRecvBusy) return;
+                window.liveRecvBusy = true;
 
-                        // Kosongkan list belanja di menu utama
-                        const listBody = document.getElementById('listBelanjaRiilBody');
-                        const listFooter = document.getElementById('listBelanjaRiilFooter');
-                        if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
-                        if (listFooter) listFooter.innerHTML = '';
+                liveRecv = function (data) {
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembelian Berhasil',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            for (let i = 0; i < statusTerpilihRiil.length; i++) statusTerpilihRiil[i] = false;
+                            // Reset jumlah beli
+                            for (let i = 0; i < jumlahBeliRiil.length; i++) {
+                                jumlahBeliRiil[i] = 0;
+                            }
 
-                        updateTotalHargaRiil();
-                        renderHalamanRiil(0);
-                        document.querySelector('#result_pasar_riil .card-body').innerHTML = '';
+                            // Kosongkan list belanja di menu utama
+                            const listBody = document.getElementById('listBelanjaRiilBody');
+                            const listFooter = document.getElementById('listBelanjaRiilFooter');
+                            if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
+                            if (listFooter) listFooter.innerHTML = '';
 
-                        // Kembali ke menu utama
-                        showForm('menu_utama');
-                    });
+                            updateTotalHargaRiil();
+                            renderHalamanRiil(0);
+                            document.querySelector('#result_pasar_riil .card-body').innerHTML = '';
 
-                } else if (data.status === 'error') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pembelian Gagal',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                            // Kembali ke menu utama
+                            showForm('menu_utama');
+                        });
+
+                    } else if (data.status === 'error') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Pembelian Gagal',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
                 }
             }
 
@@ -715,6 +724,8 @@
                     produk_terpilih: produkTerpilih,
                     total_belanja: total
                 });
+
+                backendRiil();
             }
         // Akhir Source Code - JavaScript untuk Pasar Riil
 
@@ -914,37 +925,42 @@
                 liveSend(payload);
             });
 
-            liveRecv = function (data) {
-                if (data.status === 'success') {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Pembelian Berhasil',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    }).then(() => {
-                        for (let i = 0; i < statusTerpilihDigital.length; i++) statusTerpilihDigital[i] = false;
-                        for (let i = 0; i < jumlahBeliDigital.length; i++) jumlahBeliDigital[i] = 0;
+            function backendDigital() {
+                if (window.liveRecvBusy) return;
+                window.liveRecvBusy = true;
 
-                        const listBody = document.getElementById('listBelanjaDigitalBody');
-                        const listFooter = document.getElementById('listBelanjaDigitalFooter');
-                        if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
-                        if (listFooter) listFooter.innerHTML = '';
+                liveRecv = function (data) {
+                    if (data.status === 'success') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembelian Berhasil',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            for (let i = 0; i < statusTerpilihDigital.length; i++) statusTerpilihDigital[i] = false;
+                            for (let i = 0; i < jumlahBeliDigital.length; i++) jumlahBeliDigital[i] = 0;
 
-                        updateTotalHargaDigital();
-                        renderHalamanDigital(0);
-                        document.querySelector('#result_pasar_digital .card-body').innerHTML = '';
-                        showForm('menu_utama');
-                    });
+                            const listBody = document.getElementById('listBelanjaDigitalBody');
+                            const listFooter = document.getElementById('listBelanjaDigitalFooter');
+                            if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
+                            if (listFooter) listFooter.innerHTML = '';
 
-                } else if (data.status === 'error') {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Pembelian Gagal',
-                        text: data.message,
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
+                            updateTotalHargaDigital();
+                            renderHalamanDigital(0);
+                            document.querySelector('#result_pasar_digital .card-body').innerHTML = '';
+                            showForm('menu_utama');
+                        });
+
+                    } else if (data.status === 'error') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Pembelian Gagal',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
                 }
             }
 
@@ -974,6 +990,8 @@
                     produk_terpilih: produkTerpilih,
                     total_belanja: total
                 });
+
+                backendDigital();
             }
         // Akhir Source Code - JavaScript untuk Pasar Digital
     </script>

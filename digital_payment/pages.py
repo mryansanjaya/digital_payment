@@ -7,7 +7,7 @@ import json
 class DynamicPage(Page):
     live_method = 'live_handle'
 
-    def vars_for_template(player):
+    def vars_for_template(player: Player):
         produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 38)
         produk_digital_list = random.sample(C.PRODUK_DIGITAL, 38)
         return {
@@ -15,34 +15,32 @@ class DynamicPage(Page):
             'produk_digital_list': produk_digital_list,
         }
 
-    def live_handle(self, data):
-        player = self.player
+    def live_handle(player: Player, data):
         jenis = data.get("jenis")
 
         if jenis == "belanja_riil":
-            produk = data.get("produk_terpilih", [])
+            produk_riil = data.get("produk_terpilih", [])
             total = data.get("total_belanja", 0)
 
             if total > 100000:
                 return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
 
-            player.selected_products_produk_riil = json.dumps(produk)
+            player.selected_products_produk_riil = json.dumps(produk_riil)
             player.total_belanja_riil = total
 
             return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
 
-        elif jenis == "digital":
-            produk_index = data.get("produk_terpilih", [])
-            total = data.get("total", 0)
+        elif jenis == "belanja_digital":
+            produk_digital = data.get("produk_terpilih", [])
+            total = data.get("total_belanja", 0)
 
             if total > 100000:
-                return {player.id_in_group: dict(status="error", message="Total belanja digital melebihi saldo.")}
+                return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
 
-            selected_names = [C.PRODUK_DIGITAL[i]['nama'] for i in produk_index]
-            player.selected_products_produk_digital = json.dumps(selected_names)
-            player.total_harga_digital = total
+            player.selected_products_produk_digital = json.dumps(produk_digital)
+            player.total_belanja_digital = total
 
-            return {player.id_in_group: dict(status="success", message="Belanja digital berhasil disimpan.")}
+            return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
 
 
 page_sequence = [DynamicPage]
