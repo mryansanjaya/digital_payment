@@ -12,7 +12,7 @@ class DynamicPage(Page):
         produk_digital_list = random.sample(C.PRODUK_DIGITAL, 38)
         return {
             'produk_riil_list': produk_riil_list,
-            'produk_digital_json': json.dumps(produk_digital_list),
+            'produk_digital_list': produk_digital_list,
         }
 
     def live_handle(self, data):

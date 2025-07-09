@@ -54,11 +54,28 @@
                                         </button>
                                         <!-- Card List Belanja Anda di Pasar Riil -->
                                         <div class="card">
-                                            <div class="card-header text-center">
+                                            <div class="card-header">
                                                 <strong>List Belanja - Pasar Tradisional</strong>
                                             </div>
-                                            <div class="card-body" id="listBelanjaRiilBody"></div>
-                                            <div class="card-footer" id="listBelanjaRiilFooter"></div>
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive p-2">
+                                                    <table class="table table-sm table-striped m-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Produk</th>
+                                                                <th>Jumlah</th>
+                                                                <th>Subtotal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="listBelanjaRiilBody">
+                                                            <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-end fw-bold" id="listBelanjaRiilFooter">
+                                                <!-- total akan muncul di sini -->
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-4">
@@ -66,12 +83,30 @@
                                             <i class="fa-solid fa-shop"></i>
                                             <span>Platform Pasar Digital</span>
                                         </button>
+                                        <!-- Card List Belanja Anda di Pasar Digital -->
                                         <div class="card">
-                                            <div class="card-header text-center">
+                                            <div class="card-header">
                                                 <strong>List Belanja - Pasar Digital</strong>
                                             </div>
-                                            <div class="card-body"></div>
-                                            <div class="card-footer"></div>
+                                            <div class="card-body p-0">
+                                                <div class="table-responsive p-2">
+                                                    <table class="table table-sm table-striped m-0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>Produk</th>
+                                                                <th>Jumlah</th>
+                                                                <th>Subtotal</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="listBelanjaDigitalBody">
+                                                            <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer text-end fw-bold" id="listBelanjaDigitalFooter">
+                                                <!-- total akan muncul di sini -->
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-4">
@@ -155,16 +190,13 @@
                 </div>
             </div>
 
-            <!-- PASAR DIGITAL -->
+            <!-- PASAR RIIL -->
             <div id="pasar_digital" style="display: none;">
-                <span class="badge fs-5 bg-success bg-gradient p-2 mb-2">
-                    Ronde: {{ player.round_number }}
-                </span>
                 <div class="card">
                     <div class="card-header bg-transparent">
                         <div class="row">
                             <div class="col-6">
-                                <h3>P2. Platform Pasar Digital</h3>
+                                <h3 class="m-0">P1. Platform Pasar Riil</h3>
                             </div>
                             <div class="col-6">
                                 <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
@@ -175,23 +207,20 @@
                     </div>
                     <div class="card-body">
                         <form method="post">
+                            <!-- Total Belanja -->
                             <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
-                                <span class="fw-bold">Total Belanja Digital Anda:</span>
-                                <span class="fw-bold" id="totalHargaDigital">Rp0</span>
+                                <span class="fw-bold">Total Belanja Anda:</span>
+                                <span class="fw-bold" id="totalHargaDigital">Rp. 0</span>
                             </div>
+
+                            <!-- Daftar Produk -->
                             <div id="produkDigitalContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
                             <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
-                            <div class="d-flex flex-column align-items-end mt-3">
-                                <nav aria-label="Page navigation digital">
-                                    <ul class="pagination flex-wrap mb-2" id="paginationNavDigital"></ul>
-                                </nav>
-                                <span class="float-end text-muted" id="paginationInfoDigital"></span>
-                            </div>
                         </form>
                     </div>
                     <div class="card-footer d-flex flex-row justify-content-between">
-                        <button type="button" class="btn btn-success" onclick="showForm('result_pasar_digital')">
-                            Selesaikan Belanja Digital Anda
+                        <button type="button" class="btn btn-success" onclick="tampilkanHasilBelanjaDigital()">
+                            Selesaikan Belanja Anda
                         </button>
                         <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
                             Kembali ke Menu Utama
@@ -202,12 +231,12 @@
             <div id="result_pasar_digital" style="display: none;">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="m-0">Hasil Belanja Anda (Digital)</h3>
+                        <h3 class="m-0">Hasil Belanja Anda</h3>
                     </div>
-                    <div class="card-body" id="hasilBelanjaDigital"></div>
+                    <div class="card-body" id="hasilBelanjaDigitalContainer"></div>
                     <div class="card-footer d-flex flex-row justify-content-between">
-                        <button type="button" class="btn btn-success" onclick="prosesBelanjaDigital()">
-                            Beli Sekarang
+                        <button type="button" class="btn btn-success" onclick="simpanBelanjaDigital()">
+                            Beli
                         </button>
                         <button type="button" class="btn btn-primary" onclick="showForm('pasar_digital')">
                             Kembali ke Pasar Digital
@@ -322,6 +351,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Data produk dari server
+            const produk_riil_list = {{ produk_riil_list|safe }};
+            const produk_digital_list = {{ produk_digital_list|safe }};
+            const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'pcs', 'lembar', 'sisir',
+                'butir', 'botol', 'pasang', 'pak', 'sachet'];
+
         function showForm(formIdToShow) {
             // Sembunyikan semua formulir
             const forms = [
@@ -340,7 +375,7 @@
             });
 
             if (formIdToShow === 'menu_utama') {
-                // Tampilkan List Belanja Riil
+                // Tampilkan List Belanja Digital
                 const listBody = document.getElementById('listBelanjaRiilBody');
                 const listFooter = document.getElementById('listBelanjaRiilFooter');
                 let total = 0;
@@ -367,54 +402,71 @@
                     listFooter.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
                 }
 
-                // Reset Pasar Digital
-                for (let i = 0; i < selectedDigitalStatus.length; i++) selectedDigitalStatus[i] = false;
-                updateTotalDigital();
-                renderPageDigital(0);
-                document.getElementById('hasilBelanjaDigital').innerHTML = '';
-            }
+                tampilkanListBelanjaRiil();
 
-            if (formIdToShow === 'result_pasar_digital') {
-                tampilkanHasilBelanjaDigital();
+                // Tampilkan List Belanja Digital
+                const listBodyDigital = document.getElementById('listBelanjaDigitalBody');
+                const listFooterDigital = document.getElementById('listBelanjaDigitalFooter');
+                let total_digital = 0;
+                let adaBelanjaDigital = false;
+                listBodyDigital.innerHTML = '';
+                listFooterDigital.innerHTML = '';
+
+                produk_digital_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliDigital[i];
+                    if (jumlah > 0) {
+                        adaBelanjaDigital = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
+                        const item = document.createElement('p');
+                        item.classList.add('mb-1');
+                        item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                        listBodyDigital.appendChild(item);
+                    }
+                });
+
+                if (!adaBelanjaDigital) {
+                    listBodyDigital.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                } else {
+                    listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
+                }
+
+                tampilkanListBelanjaDigital();
             }
 
             document.getElementById(formIdToShow).style.display = 'block';
         }
 
         // JavaScript untuk Pasar Riil
-            // Data produk dari server
-            const produk_riil_list = {{ produk_riil_list|safe }};
-            const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'buah', 'lembar',
-                'sisir', 'butir', 'botol'];
-
             function tampilkanListBelanjaRiil() {
                 const listBody = document.getElementById('listBelanjaRiilBody');
                 const listFooter = document.getElementById('listBelanjaRiilFooter');
-
                 listBody.innerHTML = '';
-                listFooter.innerHTML = '';
-
                 let total = 0;
-                let adaBelanja = false;
+                let adaProduk = false;
 
                 produk_riil_list.forEach((p, i) => {
                     const jumlah = jumlahBeliRiil[i];
                     if (jumlah > 0) {
-                        adaBelanja = true;
+                        adaProduk = true;
                         const subtotal = jumlah * p.harga;
                         total += subtotal;
 
-                        const item = document.createElement('p');
-                        item.classList.add('mb-1');
-                        item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
-                        listBody.appendChild(item);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
                     }
                 });
 
-                if (!adaBelanja) {
-                    listBody.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                if (!adaProduk) {
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
+                    listFooter.innerHTML = '';
                 } else {
-                    listFooter.innerHTML = `<strong>Total Belanja: Rp${total.toLocaleString('id-ID')}</strong>`;
+                    listFooter.innerHTML = `Total: Rp${total.toLocaleString('id-ID')}`;
                 }
             }
 
@@ -452,15 +504,15 @@
                                 <p class="card-text"><small>${p.deskripsi}</small></p>
                             </div>
                             <div class="card-footer d-flex flex-row justify-content-between align-items-center">
-                                <span>Jumlah yang dibeli:</span>
+                                <span>Jumlah (${p.satuan}):</span>
                                 <div class="d-flex flex-row align-items-center d-none" id="jumlahDivRiil${i}">
                                     <button type="button" class="btn btn-sm btn-outline-success rounded-3"
-                                        onclick="ubahJumlahRiil(${i}, 0.5)">
+                                        onclick="ubahJumlahRiil(${i}, 1)">
                                         <i class="fa-solid fa-plus"></i>
                                     </button>
                                     <span class="mx-2" id="jumlahRiil${i}">0</span>
                                     <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
-                                        onclick="ubahJumlahRiil(${i}, -0.5)">
+                                        onclick="ubahJumlahRiil(${i}, -1)">
                                         <i class="fa-solid fa-minus"></i>
                                     </button>
                                 </div>
@@ -585,15 +637,15 @@
             // Tombol beli di hasil belanja
             const tombolBeli = document.querySelector('#result_pasar_riil .btn-success');
             tombolBeli.addEventListener('click', () => {
-            const selectedIndex = statusTerpilihRiil.map((v, i) => v ? i : null).filter(v => v !== null);
-            const selectedProduk = selectedIndex.map(i => produk_riil_list[i]);
-            const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
-            const payload = {
-                action: 'beli_produk_riil',
-                selected_produk: selectedProduk,
-                total: totalHarga
-            };
-            liveSend(payload);
+                const selectedIndex = statusTerpilihRiil.map((v, i) => v ? i : null).filter(v => v !== null);
+                const selectedProduk = selectedIndex.map(i => produk_riil_list[i]);
+                const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
+                const payload = {
+                    action: 'beli_produk_riil',
+                    selected_produk: selectedProduk,
+                    total: totalHarga
+                };
+                liveSend(payload);
             });
 
             // Fungsi menerima balasan dari server (live_method)
@@ -666,173 +718,263 @@
             }
         // Akhir Source Code - JavaScript untuk Pasar Riil
 
-        const produk_digital = {{ produk_digital_json|safe }};
-        const hargaDigital = produk_digital.map(p => p.harga);
-        const formDigital = document.querySelector('form');
-        const hiddenDigital = document.getElementById('selected_products_produk_digital');
-        const totalHargaDigital = document.getElementById('totalHargaDigital');
-        const containerDigital = document.getElementById('produkDigitalContainer');
-        const paginationNavDigital = document.getElementById('paginationNavDigital');
-        const paginationInfoDigital = document.getElementById('paginationInfoDigital');
-        const selectedDigitalStatus = Array(produk_digital.length).fill(false);
+        // JavaScript untuk Pasar Digital
+            function tampilkanListBelanjaDigital() {
+                const listBody = document.getElementById('listBelanjaDigitalBody');
+                const listFooter = document.getElementById('listBelanjaDigitalFooter');
+                listBody.innerHTML = '';
+                let total = 0;
+                let adaProduk = false;
 
-        const perPageDigital = 9;
-        const totalPagesDigital = Math.ceil(produk_digital.length / perPageDigital);
-        let currentPageDigital = 0;
+                produk_digital_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliDigital[i];
+                    if (jumlah > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
 
-        function renderPageDigital(page) {
-            currentPageDigital = page;
-            containerDigital.innerHTML = '';
-            const start = page * perPageDigital;
-            const end = Math.min(start + perPageDigital, produk_digital.length);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
+                    }
+                });
 
-            for (let i = start; i < end; i++) {
-                const p = produk_digital[i];
-                const col = document.createElement('div');
-                col.className = 'col';
-                col.innerHTML = `
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <div class="form-check">
-                                <input class="form-check-input digital-checkbox" type="checkbox"
-                                       value="${i}" id="produkDigital${i}" ${selectedDigitalStatus[i] ? 'checked' : ''}>
-                                <label class="form-check-label" for="produkDigital${i}">
-                                    <h5 class="card-title mb-1">${p.nama}</h5>
-                                </label>
-                            </div>
-                            <p class="card-text text-muted mb-1">Rp${p.harga}</p>
-                            <p class="card-text"><small>${p.deskripsi}</small></p>
-                        </div>
-                        <div class="card-footer d-flex flex-row justify-content-between align-items-center">
-                            <span>Jumlah yang dibeli:</span>
-                            <div class="d-flex flex-row align-items-center">
-                                <button type="button" class="btn btn-sm btn-outline-success rounded-3">
-                                    <i class="fa-solid fa-plus"></i>
-                                </button>
-                                <span class="mx-2">1</span>
-                                <button type="button" class="btn btn-sm btn-outline-danger rounded-3">
-                                    <i class="fa-solid fa-minus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                containerDigital.appendChild(col);
+                if (!adaProduk) {
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
+                    listFooter.innerHTML = '';
+                } else {
+                    listFooter.innerHTML = `Total: Rp${total.toLocaleString('id-ID')}`;
+                }
             }
 
-            attachDigitalCheckboxEvents();
-            renderPaginationButtonsDigital();
-            updateTotalDigital();
-            updatePaginationInfoDigital();
-        }
+            const formDigital = document.querySelector('form');
+            const inputTerpilihDigital = document.getElementById('selected_products_produk_digital');
+            const jumlahBeliDigital = Array(produk_digital_list.length).fill(0);
+            const containerProdukDigital = document.getElementById('produkDigitalContainer');
 
-        function attachDigitalCheckboxEvents() {
-            document.querySelectorAll('.digital-checkbox').forEach(cb => {
-                cb.addEventListener('change', function () {
-                    const index = parseInt(this.value);
-                    selectedDigitalStatus[index] = this.checked;
-                    updateTotalDigital();
-                });
-            });
-        }
+            const statusTerpilihDigital = Array(produk_digital_list.length).fill(false);
 
-        function updateTotalDigital() {
-            let total = 0;
-            selectedDigitalStatus.forEach((checked, i) => {
-                if (checked) total += hargaDigital[i];
-            });
-            totalHargaDigital.innerText = "Rp" + total.toLocaleString('id-ID');
-        }
+            function renderHalamanDigital() {
+                containerProdukDigital.innerHTML = '';
 
-        function renderPaginationButtonsDigital() {
-            paginationNavDigital.innerHTML = '';
+                const akhir = Math.min(15, produk_digital_list.length);
 
-            // Previous
-            const prev = document.createElement('li');
-            prev.className = `page-item ${currentPageDigital === 0 ? 'disabled' : ''}`;
-            prev.innerHTML = `<a class="page-link" href="#">Previous</a>`;
-            prev.addEventListener('click', e => {
-                e.preventDefault();
-                if (currentPageDigital > 0) renderPageDigital(currentPageDigital - 1);
-            });
-            paginationNavDigital.appendChild(prev);
+                for (let i = 0; i < akhir; i++) {
+                    const p = produk_digital_list[i];
 
-            // Page Numbers
-            for (let i = 0; i < totalPagesDigital; i++) {
-                const page = document.createElement('li');
-                page.className = `page-item ${i === currentPageDigital ? 'active' : ''}`;
-                page.innerHTML = `<a class="page-link" href="#">${i + 1}</a>`;
-                page.addEventListener('click', e => {
-                    e.preventDefault();
-                    renderPageDigital(i);
-                });
-                paginationNavDigital.appendChild(page);
-            }
-
-            // Next
-            const next = document.createElement('li');
-            next.className = `page-item ${currentPageDigital === totalPagesDigital - 1 ? 'disabled' : ''}`;
-            next.innerHTML = `<a class="page-link" href="#">Next</a>`;
-            next.addEventListener('click', e => {
-                e.preventDefault();
-                if (currentPageDigital < totalPagesDigital - 1) renderPageDigital(currentPageDigital + 1);
-            });
-            paginationNavDigital.appendChild(next);
-        }
-
-        function updatePaginationInfoDigital() {
-            const start = currentPageDigital * perPageDigital + 1;
-            const end = Math.min((currentPageDigital + 1) * perPageDigital, produk_digital.length);
-            paginationInfoDigital.innerText = `Menampilkan ${end - start + 1} dari ${produk_digital.length} produk`;
-        }
-
-        formDigital.addEventListener('submit', function () {
-            const selectedIndexes = [];
-            selectedDigitalStatus.forEach((checked, i) => {
-                if (checked) selectedIndexes.push(i);
-            });
-            hiddenDigital.value = JSON.stringify(selectedIndexes);
-        });
-
-        // Inisialisasi
-        renderPageDigital(currentPageDigital);
-
-        function tampilkanHasilBelanjaDigital() {
-            const container = document.getElementById('hasilBelanjaDigital');
-            container.innerHTML = '';
-            let total = 0;
-            produk_digital.forEach((produk, i) => {
-                if (selectedDigitalStatus[i]) {
-                    const item = document.createElement('div');
-                    item.innerHTML = `
-                        <p class="m-0"><strong>${produk.nama}</strong> - Rp${produk.harga.toLocaleString('id-ID')}</p>
+                    const kolom = document.createElement('div');
+                    kolom.className = 'col';
+                    kolom.innerHTML = `
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-body">
+                                <div class="form-check">
+                                    <input class="form-check-input produk-digital-checkbox" type="checkbox" value="${i}"
+                                        id="produkDigitalCard${i}" ${statusTerpilihDigital[i] ? 'checked' : ''}>
+                                    <label class="form-check-label" for="produkDigitalCard${i}">
+                                        <h5 class="card-title mb-1">${p.nama}</h5>
+                                    </label>
+                                </div>
+                                <p class="card-text text-muted mb-1">Rp${p.harga.toLocaleString('id-ID')}</p>
+                                <p class="card-text"><small>${p.deskripsi}</small></p>
+                            </div>
+                            <div class="card-footer d-flex flex-row justify-content-between align-items-center">
+                                <span>Jumlah (${p.satuan}):</span>
+                                <div class="d-flex flex-row align-items-center d-none" id="jumlahDivDigital${i}">
+                                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                                        onclick="ubahJumlahDigital(${i}, 1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <span class="mx-2" id="jumlahDigital${i}">0</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
+                                        onclick="ubahJumlahDigital(${i}, -1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     `;
-                    total += produk.harga;
-                    container.appendChild(item);
+                    containerProdukDigital.appendChild(kolom);
                 }
-            });
-            container.innerHTML += `<hr><p><strong>Total Belanja:</strong> Rp${total.toLocaleString('id-ID')}</p>`;
-        }
+                pasangEventCheckboxDigital();
+            }
 
-        function prosesBelanjaDigital() {
-            const produkTerpilih = [];
-            let total = 0;
+            function ubahJumlahDigital(index, delta) {
+                if (!statusTerpilihDigital[index]) return;
 
-            produk_digital.forEach((produk, i) => {
-                if (selectedDigitalStatus[i]) {
-                    produkTerpilih.push(produk);
-                    total += produk.harga;
+                const satuan = produk_digital_list[index].satuan;
+                const isBulat = satuanTidakBolehSetengah.includes(satuan);
+
+                let jumlah = jumlahBeliDigital[index] || 0;
+                jumlah += delta;
+
+                if (jumlah < 0) jumlah = 0;
+
+                if (isBulat) {
+                    jumlah = Math.round(jumlah);
+                } else {
+                    jumlah = Math.round(jumlah * 2) / 2;
                 }
+
+                jumlahBeliDigital[index] = jumlah;
+                document.getElementById(`jumlahDigital${index}`).textContent = jumlah;
+                updateTotalHargaDigital();
+            }
+
+            function pasangEventCheckboxDigital() {
+                document.querySelectorAll('.produk-digital-checkbox').forEach((checkbox, i) => {
+                    checkbox.addEventListener('change', function () {
+                        statusTerpilihDigital[i] = this.checked;
+
+                        const jumlahDiv = document.getElementById(`jumlahDivDigital${i}`);
+                        if (this.checked) {
+                            jumlahDiv.classList.remove('d-none');
+
+                            if (jumlahBeliDigital[i] === 0) {
+                                jumlahBeliDigital[i] = 1;
+                                document.getElementById(`jumlahDigital${i}`).textContent = "1";
+                            }
+                        } else {
+                            jumlahDiv.classList.add('d-none');
+                            jumlahBeliDigital[i] = 0;
+                            document.getElementById(`jumlahDigital${i}`).textContent = "0";
+                        }
+
+                        updateTotalHargaDigital();
+                    });
+                });
+            }
+
+            function updateTotalHargaDigital() {
+                let total = 0;
+                statusTerpilihDigital.forEach((selected, i) => {
+                    if (selected && jumlahBeliDigital[i] > 0) {
+                        total += jumlahBeliDigital[i] * produk_digital_list[i].harga;
+                    }
+                });
+
+                document.getElementById('totalHargaDigital').textContent =
+                    `Rp. ${total.toLocaleString('id-ID')}`;
+            }
+
+            formDigital.addEventListener('submit', function () {
+                const indexTerpilih = [];
+                statusTerpilihDigital.forEach((checked, i) => {
+                    if (checked) indexTerpilih.push(i);
+                });
+                inputTerpilihDigital.value = JSON.stringify(indexTerpilih);
             });
 
-            liveSend({
-                jenis: 'digital',
-                produk_terpilih: produkTerpilih,
-                total: total
+            renderHalamanDigital();
+            updateTotalHargaDigital();
+
+            function tampilkanHasilBelanjaDigital() {
+                const cardBody = document.querySelector('#result_pasar_digital .card-body');
+                cardBody.innerHTML = '';
+                let total = 0;
+                let adaProduk = false;
+
+                produk_digital_list.forEach((p, i) => {
+                    if (statusTerpilihDigital[i] && jumlahBeliDigital[i] > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlahBeliDigital[i] * p.harga;
+                        total += subtotal;
+
+                        const item = document.createElement('p');
+                        item.innerText = `${p.nama} (${jumlahBeliDigital[i]} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                        cardBody.appendChild(item);
+                    }
+                });
+
+                if (!adaProduk) {
+                    cardBody.innerHTML = `<div class="alert alert-warning">Anda belum memilih produk.</div>`;
+                } else {
+                    cardBody.innerHTML += `<hr><p class="fw-bold fs-5">Total: Rp${total.toLocaleString('id-ID')}</p>`;
+                }
+
+                showForm('result_pasar_digital');
+            }
+
+            const tombolSelesaiDigital = document.querySelector("#pasar_digital .btn-success");
+            tombolSelesaiDigital.addEventListener("click", tampilkanHasilBelanjaDigital);
+
+            const tombolBeliDigital = document.querySelector('#result_pasar_digital .btn-success');
+            tombolBeliDigital.addEventListener('click', () => {
+                const selectedIndex = statusTerpilihDigital.map((v, i) => v ? i : null).filter(v => v !== null);
+                const selectedProduk = selectedIndex.map(i => produk_digital_list[i]);
+                const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
+                const payload = {
+                    action: 'beli_produk_digital',
+                    selected_produk: selectedProduk,
+                    total: totalHarga
+                };
+                liveSend(payload);
             });
 
-            showForm('menu_utama');
-        }
+            liveRecv = function (data) {
+                if (data.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Pembelian Berhasil',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        for (let i = 0; i < statusTerpilihDigital.length; i++) statusTerpilihDigital[i] = false;
+                        for (let i = 0; i < jumlahBeliDigital.length; i++) jumlahBeliDigital[i] = 0;
+
+                        const listBody = document.getElementById('listBelanjaDigitalBody');
+                        const listFooter = document.getElementById('listBelanjaDigitalFooter');
+                        if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
+                        if (listFooter) listFooter.innerHTML = '';
+
+                        updateTotalHargaDigital();
+                        renderHalamanDigital(0);
+                        document.querySelector('#result_pasar_digital .card-body').innerHTML = '';
+                        showForm('menu_utama');
+                    });
+
+                } else if (data.status === 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Pembelian Gagal',
+                        text: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }
+
+            function simpanBelanjaDigital() {
+                const produkTerpilih = produk_digital_list.map((p, i) => {
+                    const jumlah = jumlahBeliDigital[i] || 0;
+                    if (jumlah > 0) {
+                        const satuan = p.satuan;
+                        const isBulat = satuanTidakBolehSetengah.includes(satuan);
+                        if (isBulat && jumlah % 1 !== 0) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Jumlah tidak valid',
+                                text: `Produk "${p.nama}" hanya bisa dibeli dalam jumlah bulat.`,
+                            });
+                            throw new Error('Jumlah tidak valid');
+                        }
+                        return { ...p, jumlah };
+                    }
+                    return null;
+                }).filter(p => p !== null);
+
+                const total = produkTerpilih.reduce((sum, p) => sum + (p.harga * p.jumlah), 0);
+
+                liveSend({
+                    jenis: "belanja_digital",
+                    produk_terpilih: produkTerpilih,
+                    total_belanja: total
+                });
+            }
+        // Akhir Source Code - JavaScript untuk Pasar Digital
     </script>
-    <script src="pasar_riil.js"></script>
 {% endblock %}
