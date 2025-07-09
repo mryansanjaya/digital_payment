@@ -654,9 +654,6 @@
 
             // Fungsi menerima balasan dari server (live_method)
             function backendRiil() {
-                if (window.liveRecvBusy) return;
-                window.liveRecvBusy = true;
-
                 liveRecv = function (data) {
                     if (data.status === 'success') {
                         Swal.fire({
@@ -926,9 +923,6 @@
             });
 
             function backendDigital() {
-                if (window.liveRecvBusy) return;
-                window.liveRecvBusy = true;
-
                 liveRecv = function (data) {
                     if (data.status === 'success') {
                         Swal.fire({
