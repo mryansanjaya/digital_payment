@@ -30,7 +30,13 @@
     </ul>
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
-            aria-labelledby="home-tab" tabindex="0"></div>
+            aria-labelledby="home-tab" tabindex="0">
+            <div class="card">
+                <div class="card-header"></div>
+                <div class="card-body"></div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
         <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
           <!-- MENU UTAMA -->
             <div id="menu_utama">
@@ -303,7 +309,10 @@
                     <div class="card-body">
                         <div class="alert p-0" role="alert">
                             <h4 class="alert-heading">Well done!</h4>
-                            <p>Aww yeah, you successfully read this important alert message. This example text is going to run a bit longer so that you can see how spacing within an alert works with this kind of content.</p>
+                            <ul class="mb-0 text-danger">
+                                <li>Anda memiliki kesempatan untuk membuat uang Anda menjadi <b>1.25 kali lipat</b> dengan peluang <b>75%</b>.</li>
+                                <li>Namun uang Anda juga bisa berkurang menjadi <b>3/4</b> dari alokasi Anda dengan peluang <b>25%</b>.</li>
+                            </ul>
                             <hr>
                             <div>
                                 <label for="id_lowinvest" class="form-label fw-bold">
@@ -313,14 +322,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex flex-row justify-content-between" id="footer_investasi_rendah">
-            <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
-                Proses Investasi Anda
-            </button>
-            <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
-                Kembali ke Menu Investasi
-            </button>
-        </div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
+                            Proses Investasi Anda
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
+                            Kembali ke Menu Investasi
+                        </button>
+                    </div>
                 </div>
             </div>
             <div id="result_investasi_rendah" style="display:none;">
@@ -352,8 +361,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         // Data produk dari server
-            const produk_riil_list = {{ produk_riil_list|safe }};
-            const produk_digital_list = {{ produk_digital_list|safe }};
+            const produk_riil_list = {{ produk_riil_list|safe }}
+            const produk_digital_list = {{ produk_digital_list|safe }}
             const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'pcs', 'lembar', 'sisir',
                 'butir', 'botol', 'pasang', 'pak', 'sachet'];
 
@@ -988,5 +997,64 @@
                 backendDigital();
             }
         // Akhir Source Code - JavaScript untuk Pasar Digital
+
+        // JavaScript untuk Investasi Resiko Rendah
+        function backendLowInvest() {
+            liveRecv = function (data) {
+                const hasil = data.hasil;
+
+                if (data.status === 'untung') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Investasi Anda Menguntungkan',
+                        html: `
+                            Uang dari alokasi Anda menjadi <b>Rp${hasil.toLocaleString('id-ID')}</b>.
+                        `,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        document.getElementById('id_lowinvest').value = '';
+                        showForm('all_investasi');
+                    });
+
+                } else if (data.status === 'rugi') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Investasi Anda Merugi',
+                        html: `
+                            Uang dari alokasi Anda menjadi <b>Rp${hasil.toLocaleString('id-ID')}</b>.
+                        `,
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        document.getElementById('id_lowinvest').value = '';
+                        showForm('all_investasi');
+                    });
+                }
+            };
+        }
+
+        function submitInvestasiRendah() {
+            const input = document.getElementById('id_lowinvest');
+            const jumlah = parseFloat(input.value);
+
+            if (isNaN(jumlah) || jumlah <= 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Jumlah tidak valid',
+                    text: 'Masukkan jumlah yang ingin Anda investasikan.',
+                });
+                return;
+            }
+
+            backendLowInvest();
+
+            // Kirim data ke backend menggunakan liveSend
+            liveSend({
+                jenis: 'investasi_rendah',
+                jumlah: jumlah
+            });
+        }
+        // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
     </script>
 {% endblock %}

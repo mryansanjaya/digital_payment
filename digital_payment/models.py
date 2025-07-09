@@ -1,4 +1,5 @@
 from otree.api import *
+import random
 import json
 
 doc = """
@@ -144,4 +145,37 @@ class Player(BasePlayer):
             player.total_belanja_digital = total
 
             return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
+
+        elif data.get('jenis') == 'investasi_rendah':
+            jumlah = float(data.get('jumlah', 0))
+
+            if jumlah <= 0:
+                return {
+                    player.id_in_group: {
+                        'status': 'error',
+                        'message': 'Jumlah tidak valid'
+                    }
+                }
+
+            # Proses investasi risiko rendah
+            peluang = random.random()
+
+            if peluang <= 0.75:
+                hasil = round(jumlah * 1.25)
+                status = 'untung'
+            else:
+                hasil = round(jumlah * 0.75)
+                status = 'rugi'
+
+            # Simpan ke player
+            player.lowinvest = jumlah
+            player.hasil_akhir_lowinvest = hasil
+            player.untungrugi_lowinvest = status
+
+            return {
+                player.id_in_group: {
+                    'status': status,
+                    'hasil': hasil
+                }
+            }
 
