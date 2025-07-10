@@ -31,14 +31,10 @@
     <div class="tab-content" id="myTabContent">
         <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
             aria-labelledby="home-tab" tabindex="0">
-            <div class="card">
-                <div class="card-header"></div>
-                <div class="card-body"></div>
-                <div class="card-footer"></div>
-            </div>
+
         </div>
         <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-          <!-- MENU UTAMA -->
+          <!-- MENU UTAMA & HISTORY RONDE -->
             <div id="menu_utama">
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between align-items-center">
@@ -133,10 +129,33 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success bg-gradient">
-                            <span>Lanjut menuju Ronde selanjutnya</span>
-                            <i class="fa-solid fa-chevron-right"></i>
+<!--                        <button type="submit" class="btn btn-success bg-gradient">-->
+<!--                            <span>Lanjut menuju Ronde selanjutnya</span>-->
+<!--                            <i class="fa-solid fa-chevron-right"></i>-->
+<!--                        </button>-->
+                        <button type="button" class="btn btn-outline-dark" onclick="mintaRekapRonde()">
+                            Lihat History Ronde
                         </button>
+                    </div>
+                </div>
+            </div>
+            <div id="rekap_ronde" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Rekap History Ronde</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>🛒 Pasar Riil</h5>
+                        <div id="rekapRiil"></div>
+                        <hr>
+                        <h5>🛍️ Pasar Digital</h5>
+                        <div id="rekapDigital"></div>
+                        <hr>
+                        <h5>📈 Investasi Risiko Rendah</h5>
+                        <div id="rekapInvestasiRendah"></div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">Kembali ke Menu Utama</button>
                     </div>
                 </div>
             </div>
@@ -370,6 +389,7 @@
             // Sembunyikan semua formulir
             const forms = [
                 'menu_utama',
+                'rekap_ronde',
                 'pasar_riil',
                 'result_pasar_riil',
                 'pasar_digital',
@@ -1056,5 +1076,119 @@
             });
         }
         // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
+
+        //
+        function mintaRekapRonde() {
+            // Override liveRecv SEBELUM mengirim liveSend
+            liveRecv = function (data) {
+                if (
+                    data.selected_products_produk_riil !== undefined ||
+                    data.selected_products_produk_digital !== undefined ||
+                    data.lowinvest !== undefined
+                ) {
+                    tampilkanRekapRonde(data);
+                }
+            };
+
+            liveSend({ jenis: "minta_rekap" });
+        }
+
+        function tampilkanRekapRonde(data) {
+            // Pasar Riil
+            const rekapRiil = document.getElementById('rekapRiil');
+            const historyRiil = JSON.parse(data.history_riil || '[]');
+
+            if (historyRiil.length === 0) {
+                rekapRiil.innerHTML = '<p class="text-muted">Belum ada belanja di pasar riil.</p>';
+            } else {
+                const groupedRiil = {};
+                historyRiil.forEach(entry => {
+                    const round = entry.round_number;
+                    if (!groupedRiil[round]) {
+                        groupedRiil[round] = {
+                            produk: [],
+                            total: 0
+                        };
+                    }
+                    groupedRiil[round].produk.push(...entry.produk);
+                    groupedRiil[round].total += entry.total;
+                });
+
+                rekapRiil.innerHTML = Object.entries(groupedRiil).map(([round, data]) => {
+                    const items = data.produk.map(p =>
+                        `<li>${p.nama} (${p.jumlah} ${p.satuan}) = Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</li>`
+                    ).join('');
+                    return `
+                        <p class="fw-bold">Ronde ${round}</p>
+                        <ul>${items}</ul>
+                        <p class="fw-bold">Total: Rp${data.total.toLocaleString('id-ID')}</p><hr>
+                    `;
+                }).join('');
+            }
+
+            // Pasar Digital
+            const rekapDigital = document.getElementById('rekapDigital');
+            const historyDigital = JSON.parse(data.history_digital || '[]');
+
+            if (historyDigital.length === 0) {
+                rekapDigital.innerHTML = '<p class="text-muted">Belum ada belanja di pasar digital.</p>';
+            } else {
+                const groupedDigital = {};
+                historyDigital.forEach(entry => {
+                    const round = entry.round_number;
+                    if (!groupedDigital[round]) {
+                        groupedDigital[round] = {
+                            produk: [],
+                            total: 0
+                        };
+                    }
+                    groupedDigital[round].produk.push(...entry.produk);
+                    groupedDigital[round].total += entry.total;
+                });
+
+                rekapDigital.innerHTML = Object.entries(groupedDigital).map(([round, data]) => {
+                    const items = data.produk.map(p =>
+                        `<li>${p.nama} (${p.jumlah} ${p.satuan}) = Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</li>`
+                    ).join('');
+                    return `
+                        <p class="fw-bold">Ronde ${round}</p>
+                        <ul>${items}</ul>
+                        <p class="fw-bold">Total: Rp${data.total.toLocaleString('id-ID')}</p><hr>
+                    `;
+                }).join('');
+            }
+
+            // Investasi Risiko Rendah
+            const rekapInvestasi = document.getElementById('rekapInvestasiRendah');
+            const historyLowInvest = JSON.parse(data.history_lowinvest || '[]');
+
+            if (historyLowInvest.length === 0) {
+                rekapInvestasi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
+            } else {
+                const groupedInvest = {};
+                historyLowInvest.forEach(entry => {
+                    const round = entry.round_number;
+                    if (!groupedInvest[round]) {
+                        groupedInvest[round] = [];
+                    }
+                    groupedInvest[round].push(entry);
+                });
+
+                rekapInvestasi.innerHTML = Object.entries(groupedInvest).map(([round, list]) => {
+                    return `
+                        <p class="fw-bold">Ronde ${round}</p>
+                        ${list.map(entry => `
+                            <p>Jumlah Investasi: Rp${entry.jumlah.toLocaleString('id-ID')}</p>
+                            <p>Hasil: <b class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                Rp${entry.hasil.toLocaleString('id-ID')} (${entry.status.toUpperCase()})
+                            </b></p>
+                        `).join('<hr>')}
+                        <hr>
+                    `;
+                }).join('');
+            }
+
+            showForm('rekap_ronde');
+        }
     </script>
 {% endblock %}

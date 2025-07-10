@@ -15,7 +15,7 @@ class DynamicPage(Page):
             'produk_digital_list': produk_digital_list,
         }
 
-    def live_handle(player: Player, data):
+    def live_handle(player, data):
         jenis = data.get("jenis")
 
         if jenis == "belanja_riil":
@@ -25,37 +25,39 @@ class DynamicPage(Page):
             if total > 100000:
                 return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
 
-            player.selected_products_produk_riil = json.dumps(produk_riil)
-            player.total_belanja_riil = total
+            history = json.loads(player.history_riil or "[]")
+            history.append({
+                "produk": produk_riil,
+                "total": total,
+                "round_number": player.round_number
+            })
+            player.history_riil = json.dumps(history)
 
             return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
 
         elif jenis == "belanja_digital":
             produk_digital = data.get("produk_terpilih", [])
             total = data.get("total_belanja", 0)
-
             if total > 100000:
                 return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
 
-            player.selected_products_produk_digital = json.dumps(produk_digital)
-            player.total_belanja_digital = total
+            history = json.loads(player.history_digital or "[]")
+            history.append({
+                "produk": produk_digital,
+                "total": total,
+                "round_number": player.round_number
+            })
 
-            return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
+            player.history_digital = json.dumps(history)
+            return {player.id_in_group: dict(status="success", message="Belanja pasar digital berhasil disimpan.")}
 
-        elif data.get('jenis') == 'investasi_rendah':
-            jumlah = float(data.get('jumlah', 0))
+        elif jenis == "investasi_rendah":
+            jumlah = float(data.get("jumlah", 0))
 
             if jumlah <= 0:
-                return {
-                    player.id_in_group: {
-                        'status': 'error',
-                        'message': 'Jumlah tidak valid'
-                    }
-                }
+                return {player.id_in_group: dict(status="error", message="Jumlah tidak valid")}
 
-            # Proses investasi risiko rendah
             peluang = random.random()
-
             if peluang <= 0.75:
                 hasil = round(jumlah * 1.25)
                 status = 'untung'
@@ -63,15 +65,35 @@ class DynamicPage(Page):
                 hasil = round(jumlah * 0.75)
                 status = 'rugi'
 
-            # Simpan ke player
-            player.lowinvest = jumlah
-            player.hasil_akhir_lowinvest = hasil
-            player.untungrugi_lowinvest = status
+            history = json.loads(player.history_lowinvest or "[]")
+            history.append({
+                "jumlah": jumlah,
+                "hasil": hasil,
+                "status": status,
+                "round_number": player.round_number
+            })
+            player.history_lowinvest = json.dumps(history)
 
             return {
                 player.id_in_group: {
-                    'status': status,
-                    'hasil': hasil
+                    "status": status,
+                    "hasil": hasil
+                }
+            }
+
+        elif data.get("jenis") == "minta_rekap":
+            return {
+                player.id_in_group: {
+                    "selected_products_produk_riil": player.field_maybe_none("selected_products_produk_riil"),
+                    "total_belanja_riil": player.field_maybe_none("total_belanja_riil"),
+                    "selected_products_produk_digital": player.field_maybe_none("selected_products_produk_digital"),
+                    "total_belanja_digital": player.field_maybe_none("total_belanja_digital"),
+                    "lowinvest": player.field_maybe_none("lowinvest"),
+                    "hasil_akhir_lowinvest": player.field_maybe_none("hasil_akhir_lowinvest"),
+                    "untungrugi_lowinvest": player.field_maybe_none("untungrugi_lowinvest"),
+                    "history_riil": player.history_riil,
+                    "history_digital": player.history_digital,
+                    "history_lowinvest": player.history_lowinvest
                 }
             }
 
