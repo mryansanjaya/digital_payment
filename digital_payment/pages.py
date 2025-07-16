@@ -4,6 +4,10 @@ import random
 import json
 
 
+class InfoPage(Page):
+    pass
+
+
 class DynamicPage(Page):
     live_method = 'live_handle'
 
@@ -98,4 +102,4 @@ class DynamicPage(Page):
             }
 
 
-page_sequence = [DynamicPage]
+page_sequence = [InfoPage, DynamicPage]

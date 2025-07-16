@@ -29,9 +29,45 @@
         </li>
     </ul>
     <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel"
+        <div class="tab-pane fade p-2 show active" id="home-tab-pane" role="tabpanel"
             aria-labelledby="home-tab" tabindex="0">
-
+            <div id="info_ronde">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="m-0">
+                            Anda sekarang berada di Ronde {{ player.round_number }}
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        Informasi
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-warning bg-gradient" onclick="mintaRekapRonde()">
+                            Selesaikan Ronde {{ player.round_number }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="rekap_ronde" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Rekap History Ronde</h3>
+                    </div>
+                    <div class="card-body">
+                        <h5>🛒 Pasar Riil</h5>
+                        <div id="rekapRiil"></div>
+                        <hr>
+                        <h5>🛍️ Pasar Digital</h5>
+                        <div id="rekapDigital"></div>
+                        <hr>
+                        <h5>📈 Investasi Risiko Rendah</h5>
+                        <div id="rekapInvestasiRendah"></div>
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="button" class="btn btn-primary" onclick="showForm('info_ronde')">Kembali ke Menu Utama</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
           <!-- MENU UTAMA & HISTORY RONDE -->
@@ -129,33 +165,10 @@
                         </div>
                     </div>
                     <div class="card-footer">
-<!--                        <button type="submit" class="btn btn-success bg-gradient">-->
-<!--                            <span>Lanjut menuju Ronde selanjutnya</span>-->
-<!--                            <i class="fa-solid fa-chevron-right"></i>-->
-<!--                        </button>-->
-                        <button type="button" class="btn btn-outline-dark" onclick="mintaRekapRonde()">
-                            Lihat History Ronde
+                        <button type="submit" class="btn btn-success bg-gradient">
+                            <span>Lanjut menuju Ronde selanjutnya</span>
+                            <i class="fa-solid fa-chevron-right"></i>
                         </button>
-                    </div>
-                </div>
-            </div>
-            <div id="rekap_ronde" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="m-0">Rekap History Ronde</h3>
-                    </div>
-                    <div class="card-body">
-                        <h5>🛒 Pasar Riil</h5>
-                        <div id="rekapRiil"></div>
-                        <hr>
-                        <h5>🛍️ Pasar Digital</h5>
-                        <div id="rekapDigital"></div>
-                        <hr>
-                        <h5>📈 Investasi Risiko Rendah</h5>
-                        <div id="rekapInvestasiRendah"></div>
-                    </div>
-                    <div class="card-footer text-end">
-                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">Kembali ke Menu Utama</button>
                     </div>
                 </div>
             </div>
@@ -385,8 +398,21 @@
             const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'pcs', 'lembar', 'sisir',
                 'butir', 'botol', 'pasang', 'pak', 'sachet'];
 
+            document.addEventListener("DOMContentLoaded", function () {
+                const InfoRondeTab = document.getElementById('home-tab');
+                const menuUtamaTab = document.getElementById('profile-tab');
+
+                menuUtamaTab.addEventListener('shown.bs.tab', function () {
+                    // Saat tab Menu Utama aktif, tampilkan menu_utama dan sembunyikan form lainnya
+                    showForm('menu_utama');
+                });
+                InfoRondeTab.addEventListener('shown.bs.tab', function () {
+                    // Saat tab Menu Utama aktif, tampilkan menu_utama dan sembunyikan form lainnya
+                    showForm('info_ronde');
+                });
+            });
         function showForm(formIdToShow) {
-            // Sembunyikan semua formulir
+            // Hanya elemen-elemen ini yang akan disembunyikan, bukan tab-pane/tab utama
             const forms = [
                 'menu_utama',
                 'rekap_ronde',
@@ -399,9 +425,16 @@
                 'result_investasi_rendah',
                 'investasi_tinggi'
             ];
-            forms.forEach(function(formId) {
-                document.getElementById(formId).style.display = 'none';
+
+            // Sembunyikan semua sub-formulir
+            forms.forEach(function (formId) {
+                const el = document.getElementById(formId);
+                if (el) el.style.display = 'none';
             });
+
+            // Tampilkan form yang diminta
+            const formToShow = document.getElementById(formIdToShow);
+            if (formToShow) formToShow.style.display = 'block';
 
             // Tindakan khusus saat kembali ke Menu Utama
             if (formIdToShow === 'menu_utama') {
@@ -465,9 +498,6 @@
 
                 tampilkanListBelanjaDigital();
             }
-
-            // Tampilkan form yang diminta
-            document.getElementById(formIdToShow).style.display = 'block';
         }
 
         // JavaScript untuk Pasar Riil
@@ -1091,6 +1121,9 @@
             };
 
             liveSend({ jenis: "minta_rekap" });
+
+            // Sembunyikan info_ronde saat rekap diminta
+            document.getElementById('info_ronde').style.display = 'none';
         }
 
         function tampilkanRekapRonde(data) {
@@ -1124,6 +1157,8 @@
                         <p class="fw-bold">Total: Rp${data.total.toLocaleString('id-ID')}</p><hr>
                     `;
                 }).join('');
+
+                showForm('rekap_ronde');
             }
 
             // Pasar Digital
@@ -1187,7 +1222,6 @@
                     `;
                 }).join('');
             }
-
             showForm('rekap_ronde');
         }
     </script>

@@ -1,0 +1,113 @@
+{% extends "global/Page.html" %}
+{% block styles  %}
+    <link href="{{ static 'fontawesome/css/all.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/solid.css' }}" rel="stylesheet"/>
+    <link href="{{ static 'fontawesome/css/brands.css' }}" rel="stylesheet"/>
+{% endblock %}
+{% block title  %}
+    <title>Informasi Ronde</title>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="m-0">Informasi Penting - Digital Payment Experiment</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-sm">
+                        <thead>
+                            <th>Pendapatan Anda</th>
+                            <th>Jumlah</th>
+                            <th>Keterangan</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dompet Tunai</td>
+                                <td class="fw-bold">Rp. 100.000</td>
+                                <td>
+                                    <small>Alat Pembayaran pada Pasar Tradisional.</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dompet Digital</td>
+                                <td class="fw-bold">Rp. 100.000</td>
+                                <td>
+                                    <small>Alat Pembayaran pada Pasar Digital & Platform Investasi.</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bantuan</td>
+                                <td class="fw-bold">Rp. 100.000</td>
+                                <td>
+                                    <small>Bantuan akan diberikan hanya sekali pada masing-masing Ronde.</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Konsumsi Dasar</td>
+                                <td class="fw-bold">Rp. 100.000</td>
+                                <td>
+                                    <small>Akan dikenakan Konsumsi Dasar setelah Anda menyelesaikan Ronde.</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Denda (Penalty)</td>
+                                <td class="fw-bold">Rp. 200.000</td>
+                                <td>
+                                    <small>Denda</small>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <hr>
+                <div class="alert p-0" role="alert">
+                    <h4 class="alert-heading">
+                        Informasi Pendapatan Anda
+                    </h4>
+                    <p class="m-0">Berikut penjelasan masing-masing Pendapatan Anda:</p>
+                    <ul class="list-group my-3">
+                        <li class="list-group-item list-group-item-success">
+                            Anda memiliki Dompet Tunai & Dompet Digital sebagai alat transaksi pada eksperimen ini.
+                        </li>
+                        <li class="list-group-item list-group-item-success">
+                            Dompet Tunai hanya dapat digunakan pada Pasar Tradisional serta Anda bisa melakukan
+                            Pertukaran Uang pada Dompet Tunai ditukarkan ke Dompet Digital.
+                        </li>
+                        <li class="list-group-item list-group-item-success">
+                            Dompet Digital hanya dapat digunakan pada Pasar Digital & Platform Investasi
+                            (Investasi Resiko Rendah & Investasi Resiko Tinggi) serta Anda bisa melakukan
+                            Pertukaran Uang pada Dompet Digital ditukarkan ke Dompet Tunai.
+                        </li>
+                        <li class="list-group-item list-group-item-success">
+                            Pertukaran Uang pada Dompet Tunai maupun Dompet Digital akan dikenakan biaya
+                            admin sebesar <strong>Rp. 1.000</strong> pada setiap kali Anda melakukan Pertukaran Uang
+                            dari Dompet Tunai ke Dompet Digital dan begitu sebaliknya.
+                        </li>
+                        <li class="list-group-item list-group-item-warning">
+                            Anda juga akan mendapatkan Bantuan sebesar Rp. 50.000 di setiap Ronde.
+                            Bantuan tersebut hanya diberikan <strong>SATU</strong> kali pada setiap Ronde dan akan
+                            mendapatkan Bantuan kembali setelah Anda telah menyelesaikan Ronde.
+                        </li>
+                        <li class="list-group-item list-group-item-danger">
+                            Anda akan dikenakan Konsumsi Dasar sebesar Rp. 50.000 pada setiap Ronde. <strong>
+                            Sistem akan mendeteksi jika Anda tidak mampu membayar Konsumsi Dasar maka Anda akan terkena
+                            Denda sesuai yang sudah ditentukan</strong>.
+                        </li>
+                        <li class="list-group-item list-group-item-danger">
+                            Sistem Denda
+                        </li>
+                    </ul>
+                    <p class="m-0">
+                        Jika Anda telah memahami dari penjelasan tersebut, Anda bisa melanjutkan dan diarahkan menuju
+                        halaman eksperimen dengan klik tombol "Saya telah memahami paparan informasi tersebut".
+                    </p>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-sm btn-success bg-gradient">
+                    <i class="fa-solid fa-check me-1"></i>
+                    <span>Saya telah memahami paparan informasi tersebut</span>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
