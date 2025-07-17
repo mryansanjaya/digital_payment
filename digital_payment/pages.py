@@ -102,4 +102,11 @@ class DynamicPage(Page):
             }
 
 
-page_sequence = [InfoPage, DynamicPage]
+class AfterRound(Page):
+    def vars_for_template(player):
+        return dict(
+            next_round_number=player.round_number + 1
+        )
+
+
+page_sequence = [InfoPage, DynamicPage, AfterRound]
