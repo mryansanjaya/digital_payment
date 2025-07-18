@@ -42,8 +42,9 @@
                         Informasi
                     </div>
                     <div class="card-footer">
-                        <button type="button" class="btn btn-warning bg-gradient" onclick="mintaRekapRonde()">
-                            Selesaikan Ronde {{ player.round_number }}
+                        <button type="button" class="btn btn-success bg-gradient" onclick="mintaRekapRonde()">
+                            <i class="fa-solid fa-flag-checkered me-1"></i>
+                            <span>Selesaikan Ronde {{ player.round_number }}</span>
                         </button>
                     </div>
                 </div>
@@ -51,20 +52,54 @@
             <div id="rekap_ronde" style="display: none;">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="m-0">Rekap History Ronde</h3>
+                        <h3 class="m-0">Rekap History Ronde {{ player.round_number }}</h3>
                     </div>
                     <div class="card-body">
-                        <h5>🛒 Pasar Riil</h5>
-                        <div id="rekapRiil"></div>
-                        <hr>
-                        <h5>🛍️ Pasar Digital</h5>
-                        <div id="rekapDigital"></div>
-                        <hr>
-                        <h5>📈 Investasi Risiko Rendah</h5>
-                        <div id="rekapInvestasiRendah"></div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Pasar Tradisional</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapRiil"></div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Pasar Digital</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapDigital"></div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Investasi Risiko Rendah</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapInvestasiRendah"></div>
+                            </div>
+                        </div>
+                        <div class="card shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Penukaran Uang</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapPenukaranUang"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-footer text-end">
-                        <button type="button" class="btn btn-primary" onclick="showForm('info_ronde')">Kembali ke Menu Utama</button>
+                    <div class="card-footer">
+                        <form method="post">
+                            <button type="submit" id="submit-lanjut" style="display: none;"></button>
+                        </form>
+                        <button type="button" class="btn btn-warning bg-gradient" onclick="konfirmasiLanjutRonde()">
+                            <i class="fa-regular fa-circle-play me-1"></i>
+                            <span>Lanjut menuju Ronde berikutnya</span>
+                        </button>
+                        <button type="button" class="btn btn-primary bg-gradient" onclick="showForm('info_ronde')">
+                            <i class="fa-regular fa-circle-play me-1"></i>
+                            <span>Kembali ke Informasi Ronde</span>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -79,8 +114,17 @@
                     </div>
                     <div class="card-body">
                         <div class="alert p-0" role="alert">
-                            <h4 class="alert-heading">Informasi Pendapatan Anda</h4>
-                            <p></p>
+                            <div class="d-flex flex-row justify-content-between align-items-center">
+                                <h4 class="alert-heading m-0">Informasi Dompet Anda</h4>
+                                <div class="d-flex flex-row">
+                                    <span class="badge fs-6 bg-primary bg-gradient p-2 me-1">
+                                        Dompet Tunai: Rp. 100.000
+                                    </span>
+                                    <span class="badge fs-6 bg-primary bg-gradient p-2">
+                                        Dompet Digital: Rp. 100.000
+                                    </span>
+                                </div>
+                            </div>
                             <hr>
                             <h2 class="m-0">Silahkan pilih platform yang tersedia:</h2>
                             <div class="container p-0 mt-3">
@@ -90,85 +134,98 @@
                                             <i class="fa-solid fa-shop"></i>
                                             <span>Platform Pasar Tradisional</span>
                                         </button>
-                                        <!-- Card List Belanja Anda di Pasar Riil -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <strong>List Belanja - Pasar Tradisional</strong>
-                                            </div>
-                                            <div class="card-body p-0">
-                                                <div class="table-responsive p-2">
-                                                    <table class="table table-sm table-striped m-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Produk</th>
-                                                                <th>Jumlah</th>
-                                                                <th>Subtotal</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="listBelanjaRiilBody">
-                                                            <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer text-end fw-bold" id="listBelanjaRiilFooter">
-                                                <!-- total akan muncul di sini -->
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="col-4">
                                         <button type="button" class="btn btn-warning w-100 mb-2" onclick="showForm('pasar_digital')">
                                             <i class="fa-solid fa-shop"></i>
                                             <span>Platform Pasar Digital</span>
                                         </button>
-                                        <!-- Card List Belanja Anda di Pasar Digital -->
-                                        <div class="card">
-                                            <div class="card-header">
-                                                <strong>List Belanja - Pasar Digital</strong>
-                                            </div>
-                                            <div class="card-body p-0">
-                                                <div class="table-responsive p-2">
-                                                    <table class="table table-sm table-striped m-0">
-                                                        <thead>
-                                                            <tr>
-                                                                <th>Produk</th>
-                                                                <th>Jumlah</th>
-                                                                <th>Subtotal</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody id="listBelanjaDigitalBody">
-                                                            <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                            <div class="card-footer text-end fw-bold" id="listBelanjaDigitalFooter">
-                                                <!-- total akan muncul di sini -->
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="col-4">
                                         <button type="button" class="btn btn-success w-100 mb-2" onclick="showForm('all_investasi')">
                                             <i class="fa-solid fa-money-bill-trend-up"></i>
                                             <span>Platform Investasi</span>
                                         </button>
-                                        <div class="card">
-                                            <div class="card-header text-center">
-                                                <strong>Investasi Anda</strong>
-                                            </div>
-                                            <div class="card-body"></div>
-                                            <div class="card-footer"></div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-success bg-gradient">
-                            <span>Lanjut menuju Ronde selanjutnya</span>
-                            <i class="fa-solid fa-chevron-right"></i>
-                        </button>
+                        <div id="tombolProsesRiil" class="alert alert-danger" role="alert"
+                             style="display: none;">
+                            <p class="m-0">
+                                Ada belajaan yang belum dibeli nih di Pasar Tradisional. Silahkan lakukan proses
+                                pembelian belanja Anda.
+                            </p>
+                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaRiil()">
+                                Selesaikan Belanja Anda
+                            </button>
+                        </div>
+                        <div id="tombolProsesDigital" class="alert alert-danger" role="alert"
+                             style="display: none;">
+                            <p class="m-0">
+                                Ada belajaan yang belum dibeli nih di Pasar Digital. Silahkan lakukan proses pembelian
+                                belanja Anda.
+                            </p>
+                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaDigital()">
+                                Selesaikan Belanja Anda
+                            </button>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <!-- Card List Belanja Pasar Riil -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Daftar Belanja yang belum dibeli - Pasar Tradisional</strong>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive p-2">
+                                            <table class="table table-sm table-striped m-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Produk</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="listBelanjaRiilBody">
+                                                    <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-end fw-bold" id="listBelanjaRiilFooter">
+                                        <!-- total akan muncul di sini -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Card List Belanja Pasar Digital -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Daftar Belanja yang belum dibeli - Pasar Digital</strong>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive p-2">
+                                            <table class="table table-sm table-striped m-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Produk</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="listBelanjaDigitalBody">
+                                                    <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-end fw-bold" id="listBelanjaDigitalFooter">
+                                        <!-- total akan muncul di sini -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -388,24 +445,38 @@
             </div>
         </div>
         <div class="tab-pane fade p-2" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
-            <!-- Modal - History Pertukaran Uang -->
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                        ...
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <!-- MODAL: History Pertukaran Uang -->
+            <div class="modal fade" id="modalHistoryTukarUang" tabindex="-1" aria-labelledby="modalHistoryTukarUangLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalHistoryTukarUangLabel">History Pertukaran Uang</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+      </div>
+      <div class="modal-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-striped">
+            <thead class="table-light">
+              <tr>
+                <th>#</th>
+                <th>Waktu</th>
+                <th>Jenis Pertukaran</th>
+                <th>Jumlah</th>
+                <th>Biaya Admin</th>
+              </tr>
+            </thead>
+            <tbody id="historyTukarUangTable">
+              <tr><td colspan="6" class="text-muted text-center">Belum ada data.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
 
             <div id="pertukaran_uang">
                 <div class="card">
@@ -459,7 +530,7 @@
                             </button>
                             <button type="button" class="btn btn-info p-0 mx-1">
                                 <div class="card text-center bg-transparent border-0" data-bs-toggle="modal"
-                                    data-bs-target="#exampleModal">
+                                    data-bs-target="#modalHistoryTukarUang" onclick="loadHistoryTukarUang()">
                                     <div class="card-body">
                                         <i class="fa-solid fa-clock-rotate-left fs-1 mb-2"></i>
                                         <h4 class="m-0">
@@ -473,6 +544,23 @@
                 </div>
             </div>
             <div id="tunai_digital" style="display: none">
+                <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h4 class="m-0">Pertukaran Uang</h4>
+        </div>
+        <div class="card-body">
+            <p>Masukkan jumlah uang yang ingin Anda tukar:</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="number" id="jumlahTukarUang" class="form-control" placeholder="Masukkan jumlah" min="1">
+                </div>
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-primary me-2" onclick="tukarUang('tunai_ke_digital')">Tukar ke Digital</button>
+                    <button type="button" class="btn btn-secondary" onclick="tukarUang('digital_ke_tunai')">Tukar ke Tunai</button>
+                </div>
+            </div>
+        </div>
+    </div>
                 <button type="button" class="btn btn-success p-0 mx-1" onclick="showForm('pertukaran_uang')">
                     Kembali ke Menu Pertukaran Uang
                 </button>
@@ -508,6 +596,70 @@
                     showForm('pertukaran_uang');
                 });
             });
+
+            function konfirmasiLanjutRonde() {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Anda akan melanjutkan ke ronde berikutnya dan tidak dapat kembali ke ronde ini.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Lanjut menuju Ronde berikutnya!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form oTree
+                        document.getElementById("submit-lanjut").click();
+                    }
+                });
+            }
+
+            function tukarUang(jenis) {
+    const jumlah = parseInt(document.getElementById('jumlahTukarUang').value);
+    if (!jumlah || jumlah <= 0) {
+        Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
+        return;
+    }
+    liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
+    backendRekap()
+}
+
+function backendRekap() {
+    liveRecv = function (data) {
+        if (data.status === 'sukses') {
+            Swal.fire('Berhasil!', 'Pertukaran Uang berhasil dilakukan.', 'success');
+            showTab('contact-tab-pane');
+            tampilkanHistoryTukarUang(data.history);
+        } else if (data.status === 'gagal') {
+            Swal.fire('Gagal!', data.message, 'error');
+        }
+    }
+}
+
+function loadHistoryTukarUang() {
+    liveSend({ jenis: "minta_rekap" });
+
+    liveRecv = function (data) {
+        const history = JSON.parse(data.history_tukar_uang || '[]');
+        const table = document.getElementById("historyTukarUangTable");
+
+        if (history.length === 0) {
+            table.innerHTML = `<tr><td colspan="6" class="text-muted text-center">Belum ada data pertukaran.</td></tr>`;
+            return;
+        }
+
+        table.innerHTML = history.map((entry, index) => `
+            <tr>
+                <td>${index + 1}</td>
+                <td>${entry.waktu}</td>
+                <td>${entry.arah === "tunai_ke_digital" ? "Tunai → Digital" : "Digital → Tunai"}</td>
+                <td>Rp${parseInt(entry.jumlah).toLocaleString("id-ID")}</td>
+                <td>Rp${parseInt(entry.admin).toLocaleString("id-ID")}</td>
+            </tr>
+        `).join('');
+    };
+}
+
+
         function showForm(formIdToShow) {
             // Hanya elemen-elemen ini yang akan disembunyikan, bukan tab-pane/tab utama
             const forms = [
@@ -562,8 +714,10 @@
 
                 if (!adaBelanjaRiil) {
                     listBodyRiil.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                    document.getElementById('tombolProsesRiil').style.display = 'none';
                 } else {
                     listFooterRiil.innerHTML = `<strong>Total Belanja: Rp${totalRiil.toLocaleString('id-ID')}</strong>`;
+                    document.getElementById('tombolProsesRiil').style.display = 'block';
                 }
 
                 tampilkanListBelanjaRiil();
@@ -592,8 +746,10 @@
 
                 if (!adaBelanjaDigital) {
                     listBodyDigital.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                    document.getElementById('tombolProsesDigital').style.display = 'none';
                 } else {
                     listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${totalDigital.toLocaleString('id-ID')}</strong>`;
+                    document.getElementById('tombolProsesDigital').style.display = 'block';
                 }
 
                 tampilkanListBelanjaDigital();
@@ -1227,101 +1383,173 @@
         }
 
         function tampilkanRekapRonde(data) {
-            // Pasar Riil
+            // === Pasar Riil ===
             const rekapRiil = document.getElementById('rekapRiil');
             const historyRiil = JSON.parse(data.history_riil || '[]');
 
             if (historyRiil.length === 0) {
                 rekapRiil.innerHTML = '<p class="text-muted">Belum ada belanja di pasar riil.</p>';
             } else {
-                const groupedRiil = {};
-                historyRiil.forEach(entry => {
-                    const round = entry.round_number;
-                    if (!groupedRiil[round]) {
-                        groupedRiil[round] = {
-                            produk: [],
-                            total: 0
-                        };
-                    }
-                    groupedRiil[round].produk.push(...entry.produk);
-                    groupedRiil[round].total += entry.total;
-                });
-
-                rekapRiil.innerHTML = Object.entries(groupedRiil).map(([round, data]) => {
-                    const items = data.produk.map(p =>
-                        `<li>${p.nama} (${p.jumlah} ${p.satuan}) = Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</li>`
-                    ).join('');
-                    return `
-                        <p class="fw-bold">Ronde ${round}</p>
-                        <ul>${items}</ul>
-                        <p class="fw-bold">Total: Rp${data.total.toLocaleString('id-ID')}</p><hr>
-                    `;
+                let totalAll = 0;
+                const rows = historyRiil.map((entry, i) => {
+                    totalAll += entry.total;
+                    const itemRows = entry.produk.map(p => `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${p.nama}</td>
+                            <td>${p.jumlah} ${p.satuan}</td>
+                            <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
+                        </tr>
+                    `).join('');
+                    return itemRows;
                 }).join('');
-
-                showForm('rekap_ronde');
+                rekapRiil.innerHTML = `
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <th>#</th>
+                            <th>Produk</th>
+                            <th>Jumlah</th>
+                            <th>Subtotal</th>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                    <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3 fs-5" role="alert">
+                        <strong>Total Belanja Pasar Tradisional:</strong>
+                        <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
+                    </div>
+                `;
             }
 
-            // Pasar Digital
+            // === Pasar Digital ===
             const rekapDigital = document.getElementById('rekapDigital');
             const historyDigital = JSON.parse(data.history_digital || '[]');
 
             if (historyDigital.length === 0) {
                 rekapDigital.innerHTML = '<p class="text-muted">Belum ada belanja di pasar digital.</p>';
             } else {
-                const groupedDigital = {};
-                historyDigital.forEach(entry => {
-                    const round = entry.round_number;
-                    if (!groupedDigital[round]) {
-                        groupedDigital[round] = {
-                            produk: [],
-                            total: 0
-                        };
-                    }
-                    groupedDigital[round].produk.push(...entry.produk);
-                    groupedDigital[round].total += entry.total;
-                });
-
-                rekapDigital.innerHTML = Object.entries(groupedDigital).map(([round, data]) => {
-                    const items = data.produk.map(p =>
-                        `<li>${p.nama} (${p.jumlah} ${p.satuan}) = Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</li>`
-                    ).join('');
-                    return `
-                        <p class="fw-bold">Ronde ${round}</p>
-                        <ul>${items}</ul>
-                        <p class="fw-bold">Total: Rp${data.total.toLocaleString('id-ID')}</p><hr>
-                    `;
+                let totalAll = 0;
+                const rows = historyDigital.map((entry, i) => {
+                    totalAll += entry.total;
+                    const itemRows = entry.produk.map(p => `
+                        <tr>
+                            <td>${i + 1}</td>
+                            <td>${p.nama}</td>
+                            <td>${p.jumlah} ${p.satuan}</td>
+                            <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
+                        </tr>
+                    `).join('');
+                    return itemRows;
                 }).join('');
+                rekapDigital.innerHTML = `
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <th>#</th>
+                            <th>Produk</th>
+                            <th>Jumlah</th>
+                            <th>Subtotal</th>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                    <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3 fs-5" role="alert">
+                        <strong>Total Belanja Pasar Digital:</strong>
+                        <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
+                    </div>
+                `;
             }
 
-            // Investasi Risiko Rendah
+            // === Investasi Risiko Rendah ===
             const rekapInvestasi = document.getElementById('rekapInvestasiRendah');
-            const historyLowInvest = JSON.parse(data.history_lowinvest || '[]');
+            const historyInvest = JSON.parse(data.history_lowinvest || '[]');
 
-            if (historyLowInvest.length === 0) {
+            if (historyInvest.length === 0) {
                 rekapInvestasi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
             } else {
-                const groupedInvest = {};
-                historyLowInvest.forEach(entry => {
-                    const round = entry.round_number;
-                    if (!groupedInvest[round]) {
-                        groupedInvest[round] = [];
-                    }
-                    groupedInvest[round].push(entry);
-                });
+                let totalJumlah = 0, totalHasil = 0;
+                let totalUntung = 0, totalRugi = 0;
 
-                rekapInvestasi.innerHTML = Object.entries(groupedInvest).map(([round, list]) => {
+                const rows = historyInvest.map((entry, i) => {
+                    totalJumlah += entry.jumlah;
+                    totalHasil += entry.hasil;
+
+                    if (entry.status === 'untung') {
+                        totalUntung += entry.hasil - entry.jumlah;
+                    } else if (entry.status === 'rugi') {
+                        totalRugi += entry.jumlah - entry.hasil;
+                    }
+
                     return `
-                        <p class="fw-bold">Ronde ${round}</p>
-                        ${list.map(entry => `
-                            <p>Jumlah Investasi: Rp${entry.jumlah.toLocaleString('id-ID')}</p>
-                            <p>Hasil: <b class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
-                                Rp${entry.hasil.toLocaleString('id-ID')} (${entry.status.toUpperCase()})
-                            </b></p>
-                        `).join('<hr>')}
-                        <hr>
+                        <tr>
+                            <td>Investasi ke ${i + 1}</td>
+                            <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
+                            <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
+                            <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                ${entry.status.toUpperCase()}
+                            </td>
+                        </tr>
                     `;
                 }).join('');
+
+                rekapInvestasi.innerHTML = `
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>List Investasi</th>
+                                <th>Jumlah Investasi</th>
+                                <th>Hasil</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                    <div class="alert p-0" role="alert">
+                        <h5 class="alert-heading m-0">Total Investasi Risiko Rendah</h5>
+                        <hr>
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Total Jumlah Investasi</th>
+                                <th>Total Hasil Investasi</th>
+                                <th>Total Keuntungan Investasi</th>
+                                <th>Total Kerugian Investasi</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
+                                    <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
+                                    <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
+                                    <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
             }
+
+            // === Penukaran Uang ===
+            const rekapTukar = document.getElementById('rekapPenukaranUang');
+            const historyTukar = JSON.parse(data.history_tukar_uang || '[]');
+            if (historyTukar.length === 0) {
+                rekapTukar.innerHTML = '<p class="text-muted">Belum ada pertukaran uang.</p>';
+            } else {
+                const rows = historyTukar.map((entry, i) => `
+                    <tr>
+                        <td>${entry.waktu}</td>
+                        <td>${entry.arah === 'tunai_ke_digital' ? 'Tunai → Digital' : 'Digital → Tunai'}</td>
+                        <td>Rp${parseInt(entry.jumlah).toLocaleString('id-ID')}</td>
+                        <td>Rp${parseInt(entry.admin).toLocaleString('id-ID')}</td>
+                    </tr>
+                `).join('');
+                rekapTukar.innerHTML = `
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr><th>Waktu</th><th>Jenis</th><th>Jumlah</th><th>Biaya Admin</th></tr>
+                        </thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                `;
+            }
+
             showForm('rekap_ronde');
         }
     </script>

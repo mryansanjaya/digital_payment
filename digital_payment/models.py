@@ -1,6 +1,7 @@
 from otree.api import *
 import random
 import json
+import datetime
 
 doc = """
 Digital Payment Experiment
@@ -108,21 +109,25 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    selected_products_produk_riil = models.LongStringField(blank=True)
-    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
+    saldo_tunai = models.IntegerField(initial=100000)
+    saldo_digital = models.IntegerField(initial=100000)
 
-    selected_products_produk_digital = models.LongStringField(blank=True)
-    total_belanja_digital = models.CurrencyField(blank=True, initial=None)
+    # History Aktivitas Beli & Investasi
+    history_riil = models.LongStringField(blank=True, initial='[]')
+    history_digital = models.LongStringField(blank=True, initial='[]')
+    history_lowinvest = models.LongStringField(blank=True, initial='[]')
+    history_tukar_uang = models.LongStringField(blank=True, initial='[]')
 
     # Investasi Risiko Rendah
     lowinvest = models.CurrencyField(blank=True, initial=None)
     hasil_akhir_lowinvest = models.CurrencyField(blank=True, initial=None)
     untungrugi_lowinvest = models.StringField(blank=True)  # UNTUNG atau RUGI
 
-    # History Aktivitas Beli & Investasi
-    history_riil = models.LongStringField(blank=True, initial='[]')
-    history_digital = models.LongStringField(blank=True, initial='[]')
-    history_lowinvest = models.LongStringField(blank=True, initial='[]')
+    selected_products_produk_riil = models.LongStringField(blank=True)
+    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
+
+    selected_products_produk_digital = models.LongStringField(blank=True)
+    total_belanja_digital = models.CurrencyField(blank=True, initial=None)
 
     def live_handle(player, data):
         jenis = data.get("jenis")
@@ -190,7 +195,7 @@ class Player(BasePlayer):
                 }
             }
 
-        elif data.get("jenis") == "minta_rekap":
+        elif jenis == "minta_rekap":
             return {
                 player.id_in_group: {
                     "selected_products_produk_riil": player.field_maybe_none("selected_products_produk_riil"),
@@ -200,8 +205,51 @@ class Player(BasePlayer):
                     "lowinvest": player.field_maybe_none("lowinvest"),
                     "hasil_akhir_lowinvest": player.field_maybe_none("hasil_akhir_lowinvest"),
                     "untungrugi_lowinvest": player.field_maybe_none("untungrugi_lowinvest"),
+                    "saldo_tunai": player.field_maybe_none("saldo_tunai"),
+                    "saldo_digital": player.field_maybe_none("saldo_digital"),
                     "history_riil": player.history_riil,
                     "history_digital": player.history_digital,
-                    "history_lowinvest": player.history_lowinvest
+                    "history_lowinvest": player.history_lowinvest,
+                    "history_tukar_uang": player.history_tukar_uang
+                }
+            }
+
+        elif jenis == "tukar_uang":
+            arah = data.get("arah")
+            jumlah = int(data.get("jumlah", 0))
+            biaya_admin = 1000
+
+            if jumlah <= 0:
+                return {player.id_in_group: dict(status="gagal", message="Jumlah tidak valid")}
+
+            history = json.loads(player.history_tukar_uang or "[]")
+
+            if arah == "tunai_ke_digital":
+                if player.saldo_tunai < jumlah + biaya_admin:
+                    return {player.id_in_group: dict(status="gagal", message="Saldo tunai tidak mencukupi")}
+                player.saldo_tunai -= (jumlah + biaya_admin)
+                player.saldo_digital += jumlah
+
+            elif arah == "digital_ke_tunai":
+                if player.saldo_digital < jumlah + biaya_admin:
+                    return {player.id_in_group: dict(status="gagal", message="Saldo digital tidak mencukupi")}
+                player.saldo_digital -= (jumlah + biaya_admin)
+                player.saldo_tunai += jumlah
+
+            else:
+                return {player.id_in_group: dict(status="gagal", message="Arah pertukaran tidak valid")}
+
+            history.append({
+                "waktu": datetime.datetime.now().strftime("%d-%m-%Y %H:%M:%S"),
+                "jumlah": jumlah,
+                "admin": biaya_admin,
+                "arah": arah,
+            })
+            player.history_tukar_uang = json.dumps(history)
+
+            return {
+                player.id_in_group: {
+                    "status": "sukses",
+                    "history": history
                 }
             }
