@@ -605,6 +605,39 @@
 
             <!-- PLATFORM INVESTASI RISIKO RENDAH -->
             <div id="investasi_tinggi" style="display: none;">
+                <div class="card mt-3">
+    <div class="card-header">
+        <h3 class="m-0">🎰 Investasi Risiko Tinggi</h3>
+    </div>
+    <div class="card-body text-center">
+        <p class="fs-5">Klik tombol <b>Spin</b> untuk memulai investasi!</p>
+        <div id="slotHasil" class="fs-1 my-3">❔❔❔</div>
+        <input type="number" id="amountHighInvest" class="form-control w-50 mx-auto mb-3" placeholder="Jumlah yang ingin diinvestasikan" min="1" step="1">
+        <button type="button" class="btn btn-danger" onclick="spinSlot()">🎰 Spin</button>
+    </div>
+</div>
+
+<div class="card mt-3">
+    <div class="card-header">
+        <h5 class="m-0">History Investasi Risiko Tinggi</h5>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered mb-0">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Jumlah</th>
+                    <th>Hasil</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="historySlotHigh">
+                <tr><td colspan="4" class="text-muted text-center">Belum ada investasi.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
                 <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
                     Kembali ke Menu Investasi
                 </button>
@@ -1577,6 +1610,65 @@
             });
         }
         // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
+
+        let historyHigh = [];
+
+function spinSlot() {
+    const amount = parseInt(document.getElementById("amountHighInvest").value);
+    if (!amount || amount <= 0) {
+        Swal.fire("Oops!", "Masukkan jumlah yang valid!", "warning");
+        return;
+    }
+
+    // Simulasi animasi simbol slot
+    const hasilEl = document.getElementById("slotHasil");
+    const simbol = ["🍒", "🍋", "🔔", "🍀", "💎"];
+    hasilEl.textContent = "🎰🎰🎰";
+
+    setTimeout(() => {
+        const r1 = simbol[Math.floor(Math.random() * simbol.length)];
+        const r2 = simbol[Math.floor(Math.random() * simbol.length)];
+        const r3 = simbol[Math.floor(Math.random() * simbol.length)];
+        hasilEl.textContent = `${r1}${r2}${r3}`;
+
+        // Logika sederhana untuk untung/rugi
+        const isWin = (r1 === r2 && r2 === r3);
+        const hasil = isWin ? Math.round(amount * 1.5) : Math.round(amount * 0.5);
+        const status = isWin ? "untung" : "rugi";
+
+        // Simpan ke history
+        historyHigh.push({
+            jumlah: amount,
+            hasil: hasil,
+            status: status
+        });
+
+        updateHistorySlot();
+        Swal.fire(
+            status === "untung" ? "Selamat!" : "Sayang sekali!",
+            `Hasil investasi Anda: Rp${hasil.toLocaleString('id-ID')}`,
+            status === "untung" ? "success" : "error"
+        );
+
+    }, 1000);
+}
+
+function updateHistorySlot() {
+    const tbody = document.getElementById("historySlotHigh");
+    tbody.innerHTML = "";
+
+    historyHigh.forEach((item, i) => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${i + 1}</td>
+            <td>Rp${item.jumlah.toLocaleString('id-ID')}</td>
+            <td>Rp${item.hasil.toLocaleString('id-ID')}</td>
+            <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
 
         //
         function mintaRekapRonde() {

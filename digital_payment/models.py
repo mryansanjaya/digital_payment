@@ -116,6 +116,7 @@ class Player(BasePlayer):
     history_riil = models.LongStringField(blank=True, initial='[]')
     history_digital = models.LongStringField(blank=True, initial='[]')
     history_lowinvest = models.LongStringField(blank=True, initial='[]')
+    history_highinvest = models.LongStringField(blank=True, initial='[]')
     history_tukar_uang = models.LongStringField(blank=True, initial='[]')
 
     # Investasi Risiko Rendah
@@ -194,6 +195,31 @@ class Player(BasePlayer):
                     "hasil": hasil
                 }
             }
+
+        elif jenis == "investasi_tinggi":
+            jumlah = float(data.get("jumlah", 0))
+            if jumlah <= 0:
+                return {player.id_in_group: dict(status="error", message="Jumlah tidak valid")}
+
+            # Slot win chance 25%
+            peluang = random.random()
+            if peluang <= 0.25:
+                hasil = round(jumlah * 1.5)
+                status = 'untung'
+            else:
+                hasil = round(jumlah * 0.5)
+                status = 'rugi'
+
+            history = json.loads(player.history_highinvest or "[]")
+            history.append({
+                "jumlah": jumlah,
+                "hasil": hasil,
+                "status": status,
+                "round_number": player.round_number
+            })
+
+            player.history_highinvest = json.dumps(history)
+            return {player.id_in_group: dict(status=status, hasil=hasil)}
 
         elif jenis == "minta_rekap":
             return {
