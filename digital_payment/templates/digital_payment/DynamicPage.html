@@ -130,22 +130,78 @@
                             <div class="container p-0 mt-3">
                                 <div class="row align-items-start">
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-danger w-100 mb-2" onclick="showForm('pasar_riil')">
-                                            <i class="fa-solid fa-shop"></i>
-                                            <span>Platform Pasar Tradisional</span>
-                                        </button>
+                                        <div class="card">
+                                            <img src="{{ static 'img/tradisional.png'}}" class="card-img-top w-100"
+                                                 alt="image">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h4 class="m-0">Pasar Tradisional</h4>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p class="m-0">
+                                                        Pasar Tradisonal terdapat berbagai macam produk belanja seperti
+                                                        Tahu, Tempe, Kecap, Daging dan lain sebagainya.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-danger w-100"
+                                                        onclick="showForm('pasar_riil')">
+                                                    <i class="fa-solid fa-shop"></i>
+                                                    <span>Platform Pasar Tradisional</span>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-warning w-100 mb-2" onclick="showForm('pasar_digital')">
-                                            <i class="fa-solid fa-shop"></i>
-                                            <span>Platform Pasar Digital</span>
-                                        </button>
+                                        <div class="card">
+                                            <img src="{{ static 'img/digital.png'}}" class="card-img-top w-100"
+                                                 alt="image">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h4 class="m-0">Pasar Digital</h4>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p class="m-0">
+                                                        Pasar Digital terdapat berbagai macam produk belanja seperti
+                                                        barang Eletronik, Aksesoris, Peralatan Kerja, Alat Tulis Kantor
+                                                        dan lain sebagainya.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-warning w-100"
+                                                        onclick="showForm('pasar_digital')">
+                                                    <i class="fa-solid fa-shop"></i>
+                                                    <span>Platform Pasar Digital</span>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-4">
-                                        <button type="button" class="btn btn-success w-100 mb-2" onclick="showForm('all_investasi')">
-                                            <i class="fa-solid fa-money-bill-trend-up"></i>
-                                            <span>Platform Investasi</span>
-                                        </button>
+                                        <div class="card">
+                                            <img src="{{ static 'img/digital.png'}}" class="card-img-top w-100"
+                                                 alt="image">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h4 class="m-0">Platform Investasi</h4>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p class="m-0">
+                                                        "Main Aman Bisa, Mau Greget Juga Bisa!", Kami mengerti, tiap
+                                                        orang punya gaya investasi beda-beda. Tenang aja — dari yang
+                                                        stabil sampai yang ngebut, semuanya ada di satu tempat!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-success w-100"
+                                                        onclick="showForm('all_investasi')">
+                                                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                                                    <span>Platform Investasi</span>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -233,26 +289,33 @@
             <!-- PASAR RIIL -->
             <div id="pasar_riil" style="display: none;">
                 <div class="card">
-                    <div class="card-header bg-transparent">
+                    <div class="card-header bg-light">
                         <div class="row">
                             <div class="col-6">
-                                <h3 class="m-0">P1. Platform Pasar Riil</h3>
+                                <h3 class="m-0">Pasar Tradisional</h3>
                             </div>
                             <div class="col-6">
-                                <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
-                                    Dompet Tunai Anda: Rp. 100.000
+                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <form method="post">
-                            <!-- Total Belanja -->
-                            <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
-                                <span class="fw-bold">Total Belanja Anda:</span>
-                                <span class="fw-bold" id="totalHargaRiil">Rp. 0</span>
-                            </div>
-
+                            <table class="table table-bordered bg-light sticky-top">
+                                <thead>
+                                    <th>Dompet Tunai Anda</th>
+                                    <th>Total Belanja Anda</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ player.saldo_tunai }}</td>
+                                        <!-- Total Belanja -->
+                                        <td id="totalHargaRiil">Rp. 0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <!-- Daftar Produk -->
                             <div id="produkRiilContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
                             <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
@@ -273,7 +336,23 @@
                     <div class="card-header">
                         <h3 class="m-0">Hasil Belanja Anda</h3>
                     </div>
-                    <div class="card-body" id="hasilBelanjaRiilContainer"></div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered m-0">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Jumlah</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultBelanjaRiilBody">
+                                <!-- baris produk akan dimasukkan di sini -->
+                            </tbody>
+                            <tfoot id="resultBelanjaRiilFooter">
+                                <!-- total belanja akan ditampilkan di sini -->
+                            </tfoot>
+                        </table>
+                    </div>
                     <div class="card-footer d-flex flex-row justify-content-between">
                         <button type="button" class="btn btn-success" onclick="simpanBelanjaRiil()">
                             Beli
@@ -291,23 +370,30 @@
                     <div class="card-header bg-transparent">
                         <div class="row">
                             <div class="col-6">
-                                <h3 class="m-0">P1. Platform Pasar Riil</h3>
+                                <h3 class="m-0">Pasar Digital</h3>
                             </div>
                             <div class="col-6">
-                                <span class="badge fs-5 float-end bg-primary bg-gradient p-2">
-                                    Dompet Digital Anda: Rp. 100.000
+                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
                                 </span>
                             </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <form method="post">
-                            <!-- Total Belanja -->
-                            <div class="alert alert-success fs-3 d-flex flex-row justify-content-between" role="alert">
-                                <span class="fw-bold">Total Belanja Anda:</span>
-                                <span class="fw-bold" id="totalHargaDigital">Rp. 0</span>
-                            </div>
-
+                            <table class="table table-bordered bg-light sticky-top">
+                                <thead>
+                                    <th>Dompet Digital Anda</th>
+                                    <th>Total Belanja Anda</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>{{ player.saldo_digital }}</td>
+                                        <!-- Total Belanja -->
+                                        <td id="totalHargaDigital">Rp. 0</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <!-- Daftar Produk -->
                             <div id="produkDigitalContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
                             <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
@@ -328,7 +414,23 @@
                     <div class="card-header">
                         <h3 class="m-0">Hasil Belanja Anda</h3>
                     </div>
-                    <div class="card-body" id="hasilBelanjaDigitalContainer"></div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered m-0">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Jumlah</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultBelanjaDigitalBody">
+                                <!-- baris produk akan dimasukkan di sini -->
+                            </tbody>
+                            <tfoot id="resultBelanjaDigitalFooter">
+                                <!-- total belanja akan ditampilkan di sini -->
+                            </tfoot>
+                        </table>
+                    </div>
                     <div class="card-footer d-flex flex-row justify-content-between">
                         <button type="button" class="btn btn-success" onclick="simpanBelanjaDigital()">
                             Beli
@@ -345,19 +447,37 @@
             <div id="all_investasi" style="display: none;">
                 <div class="card">
                     <div class="card-header">
-                        <h3>P3. Platform Investasi</h3>
+                        <div class="row">
+                            <div class="col-6">
+                                <h3 class="m-0">Platform Investasi</h3>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="row row-cols-1 row-cols-md-2 g-4 text-center">
+                        <div class="row row-cols-1 row-cols-md-2 g-2">
                             <div class="col">
                                 <div class="card">
-                                    <img src="..." class="card-img-top" alt="...">
+                                    <img src="{{ static 'img/low_invest.png'}}" class="card-img-top" alt="image">
                                     <div class="card-body">
-                                        <h3 class="card-title">
-                                        Investasi Risiko Rendah
-                                        </h3>
-                                        <!--                        <p class="card-text"></p>-->
-                                        <button type="button" class="btn btn-success" onclick="showForm('investasi_rendah')">
+                                        <div class="card-title">
+                                            <h3>Investasi Risiko Rendah</h3>
+                                        </div>
+                                        <div class="card-text">
+                                            <p class="m-0">
+                                                "Investasi Tenang, Hasil Aman", Nggak perlu pusing mikirin rugi besar!
+                                                Pilih investasi risiko rendah, cocok buat kamu yang pengin cuan tapi
+                                                tetap main aman.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success"
+                                                onclick="showForm('investasi_rendah')">
                                             Pilih Investasi Risiko Rendah
                                         </button>
                                     </div>
@@ -391,30 +511,76 @@
             <div id="investasi_rendah" style="display: none;">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="m-0">
-                            Investasi Risiko Rendah
-                        </h3>
-                    </div>
-                    <div class="card-body">
-                        <div class="alert p-0" role="alert">
-                            <h4 class="alert-heading">Well done!</h4>
-                            <ul class="mb-0 text-danger">
-                                <li>Anda memiliki kesempatan untuk membuat uang Anda menjadi <b>1.25 kali lipat</b> dengan peluang <b>75%</b>.</li>
-                                <li>Namun uang Anda juga bisa berkurang menjadi <b>3/4</b> dari alokasi Anda dengan peluang <b>25%</b>.</li>
-                            </ul>
-                            <hr>
-                            <div>
-                                <label for="id_lowinvest" class="form-label fw-bold">
-                                    Masukkan jumlah yang ingin Anda invetastikan
-                                </label>
-                                <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" min="0" step="1">
+                        <div class="row">
+                            <div class="col-6">
+                                <h3 class="m-0">Investasi Risiko Rendah</h3>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer d-flex flex-row justify-content-between">
-                        <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
-                            Proses Investasi Anda
-                        </button>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">Investasikan Uang Anda dan dapatkan keuntungannya!</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <span class="badge fs-5 bg-primary bg-gradient">
+                                            Dompet Digital Anda: {{ player.saldo_digital }}
+                                        </span>
+                                        <div class="alert p-0 m-0" role="alert">
+                                            <div class="alert alert-success p-2 m-0" role="alert">
+                                                Anda memiliki kesempatan untuk membuat uang Anda menjadi <b>1.25 kali lipat</b> dengan
+                                                peluang <b>75%</b>.
+                                            </div>
+                                            <div class="alert alert-danger p-2" role="alert">
+                                                Namun uang Anda juga bisa berkurang menjadi <b>3/4</b> dari alokasi Anda dengan
+                                                peluang <b>25%</b>.
+                                            </div>
+                                            <hr>
+                                            <div>
+                                                <label for="id_lowinvest" class="form-label fw-bold">
+                                                    Masukkan jumlah yang ingin Anda invetastikan
+                                                </label>
+                                                <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" min="0" step="1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
+                                            Proses Investasi Anda
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">History Investasi Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>#</th>
+                                                <th>Jumlah</th>
+                                                <th>Hasil Investasi</th>
+                                                <th>Untung/Rugi</th>
+                                            </thead>
+                                            <tbody id="investasi_rendah_history">
+                                                <!-- history tampil disini-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
                         <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
                             Kembali ke Menu Investasi
                         </button>
@@ -447,36 +613,40 @@
         <div class="tab-pane fade p-2" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
             <!-- MODAL: History Pertukaran Uang -->
             <div class="modal fade" id="modalHistoryTukarUang" tabindex="-1" aria-labelledby="modalHistoryTukarUangLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="modalHistoryTukarUangLabel">History Pertukaran Uang</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
-      </div>
-      <div class="modal-body">
-        <div class="table-responsive">
-          <table class="table table-bordered table-striped">
-            <thead class="table-light">
-              <tr>
-                <th>#</th>
-                <th>Waktu</th>
-                <th>Jenis Pertukaran</th>
-                <th>Jumlah</th>
-                <th>Biaya Admin</th>
-              </tr>
-            </thead>
-            <tbody id="historyTukarUangTable">
-              <tr><td colspan="6" class="text-muted text-center">Belum ada data.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
+                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalHistoryTukarUangLabel">History Pertukaran Uang</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Tutup"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Waktu</th>
+                                            <th>Jenis Pertukaran</th>
+                                            <th>Jumlah</th>
+                                            <th>Biaya Admin</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="historyTukarUangTable">
+                                        <tr>
+                                            <td colspan="6" class="text-muted text-center">
+                                                Belum ada data.
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div id="pertukaran_uang">
                 <div class="card">
@@ -545,22 +715,22 @@
             </div>
             <div id="tunai_digital" style="display: none">
                 <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h4 class="m-0">Pertukaran Uang</h4>
-        </div>
-        <div class="card-body">
-            <p>Masukkan jumlah uang yang ingin Anda tukar:</p>
-            <div class="row">
-                <div class="col-md-6">
-                    <input type="number" id="jumlahTukarUang" class="form-control" placeholder="Masukkan jumlah" min="1">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h4 class="m-0">Pertukaran Uang</h4>
+                    </div>
+                    <div class="card-body">
+                        <p>Masukkan jumlah uang yang ingin Anda tukar:</p>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="number" id="jumlahTukarUang" class="form-control" placeholder="Masukkan jumlah" min="1">
+                            </div>
+                            <div class="col-md-6">
+                                <button type="button" class="btn btn-primary me-2" onclick="tukarUang('tunai_ke_digital')">Tukar ke Digital</button>
+                                <button type="button" class="btn btn-secondary" onclick="tukarUang('digital_ke_tunai')">Tukar ke Tunai</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="col-md-6">
-                    <button type="button" class="btn btn-primary me-2" onclick="tukarUang('tunai_ke_digital')">Tukar ke Digital</button>
-                    <button type="button" class="btn btn-secondary" onclick="tukarUang('digital_ke_tunai')">Tukar ke Tunai</button>
-                </div>
-            </div>
-        </div>
-    </div>
                 <button type="button" class="btn btn-success p-0 mx-1" onclick="showForm('pertukaran_uang')">
                     Kembali ke Menu Pertukaran Uang
                 </button>
@@ -614,51 +784,50 @@
             }
 
             function tukarUang(jenis) {
-    const jumlah = parseInt(document.getElementById('jumlahTukarUang').value);
-    if (!jumlah || jumlah <= 0) {
-        Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
-        return;
-    }
-    liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
-    backendRekap()
-}
+                const jumlah = parseInt(document.getElementById('jumlahTukarUang').value);
+                if (!jumlah || jumlah <= 0) {
+                    Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
+                    return;
+                }
+                liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
+                backendRekap()
+            }
 
-function backendRekap() {
-    liveRecv = function (data) {
-        if (data.status === 'sukses') {
-            Swal.fire('Berhasil!', 'Pertukaran Uang berhasil dilakukan.', 'success');
-            showTab('contact-tab-pane');
-            tampilkanHistoryTukarUang(data.history);
-        } else if (data.status === 'gagal') {
-            Swal.fire('Gagal!', data.message, 'error');
-        }
-    }
-}
+            function backendRekap() {
+                liveRecv = function (data) {
+                    if (data.status === 'sukses') {
+                        Swal.fire('Berhasil!', 'Pertukaran Uang berhasil dilakukan.', 'success');
+                        showTab('contact-tab-pane');
+                        tampilkanHistoryTukarUang(data.history);
+                    } else if (data.status === 'gagal') {
+                        Swal.fire('Gagal!', data.message, 'error');
+                    }
+                }
+            }
 
-function loadHistoryTukarUang() {
-    liveSend({ jenis: "minta_rekap" });
+            function loadHistoryTukarUang() {
+                liveSend({ jenis: "minta_rekap" });
 
-    liveRecv = function (data) {
-        const history = JSON.parse(data.history_tukar_uang || '[]');
-        const table = document.getElementById("historyTukarUangTable");
+                liveRecv = function (data) {
+                    const history = JSON.parse(data.history_tukar_uang || '[]');
+                    const table = document.getElementById("historyTukarUangTable");
 
-        if (history.length === 0) {
-            table.innerHTML = `<tr><td colspan="6" class="text-muted text-center">Belum ada data pertukaran.</td></tr>`;
-            return;
-        }
+                    if (history.length === 0) {
+                        table.innerHTML = `<tr><td colspan="6" class="text-muted text-center">Belum ada data pertukaran.</td></tr>`;
+                        return;
+                    }
 
-        table.innerHTML = history.map((entry, index) => `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${entry.waktu}</td>
-                <td>${entry.arah === "tunai_ke_digital" ? "Tunai → Digital" : "Digital → Tunai"}</td>
-                <td>Rp${parseInt(entry.jumlah).toLocaleString("id-ID")}</td>
-                <td>Rp${parseInt(entry.admin).toLocaleString("id-ID")}</td>
-            </tr>
-        `).join('');
-    };
-}
-
+                    table.innerHTML = history.map((entry, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${entry.waktu}</td>
+                            <td>${entry.arah === "tunai_ke_digital" ? "Tunai → Digital" : "Digital → Tunai"}</td>
+                            <td>Rp${parseInt(entry.jumlah).toLocaleString("id-ID")}</td>
+                            <td>Rp${parseInt(entry.admin).toLocaleString("id-ID")}</td>
+                        </tr>
+                    `).join('');
+                };
+            }
 
         function showForm(formIdToShow) {
             // Hanya elemen-elemen ini yang akan disembunyikan, bukan tab-pane/tab utama
@@ -753,6 +922,16 @@ function loadHistoryTukarUang() {
                 }
 
                 tampilkanListBelanjaDigital();
+            }
+
+            // Tambahan: Jika membuka form investasi rendah, ambil datanya
+            if (formIdToShow === 'investasi_rendah') {
+                liveSend({ jenis: "minta_rekap" });
+                liveRecv = (data) => {
+                    if (data.history_lowinvest) {
+                        tampilkanHistoryInvestasiRendah(data.history_lowinvest);
+                    }
+                };
             }
         }
 
@@ -923,27 +1102,40 @@ function loadHistoryTukarUang() {
             updateTotalHargaRiil();
 
             function tampilkanHasilBelanjaRiil() {
-                const cardBody = document.querySelector('#result_pasar_riil .card-body');
-                cardBody.innerHTML = '';
+                const listBody = document.getElementById('resultBelanjaRiilBody');
+                const listFooter = document.getElementById('resultBelanjaRiilFooter');
+                listBody.innerHTML = '';
+                listFooter.innerHTML = '';
+
                 let total = 0;
                 let adaProduk = false;
 
                 produk_riil_list.forEach((p, i) => {
-                    if (statusTerpilihRiil[i] && jumlahBeliRiil[i] > 0) {
+                    const jumlah = jumlahBeliRiil[i];
+                    if (jumlah > 0) {
                         adaProduk = true;
-                        const subtotal = jumlahBeliRiil[i] * p.harga;
+                        const subtotal = jumlah * p.harga;
                         total += subtotal;
 
-                        const item = document.createElement('p');
-                        item.innerText = `${p.nama} (${jumlahBeliRiil[i]} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
-                        cardBody.appendChild(item);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
                     }
                 });
 
                 if (!adaProduk) {
-                    cardBody.innerHTML = `<div class="alert alert-warning">Anda belum memilih produk.</div>`;
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
                 } else {
-                    cardBody.innerHTML += `<hr><p class="fw-bold fs-5">Total: Rp${total.toLocaleString('id-ID')}</p>`;
+                    const footerRow = document.createElement('tr');
+                    footerRow.innerHTML = `
+                        <td colspan="2"><strong>Total Belanja:</strong></td>
+                        <td><strong>Rp${total.toLocaleString('id-ID')}</strong></td>
+                    `;
+                    listFooter.appendChild(footerRow);
                 }
 
                 showForm('result_pasar_riil');
@@ -974,9 +1166,7 @@ function loadHistoryTukarUang() {
                         Swal.fire({
                             icon: 'success',
                             title: 'Pembelian Berhasil',
-                            text: data.message,
-                            showConfirmButton: false,
-                            timer: 1500
+                            text: data.message
                         }).then(() => {
                             for (let i = 0; i < statusTerpilihRiil.length; i++) statusTerpilihRiil[i] = false;
                             // Reset jumlah beli
@@ -1002,9 +1192,7 @@ function loadHistoryTukarUang() {
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembelian Gagal',
-                            text: data.message,
-                            showConfirmButton: false,
-                            timer: 1500
+                            text: data.message
                         });
                     }
                 }
@@ -1195,27 +1383,40 @@ function loadHistoryTukarUang() {
             updateTotalHargaDigital();
 
             function tampilkanHasilBelanjaDigital() {
-                const cardBody = document.querySelector('#result_pasar_digital .card-body');
-                cardBody.innerHTML = '';
+                const listBody = document.getElementById('resultBelanjaDigitalBody');
+                const listFooter = document.getElementById('resultBelanjaDigitalFooter');
+                listBody.innerHTML = '';
+                listFooter.innerHTML = '';
+
                 let total = 0;
                 let adaProduk = false;
 
                 produk_digital_list.forEach((p, i) => {
-                    if (statusTerpilihDigital[i] && jumlahBeliDigital[i] > 0) {
+                    const jumlah = jumlahBeliDigital[i];
+                    if (jumlah > 0) {
                         adaProduk = true;
-                        const subtotal = jumlahBeliDigital[i] * p.harga;
+                        const subtotal = jumlah * p.harga;
                         total += subtotal;
 
-                        const item = document.createElement('p');
-                        item.innerText = `${p.nama} (${jumlahBeliDigital[i]} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
-                        cardBody.appendChild(item);
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
                     }
                 });
 
                 if (!adaProduk) {
-                    cardBody.innerHTML = `<div class="alert alert-warning">Anda belum memilih produk.</div>`;
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
                 } else {
-                    cardBody.innerHTML += `<hr><p class="fw-bold fs-5">Total: Rp${total.toLocaleString('id-ID')}</p>`;
+                    const footerRow = document.createElement('tr');
+                    footerRow.innerHTML = `
+                        <td colspan="2"><strong>Total Belanja:</strong></td>
+                        <td><strong>Rp${total.toLocaleString('id-ID')}</strong></td>
+                    `;
+                    listFooter.appendChild(footerRow);
                 }
 
                 showForm('result_pasar_digital');
@@ -1243,9 +1444,7 @@ function loadHistoryTukarUang() {
                         Swal.fire({
                             icon: 'success',
                             title: 'Pembelian Berhasil',
-                            text: data.message,
-                            showConfirmButton: false,
-                            timer: 1500
+                            text: data.message
                         }).then(() => {
                             for (let i = 0; i < statusTerpilihDigital.length; i++) statusTerpilihDigital[i] = false;
                             for (let i = 0; i < jumlahBeliDigital.length; i++) jumlahBeliDigital[i] = 0;
@@ -1265,9 +1464,7 @@ function loadHistoryTukarUang() {
                         Swal.fire({
                             icon: 'error',
                             title: 'Pembelian Gagal',
-                            text: data.message,
-                            showConfirmButton: false,
-                            timer: 1500
+                            text: data.message
                         });
                     }
                 }
@@ -1305,6 +1502,28 @@ function loadHistoryTukarUang() {
         // Akhir Source Code - JavaScript untuk Pasar Digital
 
         // JavaScript untuk Investasi Resiko Rendah
+        function tampilkanHistoryInvestasiRendah(historyJson) {
+            const tbody = document.querySelector("#investasi_rendah_history");
+            tbody.innerHTML = "";
+
+            const history = JSON.parse(historyJson);
+            if (history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
+                return;
+            }
+
+            history.forEach((item, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
+                    <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
+                    <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
         function backendLowInvest() {
             liveRecv = function (data) {
                 const hasil = data.hasil;
@@ -1314,10 +1533,8 @@ function loadHistoryTukarUang() {
                         icon: 'success',
                         title: 'Investasi Anda Menguntungkan',
                         html: `
-                            Uang dari alokasi Anda menjadi <b>Rp${hasil.toLocaleString('id-ID')}</b>.
-                        `,
-                        showConfirmButton: false,
-                        timer: 1500
+                            Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
+                        `
                     }).then(() => {
                         document.getElementById('id_lowinvest').value = '';
                         showForm('all_investasi');
@@ -1328,10 +1545,8 @@ function loadHistoryTukarUang() {
                         icon: 'error',
                         title: 'Investasi Anda Merugi',
                         html: `
-                            Uang dari alokasi Anda menjadi <b>Rp${hasil.toLocaleString('id-ID')}</b>.
-                        `,
-                        showConfirmButton: false,
-                        timer: 1500
+                            Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
+                        `
                     }).then(() => {
                         document.getElementById('id_lowinvest').value = '';
                         showForm('all_investasi');
