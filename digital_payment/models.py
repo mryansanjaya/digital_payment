@@ -13,7 +13,7 @@ class C(BaseConstants):
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 3
 
-# Daftar produk pasar
+    # Daftar produk pasar
     PRODUK_TRADISIONAL = [
         {"nama": "Beras", "harga": 12000, "deskripsi": "Beras medium per kg", "satuan": "kg"},
         {"nama": "Cabe Merah", "harga": 40000, "deskripsi": "Cabe merah segar per kg", "satuan": "kg"},
@@ -99,6 +99,9 @@ class C(BaseConstants):
         {"nama": "Tempat Sabun Portable", "harga": 5000, "deskripsi": "Kotak sabun plastik", "satuan": "pcs"},
     ]
 
+    # Item untuk Mesin Slot
+    SLOT_ITEMS = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🥝']
+
 
 class Subsession(BaseSubsession):
     pass
@@ -111,6 +114,11 @@ class Group(BaseGroup):
 class Player(BasePlayer):
     saldo_tunai = models.IntegerField(initial=100000)
     saldo_digital = models.IntegerField(initial=100000)
+    bantuan = models.IntegerField(initial=100000)
+    konsumsi_dasar = models.IntegerField(initial=100000)
+    denda = models.IntegerField(initial=100000)
+    sisa_dompet_tunai = models.IntegerField(initial=100000)
+    sisa_dompet_digital = models.IntegerField(initial=100000)
 
     # History Aktivitas Beli & Investasi
     history_riil = models.LongStringField(blank=True, initial='[]')
@@ -124,11 +132,21 @@ class Player(BasePlayer):
     hasil_akhir_lowinvest = models.CurrencyField(blank=True, initial=None)
     untungrugi_lowinvest = models.StringField(blank=True)  # UNTUNG atau RUGI
 
-    selected_products_produk_riil = models.LongStringField(blank=True)
-    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
+    # Investasi Risiko Rendah
+    highinvest = models.CurrencyField(blank=True, initial=None)
+    hasil_akhir_highinvest = models.CurrencyField(blank=True, initial=None)
+    untungrugi_highinvest = models.StringField(blank=True)  # UNTUNG atau RUGI
 
-    selected_products_produk_digital = models.LongStringField(blank=True)
+    # Total masing-masing platform
+    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
     total_belanja_digital = models.CurrencyField(blank=True, initial=None)
+    total_untung_lowinvest = models.CurrencyField(blank=True, initial=None)
+    total_rugi_lowinvest = models.CurrencyField(blank=True, initial=None)
+    total_untung_highinvest = models.CurrencyField(blank=True, initial=None)
+    total_rugi_highinvest = models.CurrencyField(blank=True, initial=None)
+
+    selected_products_produk_riil = models.LongStringField(blank=True)
+    selected_products_produk_digital = models.LongStringField(blank=True)
 
     def live_handle(player, data):
         jenis = data.get("jenis")

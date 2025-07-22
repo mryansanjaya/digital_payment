@@ -7,6 +7,59 @@
 {% block title  %}
     <title>Digital Payment Experiment</title>
 {% endblock %}
+{% block style %}
+<style>
+/* Highlight garis tengah slot */
+.highlight-bar {
+    position: absolute;
+    top: 50%; /* posisikan vertikal di tengah */
+    transform: translateY(-50%);
+    height: 110px; /* tinggi 1 box */
+    width: calc(80px * 5); /* 5 kolom + 4x margin antar kolom */
+    border: 4px solid red;
+    border-radius: 10px;
+    pointer-events: none;
+    z-index: 10;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
+.doors {
+  display: flex;
+}
+
+.door {
+  background: #fafafa;
+  width: 100px;
+  height: 330px; /* 110px * 3 kotak */
+  overflow: hidden;
+  border-radius: 5px;
+  margin: 5px;
+}
+
+
+.boxes {
+  transition: transform 1s ease-in-out;
+}
+
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  width: 100px;
+  height: 110px; /* tinggi 1 kotak */
+}
+
+.box.tengah {
+  border: 3px solid gold;
+  border-radius: 8px;
+  box-shadow: 0 0 10px gold;
+  background-color: #fffbe6;
+  z-index: 2;
+}
+
+</style>
+{% endblock %}
 {% block content %}
     <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -587,57 +640,84 @@
                     </div>
                 </div>
             </div>
-            <div id="result_investasi_rendah" style="display:none;">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="m-0">Hasil Investasi Risiko Rendah</h3>
-                    </div>
-                    <div class="card-body">
-                        <p class="fs-4" id="hasil_investasi_rendah_text">Hasil investasi akan muncul di sini.</p>
-                    </div>
-                    <div class="card-footer d-flex flex-row justify-content-between">
-                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
-                            Kembali ke Menu Utama
-                        </button>
-                    </div>
-                </div>
-            </div>
 
             <!-- PLATFORM INVESTASI RISIKO RENDAH -->
             <div id="investasi_tinggi" style="display: none;">
-                <div class="card mt-3">
-    <div class="card-header">
-        <h3 class="m-0">🎰 Investasi Risiko Tinggi</h3>
-    </div>
-    <div class="card-body text-center">
-        <p class="fs-5">Klik tombol <b>Spin</b> untuk memulai investasi!</p>
-        <div id="slotHasil" class="fs-1 my-3">❔❔❔</div>
-        <input type="number" id="amountHighInvest" class="form-control w-50 mx-auto mb-3" placeholder="Jumlah yang ingin diinvestasikan" min="1" step="1">
-        <button type="button" class="btn btn-danger" onclick="spinSlot()">🎰 Spin</button>
-    </div>
-</div>
-
-<div class="card mt-3">
-    <div class="card-header">
-        <h5 class="m-0">History Investasi Risiko Tinggi</h5>
-    </div>
-    <div class="card-body">
-        <table class="table table-bordered mb-0">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>Jumlah</th>
-                    <th>Hasil</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody id="historySlotHigh">
-                <tr><td colspan="4" class="text-muted text-center">Belum ada investasi.</td></tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                <h3 class="m-0">Investasi Risiko Tinggi</h3>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">Putar & Dapatkan keuntungannya!</h6>
+                                    </div>
+                                    <div class="card-body position-relative overflow-hidden" id="app">
+                                        <div class="doors">
+                                            <div class="door">
+                                                <div class="boxes"></div>
+                                            </div>
+                                            <div class="door">
+                                                <div class="boxes"></div>
+                                            </div>
+                                            <div class="door">
+                                                <div class="boxes"></div>
+                                            </div>
+                                            <div class="door">
+                                                <div class="boxes"></div>
+                                            </div>
+                                            <div class="door">
+                                                <div class="boxes"></div>
+                                            </div>
+                                        </div>
+                                        <div class="highlight-bar"></div>
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-success" id="spinner">
+                                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                                            <span>Putar</span>
+                                        </button>
+                                        <button type="button" class="btn btn-success" id="resetter">
+                                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                                            <span>Putar</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">History Investasi Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>#</th>
+                                                <th>Jumlah</th>
+                                                <th>Hasil Investasi</th>
+                                                <th>Untung/Rugi</th>
+                                            </thead>
+                                            <tbody id="investasi_tinggi_history">
+                                                <!-- history tampil disini-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
                     Kembali ke Menu Investasi
                 </button>
@@ -799,70 +879,7 @@
                     showForm('pertukaran_uang');
                 });
             });
-
-            function konfirmasiLanjutRonde() {
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: 'Anda akan melanjutkan ke ronde berikutnya dan tidak dapat kembali ke ronde ini.',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, Lanjut menuju Ronde berikutnya!',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Submit form oTree
-                        document.getElementById("submit-lanjut").click();
-                    }
-                });
-            }
-
-            function tukarUang(jenis) {
-                const jumlah = parseInt(document.getElementById('jumlahTukarUang').value);
-                if (!jumlah || jumlah <= 0) {
-                    Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
-                    return;
-                }
-                liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
-                backendRekap()
-            }
-
-            function backendRekap() {
-                liveRecv = function (data) {
-                    if (data.status === 'sukses') {
-                        Swal.fire('Berhasil!', 'Pertukaran Uang berhasil dilakukan.', 'success');
-                        showTab('contact-tab-pane');
-                        tampilkanHistoryTukarUang(data.history);
-                    } else if (data.status === 'gagal') {
-                        Swal.fire('Gagal!', data.message, 'error');
-                    }
-                }
-            }
-
-            function loadHistoryTukarUang() {
-                liveSend({ jenis: "minta_rekap" });
-
-                liveRecv = function (data) {
-                    const history = JSON.parse(data.history_tukar_uang || '[]');
-                    const table = document.getElementById("historyTukarUangTable");
-
-                    if (history.length === 0) {
-                        table.innerHTML = `<tr><td colspan="6" class="text-muted text-center">Belum ada data pertukaran.</td></tr>`;
-                        return;
-                    }
-
-                    table.innerHTML = history.map((entry, index) => `
-                        <tr>
-                            <td>${index + 1}</td>
-                            <td>${entry.waktu}</td>
-                            <td>${entry.arah === "tunai_ke_digital" ? "Tunai → Digital" : "Digital → Tunai"}</td>
-                            <td>Rp${parseInt(entry.jumlah).toLocaleString("id-ID")}</td>
-                            <td>Rp${parseInt(entry.admin).toLocaleString("id-ID")}</td>
-                        </tr>
-                    `).join('');
-                };
-            }
-
-        function showForm(formIdToShow) {
+            function showForm(formIdToShow) {
             // Hanya elemen-elemen ini yang akan disembunyikan, bukan tab-pane/tab utama
             const forms = [
                 'menu_utama',
@@ -874,7 +891,6 @@
                 'result_pasar_digital',
                 'all_investasi',
                 'investasi_rendah',
-                'result_investasi_rendah',
                 'investasi_tinggi',
                 'tunai_digital',
                 'digital_tunai'
@@ -967,6 +983,68 @@
                 };
             }
         }
+
+            function konfirmasiLanjutRonde() {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Anda akan melanjutkan ke ronde berikutnya dan tidak dapat kembali ke ronde ini.',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Lanjut menuju Ronde berikutnya!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form oTree
+                        document.getElementById("submit-lanjut").click();
+                    }
+                });
+            }
+
+            function tukarUang(jenis) {
+                const jumlah = parseInt(document.getElementById('jumlahTukarUang').value);
+                if (!jumlah || jumlah <= 0) {
+                    Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
+                    return;
+                }
+                liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
+                backendRekap()
+            }
+
+            function backendRekap() {
+                liveRecv = function (data) {
+                    if (data.status === 'sukses') {
+                        Swal.fire('Berhasil!', 'Pertukaran Uang berhasil dilakukan.', 'success');
+                        showTab('contact-tab-pane');
+                        tampilkanHistoryTukarUang(data.history);
+                    } else if (data.status === 'gagal') {
+                        Swal.fire('Gagal!', data.message, 'error');
+                    }
+                }
+            }
+
+            function loadHistoryTukarUang() {
+                liveSend({ jenis: "minta_rekap" });
+
+                liveRecv = function (data) {
+                    const history = JSON.parse(data.history_tukar_uang || '[]');
+                    const table = document.getElementById("historyTukarUangTable");
+
+                    if (history.length === 0) {
+                        table.innerHTML = `<tr><td colspan="6" class="text-muted text-center">Belum ada data pertukaran.</td></tr>`;
+                        return;
+                    }
+
+                    table.innerHTML = history.map((entry, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${entry.waktu}</td>
+                            <td>${entry.arah === "tunai_ke_digital" ? "Tunai → Digital" : "Digital → Tunai"}</td>
+                            <td>Rp${parseInt(entry.jumlah).toLocaleString("id-ID")}</td>
+                            <td>Rp${parseInt(entry.admin).toLocaleString("id-ID")}</td>
+                        </tr>
+                    `).join('');
+                };
+            }
 
         // JavaScript untuk Pasar Riil
             function tampilkanListBelanjaRiil() {
@@ -1611,63 +1689,150 @@
         }
         // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
 
-        let historyHigh = [];
+        (function () {
+  const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
+  const doors = document.querySelectorAll('.door');
+  let spinCount = 0;
 
-function spinSlot() {
-    const amount = parseInt(document.getElementById("amountHighInvest").value);
-    if (!amount || amount <= 0) {
-        Swal.fire("Oops!", "Masukkan jumlah yang valid!", "warning");
-        return;
+  document.querySelector('#spinner').addEventListener('click', spin);
+  document.querySelector('#resetter').addEventListener('click', resetSlot);
+
+  // Fungsi reset awal (❓❓❓)
+  function resetSlot() {
+    for (const door of doors) {
+      const boxes = door.querySelector('.boxes');
+      boxes.innerHTML = ''; // Kosongkan isi lama
+
+      for (let i = 0; i < 3; i++) {
+        const box = document.createElement('div');
+        box.classList.add('box');
+        box.textContent = '❓';
+        boxes.appendChild(box);
+      }
+
+      boxes.style.transition = 'none';
+      boxes.style.transform = 'translateY(0)';
     }
+  }
 
-    // Simulasi animasi simbol slot
-    const hasilEl = document.getElementById("slotHasil");
-    const simbol = ["🍒", "🍋", "🔔", "🍀", "💎"];
-    hasilEl.textContent = "🎰🎰🎰";
+  // Fungsi untuk isi box ketika spin
+  function init(groups = 3, duration = 1) {
+    for (const door of doors) {
+      const boxes = door.querySelector('.boxes');
+      const boxesClone = boxes.cloneNode(false);
+
+      const pool = [];
+      for (let i = 0; i < groups; i++) {
+        pool.push(...shuffle(items));
+      }
+
+      const visibleCount = 3;
+      let isWinningRound = false;
+
+      // Setup: Menang setiap 4x spin
+      if ((spinCount + 1) % 4 === 0) {
+        isWinningRound = true;
+      }
+
+      let middleSymbols = [];
+
+      if (isWinningRound) {
+        const luckyFruit = items[Math.floor(Math.random() * items.length)];
+        middleSymbols = Array(visibleCount).fill(luckyFruit); // 3 simbol sama
+      } else {
+        while (middleSymbols.length < visibleCount) {
+          const fruit = items[Math.floor(Math.random() * items.length)];
+          if (!middleSymbols.includes(fruit)) {
+            middleSymbols.push(fruit);
+          }
+        }
+      }
+
+      pool.push(...middleSymbols);
+
+      for (let i = 0; i < pool.length; i++) {
+        const box = document.createElement('div');
+        box.classList.add('box');
+        box.textContent = pool[i];
+        boxesClone.appendChild(box);
+      }
+
+      boxesClone.style.transition = `transform ${duration}s ease-in-out`;
+      boxesClone.style.transform = `translateY(-${110 * (pool.length - 3)}px)`;
+      door.replaceChild(boxesClone, boxes);
+    }
+  }
+
+  // Fungsi spin
+  function spin() {
+    const groups = 3;
+    const duration = 2.5;
+    spinCount++;
+
+    init(groups, duration);
+
+    doors.forEach((door) => void door.querySelector('.boxes').offsetHeight);
+
+    doors.forEach((door, i) => {
+      const boxes = door.querySelector('.boxes');
+      const delay = i * 300;
+
+      setTimeout(() => {
+        boxes.style.transform = 'translateY(0)';
+      }, delay);
+    });
+
+    const totalDelay = duration * 1000 + doors.length * 300 + 500;
 
     setTimeout(() => {
-        const r1 = simbol[Math.floor(Math.random() * simbol.length)];
-        const r2 = simbol[Math.floor(Math.random() * simbol.length)];
-        const r3 = simbol[Math.floor(Math.random() * simbol.length)];
-        hasilEl.textContent = `${r1}${r2}${r3}`;
+      const hasilTengah = [];
 
-        // Logika sederhana untuk untung/rugi
-        const isWin = (r1 === r2 && r2 === r3);
-        const hasil = isWin ? Math.round(amount * 1.5) : Math.round(amount * 0.5);
-        const status = isWin ? "untung" : "rugi";
+      doors.forEach((door) => {
+        const boxes = door.querySelectorAll('.box');
+        if (boxes.length >= 3) {
+          hasilTengah.push(boxes[1].textContent); // Ambil baris tengah
+        }
+      });
 
-        // Simpan ke history
-        historyHigh.push({
-            jumlah: amount,
-            hasil: hasil,
-            status: status
-        });
+      let menang = false;
+      for (let i = 0; i <= hasilTengah.length - 3; i++) {
+        if (
+          hasilTengah[i] === hasilTengah[i + 1] &&
+          hasilTengah[i] === hasilTengah[i + 2]
+        ) {
+          menang = true;
+          break;
+        }
+      }
 
-        updateHistorySlot();
-        Swal.fire(
-            status === "untung" ? "Selamat!" : "Sayang sekali!",
-            `Hasil investasi Anda: Rp${hasil.toLocaleString('id-ID')}`,
-            status === "untung" ? "success" : "error"
-        );
+      const status = menang ? "MENANG" : "KALAH";
+      const multiplier = menang ? 2 : 0;
 
-    }, 1000);
-}
+      Swal.fire({
+        icon: menang ? "success" : "error",
+        title: status,
+        text: `Baris Tengah: ${hasilTengah.join(" ")}\nMultiplier: ${multiplier}x`,
+        confirmButtonText: "OK"
+      });
 
-function updateHistorySlot() {
-    const tbody = document.getElementById("historySlotHigh");
-    tbody.innerHTML = "";
+      // liveSend({ jenis: 'hasil_slot', hasil: status, multiplier: multiplier });
+    }, totalDelay);
+  }
 
-    historyHigh.forEach((item, i) => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-            <td>${i + 1}</td>
-            <td>Rp${item.jumlah.toLocaleString('id-ID')}</td>
-            <td>Rp${item.hasil.toLocaleString('id-ID')}</td>
-            <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
-        `;
-        tbody.appendChild(row);
-    });
-}
+  function shuffle(arr) {
+    let m = arr.length;
+    while (m) {
+      const i = Math.floor(Math.random() * m--);
+      [arr[m], arr[i]] = [arr[i], arr[m]];
+    }
+    return arr;
+  }
+
+  // Tampilkan tanda tanya di awal
+  resetSlot();
+})();
+
+
 
 
         //
