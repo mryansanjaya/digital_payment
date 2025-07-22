@@ -664,33 +664,54 @@
                                         <h6 class="m-0">Putar & Dapatkan keuntungannya!</h6>
                                     </div>
                                     <div class="card-body position-relative overflow-hidden" id="app">
+                                        <div class="alert alert-primary p-1" role="alert">
+                                            <strong>Dompet Digital Anda:</strong>
+                                            <strong class="float-end">{{ player.saldo_digital  }}</strong>
+                                        </div>
                                         <div class="doors">
                                             <div class="door">
-                                                <div class="boxes"></div>
+                                                <div class="boxes">
+                                                    <div class="box"></div>
+                                                </div>
                                             </div>
                                             <div class="door">
-                                                <div class="boxes"></div>
+                                                <div class="boxes">
+                                                    <div class="box"></div>
+                                                </div>
                                             </div>
                                             <div class="door">
-                                                <div class="boxes"></div>
+                                                <div class="boxes">
+                                                    <div class="box"></div>
+                                                </div>
                                             </div>
                                             <div class="door">
-                                                <div class="boxes"></div>
+                                                <div class="boxes">
+                                                    <div class="box"></div>
+                                                </div>
                                             </div>
                                             <div class="door">
-                                                <div class="boxes"></div>
+                                                <div class="boxes">
+                                                    <div class="box"></div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="highlight-bar"></div>
+                                        <div>
+                                            <label for="id_highinvest" class="form-label fw-bold">
+                                                Masukkan jumlah yang ingin Anda invetastikan
+                                            </label>
+                                            <input type="number" name="highinvest" id="id_highinvest"
+                                                   class="form-control" min="0" step="1">
+                                        </div>
                                     </div>
                                     <div class="card-footer text-center">
                                         <button type="button" class="btn btn-success" id="spinner">
                                             <i class="fa-solid fa-circle-dollar-to-slot"></i>
                                             <span>Putar</span>
                                         </button>
-                                        <button type="button" class="btn btn-success" id="resetter">
-                                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
-                                            <span>Putar</span>
+                                        <button type="button" class="btn btn-danger" id="resetter" disabled>
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                            <span>Reset</span>
                                         </button>
                                     </div>
                                 </div>
@@ -717,10 +738,12 @@
                             </div>
                         </div>
                     </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
+                            Kembali ke Menu Investasi
+                        </button>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
-                    Kembali ke Menu Investasi
-                </button>
             </div>
         </div>
         <div class="tab-pane fade p-2" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
@@ -1692,16 +1715,24 @@
         (function () {
   const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
   const doors = document.querySelectorAll('.door');
+  const spinBtn = document.querySelector('#spinner');
+  const resetBtn = document.querySelector('#resetter');
+  const inputUang = document.querySelector('#id_highinvest');
+
   let spinCount = 0;
 
-  document.querySelector('#spinner').addEventListener('click', spin);
-  document.querySelector('#resetter').addEventListener('click', resetSlot);
+  spinBtn.addEventListener('click', spin);
+  resetBtn.addEventListener('click', resetSlot);
 
-  // Fungsi reset awal (❓❓❓)
+  function setButtonState(spinEnabled, resetEnabled) {
+    spinBtn.disabled = !spinEnabled;
+    resetBtn.disabled = !resetEnabled;
+  }
+
   function resetSlot() {
     for (const door of doors) {
       const boxes = door.querySelector('.boxes');
-      boxes.innerHTML = ''; // Kosongkan isi lama
+      boxes.innerHTML = '';
 
       for (let i = 0; i < 3; i++) {
         const box = document.createElement('div');
@@ -1713,111 +1744,130 @@
       boxes.style.transition = 'none';
       boxes.style.transform = 'translateY(0)';
     }
+
+    inputUang.value = '';
+    setButtonState(true, false);
   }
 
-  // Fungsi untuk isi box ketika spin
   function init(groups = 3, duration = 1) {
-    for (const door of doors) {
-      const boxes = door.querySelector('.boxes');
-      const boxesClone = boxes.cloneNode(false);
-
-      const pool = [];
-      for (let i = 0; i < groups; i++) {
-        pool.push(...shuffle(items));
-      }
-
       const visibleCount = 3;
-      let isWinningRound = false;
+      const spinAnimationLength = 10;
+      const isWinningRound = Math.random() < 0.7;
+      const winningFruit = items[Math.floor(Math.random() * items.length)];
+      const winningStartIndex = Math.floor(Math.random() * (doors.length - 2));
 
-      // Setup: Menang setiap 4x spin
-      if ((spinCount + 1) % 4 === 0) {
-        isWinningRound = true;
-      }
+      // Simpan hasil tengah untuk digunakan nanti
+      finalMiddleSymbols = [];
 
-      let middleSymbols = [];
+      for (let d = 0; d < doors.length; d++) {
+        const door = doors[d];
+        const boxes = door.querySelector('.boxes');
+        const boxesClone = boxes.cloneNode(false);
 
-      if (isWinningRound) {
-        const luckyFruit = items[Math.floor(Math.random() * items.length)];
-        middleSymbols = Array(visibleCount).fill(luckyFruit); // 3 simbol sama
-      } else {
-        while (middleSymbols.length < visibleCount) {
-          const fruit = items[Math.floor(Math.random() * items.length)];
-          if (!middleSymbols.includes(fruit)) {
-            middleSymbols.push(fruit);
-          }
+        const pool = [];
+
+        // Animasi awal acak
+        for (let i = 0; i < spinAnimationLength; i++) {
+          pool.push(items[Math.floor(Math.random() * items.length)]);
         }
+
+        // Tentukan finalSymbol
+        let finalSymbol;
+        if (isWinningRound && d >= winningStartIndex && d <= winningStartIndex + 2) {
+          finalSymbol = winningFruit;
+        } else {
+          do {
+            finalSymbol = items[Math.floor(Math.random() * items.length)];
+          } while (isWinningRound && finalSymbol === winningFruit);
+        }
+
+        finalMiddleSymbols.push(finalSymbol); // simpan untuk pengecekan nanti
+
+        // Simbol akhir
+        pool.push(items[Math.floor(Math.random() * items.length)]); // atas
+        pool.push(finalSymbol);                                     // tengah
+        pool.push(items[Math.floor(Math.random() * items.length)]); // bawah
+
+        // Masukkan ke DOM
+        for (let i = 0; i < pool.length; i++) {
+          const box = document.createElement('div');
+          box.classList.add('box');
+          box.textContent = pool[i];
+          boxesClone.appendChild(box);
+        }
+
+        const scrollTo = 110 * (pool.length - visibleCount); // scroll agar finalSymbol di tengah
+        boxesClone.style.transition = `transform ${duration}s ease-in-out`;
+        boxesClone.style.transform = `translateY(-${scrollTo}px)`;
+        door.replaceChild(boxesClone, boxes);
       }
-
-      pool.push(...middleSymbols);
-
-      for (let i = 0; i < pool.length; i++) {
-        const box = document.createElement('div');
-        box.classList.add('box');
-        box.textContent = pool[i];
-        boxesClone.appendChild(box);
-      }
-
-      boxesClone.style.transition = `transform ${duration}s ease-in-out`;
-      boxesClone.style.transform = `translateY(-${110 * (pool.length - 3)}px)`;
-      door.replaceChild(boxesClone, boxes);
     }
+
+
+
+  function spin() {
+  const inputUang = document.querySelector('#id_highinvest');
+  const uangDialokasikan = parseInt(inputUang.value);
+
+  if (!uangDialokasikan || uangDialokasikan <= 0) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Oopps!',
+      text: 'Anda harus mengalokasikan uang sebelum memulai investasi.',
+      confirmButtonText: 'OK'
+    });
+    return;
   }
 
-  // Fungsi spin
-  function spin() {
-    const groups = 3;
-    const duration = 2.5;
-    spinCount++;
+  const groups = 3;
+  const duration = 2.5;
+  setButtonState(false, false);
+  init(groups, duration);
 
-    init(groups, duration);
+  // animasi putar
+  doors.forEach((door) => void door.querySelector('.boxes').offsetHeight);
+  doors.forEach((door, i) => {
+    const boxes = door.querySelector('.boxes');
+    const delay = i * 300;
+    setTimeout(() => {
+      boxes.style.transform = 'translateY(0)';
+    }, delay);
+  });
 
-    doors.forEach((door) => void door.querySelector('.boxes').offsetHeight);
+  const totalDelay = duration * 1000 + doors.length * 300 + 500;
+  setTimeout(() => {
+    let menang = false;
 
-    doors.forEach((door, i) => {
-      const boxes = door.querySelector('.boxes');
-      const delay = i * 300;
+    for (let i = 0; i <= finalMiddleSymbols.length - 3; i++) {
+      const a = finalMiddleSymbols[i];
+      const b = finalMiddleSymbols[i + 1];
+      const c = finalMiddleSymbols[i + 2];
+      if (a === b && b === c) {
+        menang = true;
+        break;
+      }
+    }
 
-      setTimeout(() => {
-        boxes.style.transform = 'translateY(0)';
-      }, delay);
+    const multiplier = menang ? 2 : 0;
+    const hasil = uangDialokasikan * multiplier;
+
+    Swal.fire({
+      icon: menang ? "success" : "error",
+      title: menang ? "MENANG" : "KALAH",
+      html: `
+        <p>Baris Tengah: ${finalMiddleSymbols.join(" ")}</p>
+        <p>Multiplier: ${multiplier}x</p>
+        <hr>
+        <p><strong>Alokasi: Rp${uangDialokasikan.toLocaleString('id-ID')}</strong></p>
+        <p><strong>Hasil: Rp${hasil.toLocaleString('id-ID')}</strong></p>
+      `,
+      confirmButtonText: "OK"
     });
 
-    const totalDelay = duration * 1000 + doors.length * 300 + 500;
+    setButtonState(false, true);
+  }, totalDelay);
+}
 
-    setTimeout(() => {
-      const hasilTengah = [];
-
-      doors.forEach((door) => {
-        const boxes = door.querySelectorAll('.box');
-        if (boxes.length >= 3) {
-          hasilTengah.push(boxes[1].textContent); // Ambil baris tengah
-        }
-      });
-
-      let menang = false;
-      for (let i = 0; i <= hasilTengah.length - 3; i++) {
-        if (
-          hasilTengah[i] === hasilTengah[i + 1] &&
-          hasilTengah[i] === hasilTengah[i + 2]
-        ) {
-          menang = true;
-          break;
-        }
-      }
-
-      const status = menang ? "MENANG" : "KALAH";
-      const multiplier = menang ? 2 : 0;
-
-      Swal.fire({
-        icon: menang ? "success" : "error",
-        title: status,
-        text: `Baris Tengah: ${hasilTengah.join(" ")}\nMultiplier: ${multiplier}x`,
-        confirmButtonText: "OK"
-      });
-
-      // liveSend({ jenis: 'hasil_slot', hasil: status, multiplier: multiplier });
-    }, totalDelay);
-  }
 
   function shuffle(arr) {
     let m = arr.length;
@@ -1828,9 +1878,12 @@
     return arr;
   }
 
-  // Tampilkan tanda tanya di awal
   resetSlot();
 })();
+
+
+
+
 
 
 
