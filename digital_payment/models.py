@@ -127,6 +127,14 @@ class Player(BasePlayer):
     history_highinvest = models.LongStringField(blank=True, initial='[]')
     history_tukar_uang = models.LongStringField(blank=True, initial='[]')
 
+    # Total masing-masing platform
+    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
+    total_belanja_digital = models.CurrencyField(blank=True, initial=None)
+    total_untung_lowinvest = models.CurrencyField(blank=True, initial=None)
+    total_rugi_lowinvest = models.CurrencyField(blank=True, initial=None)
+    total_untung_highinvest = models.CurrencyField(blank=True, initial=None)
+    total_rugi_highinvest = models.CurrencyField(blank=True, initial=None)
+
     # Investasi Risiko Rendah
     lowinvest = models.CurrencyField(blank=True, initial=None)
     hasil_akhir_lowinvest = models.CurrencyField(blank=True, initial=None)
@@ -136,14 +144,6 @@ class Player(BasePlayer):
     highinvest = models.CurrencyField(blank=True, initial=None)
     hasil_akhir_highinvest = models.CurrencyField(blank=True, initial=None)
     untungrugi_highinvest = models.StringField(blank=True)  # UNTUNG atau RUGI
-
-    # Total masing-masing platform
-    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
-    total_belanja_digital = models.CurrencyField(blank=True, initial=None)
-    total_untung_lowinvest = models.CurrencyField(blank=True, initial=None)
-    total_rugi_lowinvest = models.CurrencyField(blank=True, initial=None)
-    total_untung_highinvest = models.CurrencyField(blank=True, initial=None)
-    total_rugi_highinvest = models.CurrencyField(blank=True, initial=None)
 
     selected_products_produk_riil = models.LongStringField(blank=True)
     selected_products_produk_digital = models.LongStringField(blank=True)
@@ -191,7 +191,7 @@ class Player(BasePlayer):
                 return {player.id_in_group: dict(status="error", message="Jumlah tidak valid")}
 
             peluang = random.random()
-            if peluang <= 0.75:
+            if peluang <= 0.50:
                 hasil = round(jumlah * 1.25)
                 status = 'untung'
             else:
@@ -221,11 +221,11 @@ class Player(BasePlayer):
 
             # Slot win chance 25%
             peluang = random.random()
-            if peluang <= 0.25:
-                hasil = round(jumlah * 1.5)
+            if peluang <= 0.80:
+                hasil = round(jumlah * 2)
                 status = 'untung'
             else:
-                hasil = round(jumlah * 0.5)
+                hasil = round(jumlah * 0)
                 status = 'rugi'
 
             history = json.loads(player.history_highinvest or "[]")
@@ -237,7 +237,14 @@ class Player(BasePlayer):
             })
 
             player.history_highinvest = json.dumps(history)
-            return {player.id_in_group: dict(status=status, hasil=hasil)}
+            return {
+                player.id_in_group: dict(
+                    status=status,
+                    hasil=hasil,
+                    jumlah=jumlah,
+                    round_number=player.round_number
+                )
+            }
 
         elif jenis == "minta_rekap":
             return {
@@ -254,6 +261,7 @@ class Player(BasePlayer):
                     "history_riil": player.history_riil,
                     "history_digital": player.history_digital,
                     "history_lowinvest": player.history_lowinvest,
+                    "history_highinvest": player.history_highinvest,
                     "history_tukar_uang": player.history_tukar_uang
                 }
             }

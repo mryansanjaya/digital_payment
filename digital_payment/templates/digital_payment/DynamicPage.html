@@ -132,6 +132,14 @@
                                 <div id="rekapInvestasiRendah"></div>
                             </div>
                         </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Investasi Risiko Tinggi</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapInvestasiTinggi"></div>
+                            </div>
+                        </div>
                         <div class="card shadow">
                             <div class="card-header">
                                 <h5 class="m-0">Rekap History - Penukaran Uang</h5>
@@ -157,8 +165,8 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
-          <!-- MENU UTAMA & HISTORY RONDE -->
+        <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel">
+            <!-- MENU UTAMA & HISTORY RONDE -->
             <div id="menu_utama">
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between align-items-center">
@@ -339,6 +347,79 @@
                 </div>
             </div>
 
+            <!-- PLATFORM INVESTASI (RENDAH & TINGGI) -->
+            <div id="all_investasi" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                <h3 class="m-0">Platform Investasi</h3>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-2">
+                            <div class="col">
+                                <div class="card">
+                                    <img src="{{ static 'img/low_invest.png'}}" class="card-img-top" alt="image">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3>Investasi Risiko Rendah</h3>
+                                        </div>
+                                        <div class="card-text">
+                                            <p class="m-0">
+                                                <strong>"Investasi Tenang, Hasil Aman"</strong>, Nggak perlu pusing
+                                                mikirin rugi besar! Pilih Investasi Risiko Rendah, cocok buat kamu yang
+                                                pengin cuan tapi tetap main aman.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success"
+                                                onclick="showForm('investasi_rendah')">
+                                            Pilih Investasi Risiko Rendah
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <img src="{{ static 'img/high_invest.png'}}" class="card-img-top" alt="image">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3>Investasi Risiko Tinggi</h3>
+                                        </div>
+                                        <div class="card-text">
+                                            <p class="m-0">
+                                                <strong>"Mau Untung Besar? Siap Hadapi Tantangannya!"</strong>,
+                                                Investasi Risiko Tinggi cocok buat kamu yang visioner dan siap
+                                                menghadapi dinamika pasar demi hasil yang luar biasa.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="showForm('investasi_tinggi')">
+                                            Pilih Investasi Risiko Tinggi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                            Kembali ke Menu Utama
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <!-- PASAR RIIL -->
             <div id="pasar_riil" style="display: none;">
                 <div class="card">
@@ -495,72 +576,7 @@
                 </div>
             </div>
 
-
-            <!-- PLATFORM INVESTASI (RENDAH & TINGGI) -->
-            <div id="all_investasi" style="display: none;">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="col-6">
-                                <h3 class="m-0">Platform Investasi</h3>
-                            </div>
-                            <div class="col-6">
-                                <span class="badge fs-5 float-end bg-secondary bg-gradient">
-                                    Ronde: {{ player.round_number }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row row-cols-1 row-cols-md-2 g-2">
-                            <div class="col">
-                                <div class="card">
-                                    <img src="{{ static 'img/low_invest.png'}}" class="card-img-top" alt="image">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            <h3>Investasi Risiko Rendah</h3>
-                                        </div>
-                                        <div class="card-text">
-                                            <p class="m-0">
-                                                "Investasi Tenang, Hasil Aman", Nggak perlu pusing mikirin rugi besar!
-                                                Pilih investasi risiko rendah, cocok buat kamu yang pengin cuan tapi
-                                                tetap main aman.
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="card-footer">
-                                        <button type="button" class="btn btn-success"
-                                                onclick="showForm('investasi_rendah')">
-                                            Pilih Investasi Risiko Rendah
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div class="card">
-                                    <img src="..." class="card-img-top" alt="...">
-                                    <div class="card-body">
-                                        <h3 class="card-title">
-                                        Investasi Risiko Tinggi
-                                        </h3>
-                                        <!--                        <p class="card-text"></p>-->
-                                        <button type="button" class="btn btn-danger" onclick="showForm('investasi_tinggi')">
-                                            Pilih Investasi Risiko Tinggi
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
-                            Kembali ke Menu Utama
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- PLATFORM INVESTASI RISIKO RENDAH -->
+            <!-- INVESTASI RISIKO RENDAH -->
             <div id="investasi_rendah" style="display: none;">
                 <div class="card">
                     <div class="card-header">
@@ -641,7 +657,7 @@
                 </div>
             </div>
 
-            <!-- PLATFORM INVESTASI RISIKO RENDAH -->
+            <!-- INVESTASI RISIKO RENDAH -->
             <div id="investasi_tinggi" style="display: none;">
                 <div class="card">
                     <div class="card-header">
@@ -746,7 +762,7 @@
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade p-2" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">
+        <div class="tab-pane fade p-2" id="contact-tab-pane" role="tabpanel">
             <!-- MODAL: History Pertukaran Uang -->
             <div class="modal fade" id="modalHistoryTukarUang" tabindex="-1" aria-labelledby="modalHistoryTukarUangLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -813,7 +829,7 @@
                                     </div>
                                 </div>
                             </button>
-                            <button type="button" class="btn btn-success p-0 mx-1">
+                            <button type="button" class="btn btn-success p-0 mx-1" onclick="showForm('digital_tunai')">
                                 <div class="card text-center bg-transparent border-0">
                                     <div class="card-body">
                                         <div class="d-flex flex-row justify-content-center align-items-center mb-3">
@@ -851,25 +867,137 @@
             </div>
             <div id="tunai_digital" style="display: none">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h4 class="m-0">Pertukaran Uang</h4>
-                    </div>
-                    <div class="card-body">
-                        <p>Masukkan jumlah uang yang ingin Anda tukar:</p>
+                    <div class="card-header">
                         <div class="row">
-                            <div class="col-md-6">
-                                <input type="number" id="jumlahTukarUang" class="form-control" placeholder="Masukkan jumlah" min="1">
+                            <div class="col-6">
+                                <h6 class="m-0">
+                                    Pertukaran Uang - Dompet Tunai ke Dompet Digital
+                                </h6>
                             </div>
-                            <div class="col-md-6">
-                                <button type="button" class="btn btn-primary me-2" onclick="tukarUang('tunai_ke_digital')">Tukar ke Digital</button>
-                                <button type="button" class="btn btn-secondary" onclick="tukarUang('digital_ke_tunai')">Tukar ke Tunai</button>
+                            <div class="col-6">
+                                <span class="badge float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
+                                </span>
                             </div>
                         </div>
                     </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-2">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">Tukarkan Uang Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <label class="form-label">
+                                            Masukkan jumlah uang yang ingin Anda tukar:
+                                        </label>
+                                        <input type="number" id="jumlahTukarUang" class="form-control"
+                                               placeholder="Masukkan jumlah" min="1">
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="tukarUang('tunai_ke_digital')">
+                                            Proses Pertukaran Uang Anda
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">History Penukaran Uang Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>Waktu</th>
+                                                <th>Jenis Penukaran</th>
+                                                <th>Jumlah</th>
+                                                <th>Biaya Admin</th>
+                                            </thead>
+                                            <tbody id="history_penukaran_all">
+                                                <!-- history tampil disini-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success" onclick="showForm('pertukaran_uang')">
+                            Kembali ke Menu Pertukaran Uang
+                        </button>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-success p-0 mx-1" onclick="showForm('pertukaran_uang')">
-                    Kembali ke Menu Pertukaran Uang
-                </button>
+            </div>
+            <div id="digital_tunai" style="display: none">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-6">
+                                <h6 class="m-0">
+                                    Pertukaran Uang - Dompet Digital ke Dompet Tunai
+                                </h6>
+                            </div>
+                            <div class="col-6">
+                                <span class="badge float-end bg-secondary bg-gradient">
+                                    Ronde: {{ player.round_number }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-2">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">Tukarkan Uang Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <label class="form-label">
+                                            Masukkan jumlah uang yang ingin Anda tukar:
+                                        </label>
+                                        <input type="number" id="jumlahTukarUang" class="form-control"
+                                               placeholder="Masukkan jumlah" min="1">
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-primary"
+                                                onclick="tukarUang('digital_ke_tunai')">
+                                            Proses Pertukaran Uang Anda
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">History Penukaran Uang Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>Waktu</th>
+                                                <th>Jenis Penukaran</th>
+                                                <th>Jumlah</th>
+                                                <th>Biaya Admin</th>
+                                            </thead>
+                                            <tbody id="history_penukaran_all">
+                                                <!-- history tampil disini-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success" onclick="showForm('pertukaran_uang')">
+                            Kembali ke Menu Pertukaran Uang
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1002,6 +1130,15 @@
                 liveRecv = (data) => {
                     if (data.history_lowinvest) {
                         tampilkanHistoryInvestasiRendah(data.history_lowinvest);
+                    }
+                };
+            }
+
+            if (formIdToShow === 'investasi_tinggi') {
+                liveSend({ jenis: "minta_rekap" });
+                liveRecv = (data) => {
+                    if (data.history_highinvest) {
+                        tampilkanHistoryInvestasiTinggi(data.history_highinvest);
                     }
                 };
             }
@@ -1711,6 +1848,54 @@
             });
         }
         // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
+        function tampilkanHistoryInvestasiTinggi(historyJson) {
+            const tbody = document.querySelector("#investasi_tinggi_history");
+            tbody.innerHTML = "";
+
+            const history = JSON.parse(historyJson);
+            if (history.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
+                return;
+            }
+
+            history.forEach((item, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${index + 1}</td>
+                    <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
+                    <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
+                    <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+
+
+        function backendInvestasitinggi() {
+            liveRecv = function (data) {
+              if (data.status === "error") {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal',
+                  text: data.message
+                }).then(() => {
+                    showForm('all_investasi');
+                });
+              }
+
+              const tableBody = document.querySelector('#investasi_tinggi_history');
+              const row = document.createElement('tr');
+              row.innerHTML = `
+                <td>${data.round_number}</td>
+                <td>Rp${parseInt(data.jumlah).toLocaleString('id-ID')}</td>
+                <td>Rp${parseInt(data.hasil).toLocaleString('id-ID')}</td>
+                <td>${data.status}</td>
+                {# <td>${data.untung_rugi >= 0 ? '+' : ''}Rp${parseInt(data.untung_rugi).toLocaleString('id-ID')}</td>#}
+              `;
+              tableBody.prepend(row); // tampilkan yang terbaru di atas
+            };
+        }
 
         (function () {
   const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
@@ -1862,6 +2047,14 @@
         <p><strong>Hasil: Rp${hasil.toLocaleString('id-ID')}</strong></p>
       `,
       confirmButtonText: "OK"
+    }).then(() => {
+        backendInvestasitinggi();
+
+        // Kirim hasil ke server oTree
+        liveSend({
+          jenis: 'investasi_tinggi',
+          jumlah: uangDialokasikan
+        });
     });
 
     setButtonState(false, true);
@@ -2030,6 +2223,75 @@
                     </table>
                     <div class="alert p-0" role="alert">
                         <h5 class="alert-heading m-0">Total Investasi Risiko Rendah</h5>
+                        <hr>
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Total Jumlah Investasi</th>
+                                <th>Total Hasil Investasi</th>
+                                <th>Total Keuntungan Investasi</th>
+                                <th>Total Kerugian Investasi</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
+                                    <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
+                                    <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
+                                    <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+
+            // === Investasi Risiko tinggi ===
+            const rekapInvestasiTinggi = document.getElementById('rekapInvestasiTinggi');
+            const historyInvestTinggi = JSON.parse(data.history_highinvest || '[]');
+
+            if (historyInvestTinggi.length === 0) {
+                rekapInvestasiTinggi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
+            } else {
+                let totalJumlah = 0, totalHasil = 0;
+                let totalUntung = 0, totalRugi = 0;
+
+                const rows = historyInvestTinggi.map((entry, i) => {
+                    totalJumlah += entry.jumlah;
+                    totalHasil += entry.hasil;
+
+                    if (entry.status === 'untung') {
+                        totalUntung += entry.hasil - entry.jumlah;
+                    } else if (entry.status === 'rugi') {
+                        totalRugi += entry.jumlah - entry.hasil;
+                    }
+
+                    return `
+                        <tr>
+                            <td>Investasi ke ${i + 1}</td>
+                            <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
+                            <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
+                            <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                ${entry.status.toUpperCase()}
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+
+                rekapInvestasiTinggi.innerHTML = `
+                    <table class="table table-sm table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>List Investasi</th>
+                                <th>Jumlah Investasi</th>
+                                <th>Hasil</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                    <div class="alert p-0" role="alert">
+                        <h5 class="alert-heading m-0">Total Investasi Risiko Tinggi</h5>
                         <hr>
                         <table class="table table-bordered">
                             <thead>
