@@ -199,8 +199,8 @@
                                         </thead>
                                         <tbody class="fs-5">
                                             <tr>
-                                                <td>Rp. {{ player.saldo_tunai }}</td>
-                                                <td>Rp. {{ player.saldo_digital }}</td>
+                                                <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                                <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -454,7 +454,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ player.saldo_tunai }}</td>
+                                    <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
                                     <!-- Total Belanja -->
                                     <td id="totalHargaRiil">Rp. 0</td>
                                 </tr>
@@ -526,7 +526,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>{{ player.saldo_digital }}</td>
+                                    <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
                                     <!-- Total Belanja -->
                                     <td id="totalHargaDigital">Rp. 0</td>
                                 </tr>
@@ -610,7 +610,9 @@
                                                     </thead>
                                                     <tbody class="fs-5">
                                                         <tr>
-                                                            <td>{{ player.saldo_digital }}</td>
+                                                            <td class="saldo_digital_display">
+                                                                {{ formatted_saldo_digital }}
+                                                            </td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -1010,6 +1012,25 @@
                     showForm('pertukaran_uang');
                 });
             });
+
+            // formatRupiah helper
+            function formatRupiah(number) {
+              return 'Rp. ' + Number(number).toLocaleString('id-ID');
+            }
+
+            function UpdateSaldoAll(data){
+                if (data.saldo_tunai !== undefined) {
+                    document.querySelectorAll('.saldo_tunai_display').forEach(el => {
+                       el.innerText = `Rp. ${data.saldo_tunai.toLocaleString('id-ID')}`;
+                    });
+                }
+                if (data.saldo_digital !== undefined) {
+                    document.querySelectorAll('.saldo_digital_display').forEach(el => {
+                        el.innerText = `Rp. ${data.saldo_digital.toLocaleString('id-ID')}`;
+                    });
+                }
+            }
+
             function showForm(formIdToShow) {
             // Hanya elemen-elemen ini yang akan disembunyikan, bukan tab-pane/tab utama
             const forms = [
@@ -1414,6 +1435,7 @@
             function backendRiil() {
                 liveRecv = function (data) {
                     if (data.status === 'success') {
+                        UpdateSaldoAll(data);
                         Swal.fire({
                             icon: 'success',
                             title: 'Pembelian Berhasil',
@@ -1692,6 +1714,7 @@
             function backendDigital() {
                 liveRecv = function (data) {
                     if (data.status === 'success') {
+                        UpdateSaldoAll(data);
                         Swal.fire({
                             icon: 'success',
                             title: 'Pembelian Berhasil',
@@ -1780,6 +1803,7 @@
                 const hasil = data.hasil;
 
                 if (data.status === 'untung') {
+                    UpdateSaldoAll(data);
                     Swal.fire({
                         icon: 'success',
                         title: 'Investasi Anda Menguntungkan',
@@ -1790,8 +1814,10 @@
                         document.getElementById('id_lowinvest').value = '';
                         showForm('investasi_rendah');
                     });
+                }
 
-                } else if (data.status === 'rugi') {
+                else if (data.status === 'rugi') {
+                    UpdateSaldoAll(data);
                     Swal.fire({
                         icon: 'error',
                         title: 'Investasi Anda Merugi',

@@ -5,18 +5,36 @@ import json
 
 
 class InfoPage(Page):
-    pass
+    def vars_for_template(self):
+        self.player.set_saldo_awal()
+        return dict(
+            formatted_saldo_tunai="Rp. {:,}".format(self.player.saldo_tunai).replace(",", "."),
+            formatted_saldo_digital="Rp. {:,}".format(self.player.saldo_digital).replace(",", "."),
+            formatted_uang_kehadiran="Rp. {:,}".format(self.player.uang_kehadiran).replace(",", "."),
+            formatted_bantuan="Rp. {:,}".format(self.player.bantuan).replace(",", "."),
+            formatted_konsumsi_dasar="Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", ".")
+        )
+
+    def before_next_page(self):
+        self.player.final_saldo_awal()
 
 
 class DynamicPage(Page):
     live_method = 'live_handle'
 
-    def vars_for_template(player: Player):
+    def vars_for_template(self):
         produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 38)
         produk_digital_list = random.sample(C.PRODUK_DIGITAL, 38)
+        player = self.player
+
         return {
             'produk_riil_list': produk_riil_list,
             'produk_digital_list': produk_digital_list,
+            'formatted_saldo_tunai': "Rp. {:,}".format(player.saldo_tunai).replace(",", "."),
+            'formatted_saldo_digital': "Rp. {:,}".format(player.saldo_digital).replace(",", "."),
+            'formatted_uang_kehadiran': "Rp. {:,}".format(player.uang_kehadiran).replace(",", "."),
+            'formatted_bantuan': "Rp. {:,}".format(player.bantuan).replace(",", "."),
+            'formatted_konsumsi_dasar': "Rp. {:,}".format(player.konsumsi_dasar).replace(",", "."),
         }
 
 

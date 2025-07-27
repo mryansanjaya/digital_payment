@@ -112,13 +112,13 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    saldo_tunai = models.IntegerField(initial=100000)
-    saldo_digital = models.IntegerField(initial=100000)
-    bantuan = models.IntegerField(initial=100000)
-    konsumsi_dasar = models.IntegerField(initial=100000)
-    denda = models.IntegerField(initial=100000)
-    sisa_dompet_tunai = models.IntegerField(initial=100000)
-    sisa_dompet_digital = models.IntegerField(initial=100000)
+    saldo_tunai = models.IntegerField(initial=0)
+    saldo_digital = models.IntegerField(initial=0)
+    bantuan = models.IntegerField(initial=50000)
+    konsumsi_dasar = models.IntegerField(initial=50000)
+    uang_kehadiran = models.IntegerField(initial=100000)
+    sisa_dompet_tunai = models.IntegerField(initial=0)
+    sisa_dompet_digital = models.IntegerField(initial=0)
 
     # History Aktivitas Beli & Investasi
     history_riil = models.LongStringField(blank=True, initial='[]')
@@ -136,8 +136,8 @@ class Player(BasePlayer):
     total_rugi_highinvest = models.CurrencyField(blank=True, initial=None)
 
     # Investasi Risiko Rendah
-    lowinvest = models.CurrencyField(blank=True, initial=None)
-    hasil_akhir_lowinvest = models.CurrencyField(blank=True, initial=None)
+    lowinvest = models.IntegerField(blank=True, initial=None)
+    hasil_akhir_lowinvest = models.IntegerField(blank=True, initial=None)
     untungrugi_lowinvest = models.StringField(blank=True)  # UNTUNG atau RUGI
 
     # Investasi Risiko Rendah
@@ -148,6 +148,14 @@ class Player(BasePlayer):
     selected_products_produk_riil = models.LongStringField(blank=True)
     selected_products_produk_digital = models.LongStringField(blank=True)
 
+    def set_saldo_awal(self):
+        self.saldo_tunai = random.randint(0, 100000)
+        self.saldo_digital = random.randint(0, 100000)
+
+    def final_saldo_awal(self):
+        self.saldo_tunai = self.saldo_tunai + self.bantuan
+        self.saldo_digital = self.saldo_digital + self.bantuan
+
     def live_handle(player, data):
         jenis = data.get("jenis")
 
@@ -155,8 +163,10 @@ class Player(BasePlayer):
             produk_riil = data.get("produk_terpilih", [])
             total = data.get("total_belanja", 0)
 
-            if total > 100000:
+            if total > player.saldo_tunai:
                 return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
+
+            player.saldo_tunai -= total
 
             history = json.loads(player.history_riil or "[]")
             history.append({
@@ -166,13 +176,22 @@ class Player(BasePlayer):
             })
             player.history_riil = json.dumps(history)
 
-            return {player.id_in_group: dict(status="success", message="Belanja pasar riil berhasil disimpan.")}
+            return {
+                player.id_in_group: dict(
+                    status="success",
+                    message="Belanja pasar riil berhasil disimpan.",
+                    saldo_tunai=player.saldo_tunai,
+                )
+            }
 
         elif jenis == "belanja_digital":
             produk_digital = data.get("produk_terpilih", [])
             total = data.get("total_belanja", 0)
-            if total > 100000:
+
+            if total > player.saldo_digital:
                 return {player.id_in_group: dict(status="error", message="Total belanja melebihi saldo.")}
+
+            player.saldo_digital -= total
 
             history = json.loads(player.history_digital or "[]")
             history.append({
@@ -182,36 +201,52 @@ class Player(BasePlayer):
             })
 
             player.history_digital = json.dumps(history)
-            return {player.id_in_group: dict(status="success", message="Belanja pasar digital berhasil disimpan.")}
+            return {
+                player.id_in_group: dict(
+                    status="success",
+                    message="Belanja pasar digital berhasil disimpan.",
+                    saldo_digital=player.saldo_digital,
+                )
+            }
 
         elif jenis == "investasi_rendah":
             jumlah = float(data.get("jumlah", 0))
 
             if jumlah <= 0:
-                return {player.id_in_group: dict(status="error", message="Jumlah tidak valid")}
+                return {player.id_in_group: dict(status="error", message="Jumlah tidak valid.")}
+
+            if jumlah > player.saldo_digital:
+                return {player.id_in_group: dict(status="error", message="Saldo digital tidak cukup.")}
 
             peluang = random.random()
             if peluang <= 0.50:
-                hasil = round(jumlah * 1.25)
+                hasil = int(round(jumlah * 1.25))
                 status = 'untung'
             else:
-                hasil = round(jumlah * 0.75)
+                hasil = int(round(jumlah * 0.75))
                 status = 'rugi'
 
             history = json.loads(player.history_lowinvest or "[]")
             history.append({
-                "jumlah": jumlah,
+                "jumlah": int(jumlah),
                 "hasil": hasil,
                 "status": status,
                 "round_number": player.round_number
             })
             player.history_lowinvest = json.dumps(history)
 
+            # Update saldo digital
+            if status == 'untung':
+                player.saldo_digital += hasil
+            else:
+                player.saldo_digital -= int(jumlah)
+
             return {
-                player.id_in_group: {
-                    "status": status,
-                    "hasil": hasil
-                }
+                player.id_in_group: dict(
+                    status=status,
+                    hasil=hasil,
+                    saldo_digital=player.saldo_digital
+                )
             }
 
         elif jenis == "investasi_tinggi":

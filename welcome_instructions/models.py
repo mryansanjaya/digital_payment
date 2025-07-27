@@ -40,3 +40,16 @@ class Player(BasePlayer):
     )
     jumlah_anak = models.IntegerField()
     anak_sekolah = models.IntegerField()
+    jenis_rekening = models.StringField(
+        choices=[
+            ['bca', 'BCA'],
+            ['bni', 'BNI'],
+            ['bri', 'BRI'],
+            ['mandiri', 'Mandiri'],
+            ['dana', 'DANA'],
+            ['ovo', 'OVO'],
+            ['gopay', 'GoPay']
+        ],
+    )
+    no_rekening = models.StringField()
+

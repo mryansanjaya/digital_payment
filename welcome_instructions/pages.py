@@ -7,7 +7,8 @@ class Welcome_Experiment(Page):
 
 class Instruction_Page(Page):
     form_model = 'player'
-    form_fields = ['usia', 'jenis_kelamin', 'aktivitas_utama', 'status_perkawinan', 'jumlah_anak', 'anak_sekolah']
+    form_fields = ['usia', 'jenis_kelamin', 'aktivitas_utama', 'status_perkawinan', 'jumlah_anak', 'anak_sekolah',
+                   'jenis_rekening', 'no_rekening']
 
 
 page_sequence = [Welcome_Experiment, Instruction_Page]
