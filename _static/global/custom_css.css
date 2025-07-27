@@ -1,0 +1,66 @@
+/* CUSTOM CSS FOR OTREE */
+html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.page-header {
+    margin: 0;
+    padding: 0;
+}
+.otree-body {
+    padding: 0;
+}
+
+
+/* RESPONSIVE SETUP */
+@media only screen and (min-width: 320px) and (max-width: 480px) {
+    .ugm-logo-size {
+        width: 40%;
+    }
+
+    .bi-logo-size {
+        width: 80%;
+    }
+}
+
+@media only screen and (min-width: 481px) and (max-width: 800px) {
+    .ugm-logo-size {
+        width: 25%;
+    }
+
+    .bi-logo-size {
+        width: 40%;
+    }
+}
+
+@media only screen and (min-width: 801px) and (max-width: 1024px) {
+    .ugm-logo-size {
+        width: 20%;
+    }
+
+    .bi-logo-size {
+        width: 35%;
+    }
+}
+
+@media only screen and (min-width: 1025px) and (max-width: 1280px) {
+    .ugm-logo-size {
+        width: 20%;
+    }
+
+    .bi-logo-size {
+        width: 35%;
+    }
+}
+
+@media only screen and (min-width: 1366px) {
+    .ugm-logo-size {
+        width: 20%;
+    }
+
+    .bi-logo-size {
+        width: 35%;
+    }
+}

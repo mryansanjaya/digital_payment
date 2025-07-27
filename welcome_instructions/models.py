@@ -20,4 +20,23 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    pass
+    usia = models.IntegerField()
+    jenis_kelamin = models.IntegerField(
+        choices=[
+            [1, 'Laki-Laki'],
+            [2, 'Perempuan']
+        ],
+        widget=widgets.RadioSelect
+    )
+    aktivitas_utama = models.StringField()
+    status_perkawinan = models.IntegerField(
+        choices=[
+            [1, 'Kawin'],
+            [2, 'Belum Kawin'],
+            [3, 'Cerai Mati'],
+            [4, 'Cerai Hidup']
+        ],
+        widget=widgets.RadioSelect
+    )
+    jumlah_anak = models.IntegerField()
+    anak_sekolah = models.IntegerField()
