@@ -257,27 +257,34 @@ class Player(BasePlayer):
             # Slot win chance 25%
             peluang = random.random()
             if peluang <= 0.80:
-                hasil = round(jumlah * 2)
+                hasil = int(round(jumlah * 2))
                 status = 'untung'
             else:
-                hasil = round(jumlah * 0)
+                hasil = int(round(jumlah * 0))
                 status = 'rugi'
 
             history = json.loads(player.history_highinvest or "[]")
             history.append({
-                "jumlah": jumlah,
+                "jumlah": int(jumlah),
                 "hasil": hasil,
                 "status": status,
                 "round_number": player.round_number
             })
 
             player.history_highinvest = json.dumps(history)
+
+            # Update saldo digital
+            if status == 'untung':
+                player.saldo_digital += hasil
+            else:
+                player.saldo_digital -= int(jumlah)
+
             return {
                 player.id_in_group: dict(
                     status=status,
                     hasil=hasil,
                     jumlah=jumlah,
-                    round_number=player.round_number
+                    saldo_digital=player.saldo_digital
                 )
             }
 
@@ -337,6 +344,8 @@ class Player(BasePlayer):
             return {
                 player.id_in_group: {
                     "status": "sukses",
-                    "history": history
+                    "history": history,
+                    "saldo_tunai": player.saldo_tunai,
+                    "saldo_digital": player.saldo_digital
                 }
             }
