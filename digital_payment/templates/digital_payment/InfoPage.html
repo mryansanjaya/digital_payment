@@ -29,7 +29,12 @@
             </div>
             <div class="card-body">
                 <div class="alert alert-success" role="alert">
-                    Anda berada di Ronde {{ player.round_number }}
+                    <strong>Anda berada di Ronde {{ player.round_number }}</strong>
+                </div>
+                <div class="alert alert-success" role="alert">
+                    <strong>
+                        Selamat! Anda mendapatkan Bantuan sebesar {{ formatted_bantuan }} pada {{ info_bansos }}
+                    </strong>
                 </div>
                 <table class="table table-sm">
                         <thead>
@@ -61,16 +66,9 @@
                             </tr>
                             <tr>
                                 <td>Konsumsi Dasar</td>
-                                <td class="fw-bold">{{ formatted_konsumsi_dasar }}</td>
+                                <td class="fw-bold">70% - 90% dari Dompet Tunai Anda</td>
                                 <td>
                                     <small>Akan dikenakan Konsumsi Dasar setelah Anda menyelesaikan Ronde.</small>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Uang Kehadiran</td>
-                                <td class="fw-bold">{{ formatted_uang_kehadiran }}</td>
-                                <td>
-                                    <small>Denda</small>
                                 </td>
                             </tr>
                         </tbody>
@@ -105,12 +103,11 @@
                             mendapatkan Bantuan kembali setelah Anda telah menyelesaikan Ronde.
                         </li>
                         <li class="list-group-item list-group-item-danger">
-                            Anda akan dikenakan Konsumsi Dasar sebesar Rp. 50.000 pada setiap Ronde. <strong>
-                            Sistem akan mendeteksi jika Anda tidak mampu membayar Konsumsi Dasar maka Anda akan terkena
-                            Denda sesuai yang sudah ditentukan</strong>.
+                            Anda akan dikenakan Konsumsi Dasar pada setiap Ronde. <strong> Sistem akan mendeteksi jika
+                            Anda tidak mampu membayar Konsumsi Dasar maka Anda akan terkena Penalty</strong>.
                         </li>
                         <li class="list-group-item list-group-item-danger">
-                            Sistem Denda
+                            Sistem Penalty
                         </li>
                     </ul>
                     <p class="m-0">

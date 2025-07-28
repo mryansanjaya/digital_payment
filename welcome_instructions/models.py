@@ -51,5 +51,4 @@ class Player(BasePlayer):
             ['gopay', 'GoPay']
         ],
     )
-    no_rekening = models.StringField()
-
+    no_rekening = models.IntegerField()

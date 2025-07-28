@@ -115,8 +115,9 @@ class Player(BasePlayer):
     saldo_tunai = models.IntegerField(initial=0)
     saldo_digital = models.IntegerField(initial=0)
     bantuan = models.IntegerField(initial=50000)
-    konsumsi_dasar = models.IntegerField(initial=50000)
-    uang_kehadiran = models.IntegerField(initial=100000)
+    saluran_bantuan = models.StringField()
+    konsumsi_dasar = models.IntegerField(initial=0)
+    uang_kehadiran = models.IntegerField(initial=200000)
     sisa_dompet_tunai = models.IntegerField(initial=0)
     sisa_dompet_digital = models.IntegerField(initial=0)
 
@@ -149,12 +150,23 @@ class Player(BasePlayer):
     selected_products_produk_digital = models.LongStringField(blank=True)
 
     def set_saldo_awal(self):
-        self.saldo_tunai = random.randint(0, 100000)
-        self.saldo_digital = random.randint(0, 100000)
+        # 1. Acak saldo tunai antara 75.000 - 125.000 dengan kelipatan 1.000
+        self.saldo_tunai = random.randint(75, 125) * 1000
+
+        # 2. Saldo digital selalu 0 di awal
+        self.saldo_digital = 0
+
+        # 3. Bantuan masuk ke saldo tunai ATAU saldo digital (acak)
+        if random.choice(['tunai', 'digital']) == 'tunai':
+            self.saldo_tunai += self.bantuan
+            self.saluran_bantuan = "tunai"
+        else:
+            self.saldo_digital += self.bantuan
+            self.saluran_bantuan = "digital"
 
     def final_saldo_awal(self):
-        self.saldo_tunai = self.saldo_tunai + self.bantuan
-        self.saldo_digital = self.saldo_digital + self.bantuan
+        self.saldo_tunai
+        self.saldo_digital
 
     def live_handle(player, data):
         jenis = data.get("jenis")
