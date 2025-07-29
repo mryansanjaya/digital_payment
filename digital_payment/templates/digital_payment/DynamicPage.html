@@ -106,12 +106,25 @@
                         </h4>
                     </div>
                     <div class="card-body">
-                        Informasi
+                        <p>
+                            Anda berada di laman utama eksperimen. Di sini Anda dapat melakukan konsumsi tambahan
+                            (selain konsumsi dasar yang menjadi tanggungan utama Anda) dan investasi untuk meningkatkan
+                            jumlah uang Anda.
+                        </p>
+                        <p>
+                            Anda akan mendapatkan keuntungan tambahan jika Anda membeli barang dari pasar tradisional
+                            maupun digital yang akan menjadi pembayaran Anda dari eksperimen ini.
+                        </p>
+                        <p>
+                            Anda juga bisa meningkatkan jumlah uang Anda dengan investasi di platform investasi.
+                            Uang yang Anda peroleh juga akan menambah pembayaran Anda dari eksperimen ini
+                        </p>
+                        <p>Namun jangan lupa untuk tetap menyisakan uang untuk membiayai konsumsi dasar</p>
                     </div>
                     <div class="card-footer">
                         <button type="button" class="btn btn-success bg-gradient" onclick="mintaRekapRonde()">
                             <i class="fa-solid fa-flag-checkered me-1"></i>
-                            <span>Selesaikan Ronde {{ player.round_number }}</span>
+                            <span>Rekap Ronde {{ player.round_number }}</span>
                         </button>
                     </div>
                 </div>
@@ -122,6 +135,37 @@
                         <h3 class="m-0">Rekap History Ronde {{ player.round_number }}</h3>
                     </div>
                     <div class="card-body">
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h4 class="m-0">Utilitas Anda</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <th>Nama Utilitas</th>
+                                        <th>Jumlah</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Endowment</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bantuan</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Konsumsi Dasar</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Pengeluaran Belanja (Tradisional + Digital)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Pengeluaran Investasi (Risiko Rendah + Risiko Tinggi)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
                         <div class="card mb-4 shadow">
                             <div class="card-header">
                                 <h5 class="m-0">Rekap History - Pasar Tradisional</h5>

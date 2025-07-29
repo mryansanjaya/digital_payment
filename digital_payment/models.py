@@ -112,6 +112,7 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    endowment = models.IntegerField(initial=0)
     saldo_tunai = models.IntegerField(initial=0)
     saldo_digital = models.IntegerField(initial=0)
     bantuan = models.IntegerField(initial=50000)
@@ -151,12 +152,13 @@ class Player(BasePlayer):
 
     def set_saldo_awal(self):
         # 1. Acak saldo tunai antara 75.000 - 125.000 dengan kelipatan 1.000
-        self.saldo_tunai = random.randint(75, 125) * 1000
+        self.endowment = random.randint(75, 125) * 1000
+        self.konsumsi_dasar = int((random.randint(70, 90) / 100) * self.endowment)
 
-        # 2. Saldo digital selalu 0 di awal
+        self.saldo_tunai = self.endowment
         self.saldo_digital = 0
 
-        # 3. Bantuan masuk ke saldo tunai ATAU saldo digital (acak)
+        # 2. Bantuan masuk ke saldo tunai ATAU saldo digital (acak)
         if random.choice(['tunai', 'digital']) == 'tunai':
             self.saldo_tunai += self.bantuan
             self.saluran_bantuan = "tunai"
@@ -165,8 +167,10 @@ class Player(BasePlayer):
             self.saluran_bantuan = "digital"
 
     def final_saldo_awal(self):
+        self.endowment
         self.saldo_tunai
         self.saldo_digital
+        self.konsumsi_dasar
 
     def live_handle(player, data):
         jenis = data.get("jenis")

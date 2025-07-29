@@ -8,6 +8,7 @@ class InfoPage(Page):
     def vars_for_template(self):
         self.player.set_saldo_awal()
         return dict(
+            formatted_endowment="Rp. {:,}".format(self.player.endowment).replace(",", "."),
             formatted_saldo_tunai="Rp. {:,}".format(self.player.saldo_tunai).replace(",", "."),
             formatted_saldo_digital="Rp. {:,}".format(self.player.saldo_digital).replace(",", "."),
             formatted_uang_kehadiran="Rp. {:,}".format(self.player.uang_kehadiran).replace(",", "."),
@@ -31,6 +32,7 @@ class DynamicPage(Page):
         return {
             'produk_riil_list': produk_riil_list,
             'produk_digital_list': produk_digital_list,
+            'formatted_endowment': "Rp. {:,}".format(player.endowment).replace(",", "."),
             'formatted_saldo_tunai': "Rp. {:,}".format(player.saldo_tunai).replace(",", "."),
             'formatted_saldo_digital': "Rp. {:,}".format(player.saldo_digital).replace(",", "."),
             'formatted_uang_kehadiran': "Rp. {:,}".format(player.uang_kehadiran).replace(",", "."),

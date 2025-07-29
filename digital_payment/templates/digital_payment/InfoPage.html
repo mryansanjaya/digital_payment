@@ -44,14 +44,21 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Dompet Tunai</td>
+                                <td>Endowment</td>
+                                <td class="fw-bold">{{ formatted_endowment }}</td>
+                                <td>
+                                    <small>Endowment Anda</small>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Total Dompet Tunai</td>
                                 <td class="fw-bold">{{ formatted_saldo_tunai }}</td>
                                 <td>
                                     <small>Alat Pembayaran pada Pasar Tradisional.</small>
                                 </td>
                             </tr>
                             <tr>
-                                <td>Dompet Digital</td>
+                                <td>Total Dompet Digital</td>
                                 <td class="fw-bold">{{ formatted_saldo_digital }}</td>
                                 <td>
                                     <small>Alat Pembayaran pada Pasar Digital & Platform Investasi.</small>
@@ -66,7 +73,7 @@
                             </tr>
                             <tr>
                                 <td>Konsumsi Dasar</td>
-                                <td class="fw-bold">70% - 90% dari Dompet Tunai Anda</td>
+                                <td class="fw-bold">{{ formatted_konsumsi_dasar }}</td>
                                 <td>
                                     <small>Akan dikenakan Konsumsi Dasar setelah Anda menyelesaikan Ronde.</small>
                                 </td>
