@@ -117,7 +117,6 @@ class Player(BasePlayer):
     endowment = models.IntegerField(initial=0)
     saldo_tunai = models.IntegerField(initial=0)
     saldo_digital = models.IntegerField(initial=0)
-    acakan_utilitas = models.IntegerField(initial=0)
     bantuan = models.IntegerField(initial=50000)
     saluran_bantuan = models.StringField()
     konsumsi_dasar = models.IntegerField(initial=0)
@@ -208,10 +207,10 @@ class Player(BasePlayer):
         utilitas_konsumsi = self.konsumsi_dasar
 
         # Hitung utilitas belanja: 90% dikali 1, 10% dikali 1.05
-        self.acakan_utilitas = random.randrange(90, 10, -80)
-        if self.acakan_utilitas <= 90:
+        acakan_utilitas = random.randrange(90, 10, -80)
+        if acakan_utilitas <= 90:
             self.utilitas_belanja = self.total_pasar_all
-        elif self.acakan_utilitas <= 10:
+        elif acakan_utilitas <= 10:
             self.utilitas_belanja = int(round(self.total_pasar_all * 1.05))
 
         # Sisa uang = saldo tunai + saldo digital
