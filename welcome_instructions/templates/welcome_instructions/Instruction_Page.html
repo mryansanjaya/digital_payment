@@ -168,7 +168,7 @@
             <div class="card-body">
                 <div class="mb-3">
                     <label class="form-label">
-                        <strong>Usia Anda</strong>
+                        <strong>Usia Anda (dalam tahun)</strong>
                     </label>
                     {{ form.usia }}
                 </div>
@@ -182,9 +182,41 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">
+                        <strong>Pendidikan Terakhir</strong>
+                    </label>
+                    <div class="form-check">
+                        {{ form.pendidikan }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <strong>Status Pekerjaan</strong>
+                    </label>
+                    <div class="form-check">
+                        {{ form.status_pekerjaan }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
                         <strong>Aktivitas Utama</strong>
                     </label>
                     {{ form.aktivitas_utama }}
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <strong>Apakah Anda bekerja bagi seseorang untuk aktivitas utama di atas?</strong>
+                    </label>
+                    <div class="form-check">
+                        {{ form.aktivitas_untuk_seseorang }}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">
+                        <strong>Rata-rata Pengeluaran</strong>
+                    </label>
+                    <div class="form-check">
+                        {{ form.rata_pengeluaran }}
+                    </div>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">
@@ -204,7 +236,7 @@
                     <label class="form-label">
                         <strong>Jumlah Anak Anda yang masih Sekolah/Kuliah</strong>
                     </label>
-                    {{ form.anak_sekolah }}
+                    {{ form.jumlah_anak_sekolah }}
                 </div>
                 <div class="mb-3">
                     <label class="form-label">
