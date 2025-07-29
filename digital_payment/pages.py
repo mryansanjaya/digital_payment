@@ -43,7 +43,7 @@ class DynamicPage(Page):
             'formatted_total_investasi': "Rp. {:,}".format(self.player.total_invest_all).replace(",", "."),
             'formatted_utilitas_belanja': "Rp. {:,}".format(self.player.utilitas_belanja).replace(",", "."),
             'formatted_sisa_uang': "Rp. {:,}".format(self.player.sisa_uang).replace(",", "."),
-            'formatted_final_payment': "Rp. {:,}".format(self.player.payoff).replace(",", ".")
+            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", ".")
         }
 
 

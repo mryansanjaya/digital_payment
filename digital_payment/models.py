@@ -112,9 +112,12 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    final_payment = models.IntegerField(initial=0, blank=True)
+    sisa_uang = models.IntegerField(initial=0, blank=True)
     endowment = models.IntegerField(initial=0)
     saldo_tunai = models.IntegerField(initial=0)
     saldo_digital = models.IntegerField(initial=0)
+    acakan_utilitas = models.IntegerField(initial=0)
     bantuan = models.IntegerField(initial=50000)
     saluran_bantuan = models.StringField()
     konsumsi_dasar = models.IntegerField(initial=0)
@@ -122,7 +125,6 @@ class Player(BasePlayer):
     total_invest_all = models.IntegerField(initial=0)
     uang_kehadiran = models.IntegerField(initial=200000)
     utilitas_belanja = models.IntegerField(initial=0, blank=True)
-    sisa_uang = models.IntegerField(initial=0, blank=True)
 
     # History Aktivitas Beli & Investasi
     history_riil = models.LongStringField(blank=True, initial='[]')
@@ -155,7 +157,8 @@ class Player(BasePlayer):
     def set_saldo_awal(self):
         # 1. Acak saldo tunai antara 75.000 - 125.000 dengan kelipatan 1.000
         self.endowment = random.randint(75, 125) * 1000
-        self.konsumsi_dasar = int((random.randint(70, 90) / 100) * self.endowment)
+        acakan = random.randrange(70, 90, 1)
+        self.konsumsi_dasar = acakan * round(self.endowment / 100)
 
         self.saldo_tunai = self.endowment
         self.saldo_digital = 0
@@ -205,16 +208,17 @@ class Player(BasePlayer):
         utilitas_konsumsi = self.konsumsi_dasar
 
         # Hitung utilitas belanja: 90% dikali 1, 10% dikali 1.05
-        if random.random() <= 0.9:
+        self.acakan_utilitas = random.randrange(90, 10, -80)
+        if self.acakan_utilitas <= 90:
             self.utilitas_belanja = self.total_pasar_all
-        else:
+        elif self.acakan_utilitas <= 10:
             self.utilitas_belanja = int(round(self.total_pasar_all * 1.05))
 
         # Sisa uang = saldo tunai + saldo digital
-        self.sisa_uang = self.saldo_tunai + self.saldo_digital
+        self.sisa_uang = (self.saldo_tunai + self.saldo_digital) - utilitas_konsumsi
 
         # Final Payment adalah total utilitas
-        self.payoff = utilitas_konsumsi + self.utilitas_belanja + self.sisa_uang
+        self.final_payment = self.sisa_uang + utilitas_konsumsi + self.utilitas_belanja
 
     def live_handle(player, data):
         jenis = data.get("jenis")
@@ -393,11 +397,14 @@ class Player(BasePlayer):
                     "total_invest_all": player.total_invest_all,
                     "utilitas_belanja": player.field_maybe_none("utilitas_belanja"),
                     "sisa_uang": player.field_maybe_none("sisa_uang"),
-                    "final_payment": player.payoff
+                    "final_payment": player.field_maybe_none("final_payment"),
                 }
             }
 
         elif jenis == "tukar_uang":
+            # Hitung dulu utilitas agar semua nilai terisi
+            player.hitung_utilitas()
+
             arah = data.get("arah")
             jumlah = int(data.get("jumlah", 0))
             biaya_admin = 1000

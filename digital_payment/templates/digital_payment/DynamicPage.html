@@ -148,35 +148,35 @@
                                     <tbody>
                                         <tr>
                                             <td>Endowment</td>
-                                            <td>{{ formatted_endowment }}</td>
+                                            <td id="util_endowment"></td>
                                         </tr>
                                         <tr>
                                             <td>Bantuan</td>
-                                            <td>{{ formatted_bantuan }}</td>
+                                            <td id="util_bantuan"></td>
                                         </tr>
                                         <tr>
                                             <td>Konsumsi Dasar</td>
-                                            <td>{{ formatted_konsumsi_dasar }}</td>
+                                            <td id="util_konsumsi_dasar"></td>
                                         </tr>
                                         <tr>
-                                            <td>Total Pengeluaran Belanja (Tradisional + Digital)</td>
-                                            <td>{{ formatted_total_pasar }}</td>
+                                            <td>Total Belanja (Tradisional + Digital)</td>
+                                            <td id="util_total_belanja"></td>
                                         </tr>
                                         <tr>
-                                            <td>Total Pengeluaran Investasi (Risiko Rendah + Risiko Tinggi)</td>
-                                            <td>{{ formatted_total_investasi }}</td>
-                                        </tr>
-                                        <tr class="table-success fw-bold">
-                                            <td>Utilitas Belanja (dengan randomisasi 90%/10%)</td>
-                                            <td>{{ formatted_utilitas_belanja }}</td>
+                                            <td>Total Investasi</td>
+                                            <td id="util_total_invest"></td>
                                         </tr>
                                         <tr>
-                                            <td>Sisa Uang (tidak dibelanjakan)</td>
-                                            <td>{{ formatted_sisa_uang }}</td>
+                                            <td>Sisa Uang</td>
+                                            <td id="util_sisa_uang"></td>
                                         </tr>
-                                        <tr class="table-info fw-bold">
-                                            <td>Total Utilitas (Final Payment)</td>
-                                            <td>{{ formatted_final_payment }}</td>
+                                        <tr>
+                                            <td>Utilitas Belanja (Randomisasi)</td>
+                                            <td id="util_utilitas_belanja"></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Final Payment (Total Utilitas)</strong></td>
+                                            <td id="util_final_payment"><strong></strong></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -2128,6 +2128,7 @@
                     data.highinvest !== undefined
                 ) {
                     tampilkanRekapRonde(data);
+                    updateUtilitasView(data);
                 }
             };
 
@@ -2375,6 +2376,17 @@
             }
 
             showForm('rekap_ronde');
+        }
+
+        function updateUtilitasView(data) {
+            document.getElementById('util_endowment').textContent = `Rp${data.endowment.toLocaleString('id-ID')}`;
+            document.getElementById('util_bantuan').textContent = `Rp${data.bantuan.toLocaleString('id-ID')}`;
+            document.getElementById('util_konsumsi_dasar').textContent = `Rp${data.konsumsi_dasar.toLocaleString('id-ID')}`;
+            document.getElementById('util_total_belanja').textContent = `Rp${(data.total_belanja_riil + data.total_belanja_digital).toLocaleString('id-ID')}`;
+            document.getElementById('util_total_invest').textContent = `Rp${data.total_invest_all.toLocaleString('id-ID')}`;
+            document.getElementById('util_sisa_uang').textContent = `Rp${data.sisa_uang.toLocaleString('id-ID')}`;
+            document.getElementById('util_utilitas_belanja').textContent = `Rp${data.utilitas_belanja.toLocaleString('id-ID')}`;
+            document.getElementById('util_final_payment').textContent = `Rp${data.final_payment.toLocaleString('id-ID')}`;
         }
     </script>
 {% endblock %}
