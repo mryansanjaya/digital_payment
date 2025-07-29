@@ -118,9 +118,11 @@ class Player(BasePlayer):
     bantuan = models.IntegerField(initial=50000)
     saluran_bantuan = models.StringField()
     konsumsi_dasar = models.IntegerField(initial=0)
+    total_pasar_all = models.IntegerField(initial=0)
+    total_invest_all = models.IntegerField(initial=0)
     uang_kehadiran = models.IntegerField(initial=200000)
-    sisa_dompet_tunai = models.IntegerField(initial=0)
-    sisa_dompet_digital = models.IntegerField(initial=0)
+    utilitas_belanja = models.IntegerField(initial=0, blank=True)
+    sisa_uang = models.IntegerField(initial=0, blank=True)
 
     # History Aktivitas Beli & Investasi
     history_riil = models.LongStringField(blank=True, initial='[]')
@@ -172,6 +174,48 @@ class Player(BasePlayer):
         self.saldo_digital
         self.konsumsi_dasar
 
+    def hitung_utilitas(self):
+        # Hitung total belanja pasar tradisional
+        try:
+            history_riil = json.loads(self.history_riil or "[]")
+            total_riil = sum(item.get("total", 0) for item in history_riil)
+        except Exception:
+            total_riil = 0
+
+        # Hitung total belanja pasar digital
+        try:
+            history_digital = json.loads(self.history_digital or "[]")
+            total_digital = sum(item.get("total", 0) for item in history_digital)
+        except Exception:
+            total_digital = 0
+
+        # Simpan ke field oTree
+        self.total_belanja_riil = total_riil
+        self.total_belanja_digital = total_digital
+        self.total_pasar_all = total_riil + total_digital
+
+        # Hitung total investasi
+        history_low = json.loads(self.history_lowinvest or "[]")
+        history_high = json.loads(self.history_highinvest or "[]")
+        total_low = sum(item.get("jumlah", 0) for item in history_low)
+        total_high = sum(item.get("jumlah", 0) for item in history_high)
+        self.total_invest_all = total_low + total_high
+
+        # Hitung utilitas konsumsi dasar (selalu 1x)
+        utilitas_konsumsi = self.konsumsi_dasar
+
+        # Hitung utilitas belanja: 90% dikali 1, 10% dikali 1.05
+        if random.random() <= 0.9:
+            self.utilitas_belanja = self.total_pasar_all
+        else:
+            self.utilitas_belanja = int(round(self.total_pasar_all * 1.05))
+
+        # Sisa uang = saldo tunai + saldo digital
+        self.sisa_uang = self.saldo_tunai + self.saldo_digital
+
+        # Final Payment adalah total utilitas
+        self.payoff = utilitas_konsumsi + self.utilitas_belanja + self.sisa_uang
+
     def live_handle(player, data):
         jenis = data.get("jenis")
 
@@ -191,6 +235,9 @@ class Player(BasePlayer):
                 "round_number": player.round_number
             })
             player.history_riil = json.dumps(history)
+
+            # Hitung dulu utilitas agar semua nilai terisi
+            player.hitung_utilitas()
 
             return {
                 player.id_in_group: dict(
@@ -217,6 +264,10 @@ class Player(BasePlayer):
             })
 
             player.history_digital = json.dumps(history)
+
+            # Hitung dulu utilitas agar semua nilai terisi
+            player.hitung_utilitas()
+
             return {
                 player.id_in_group: dict(
                     status="success",
@@ -257,6 +308,9 @@ class Player(BasePlayer):
             else:
                 player.saldo_digital -= int(jumlah)
 
+            # Hitung dulu utilitas agar semua nilai terisi
+            player.hitung_utilitas()
+
             return {
                 player.id_in_group: dict(
                     status=status,
@@ -295,6 +349,9 @@ class Player(BasePlayer):
             else:
                 player.saldo_digital -= int(jumlah)
 
+            # Hitung dulu utilitas agar semua nilai terisi
+            player.hitung_utilitas()
+
             return {
                 player.id_in_group: dict(
                     status=status,
@@ -305,22 +362,38 @@ class Player(BasePlayer):
             }
 
         elif jenis == "minta_rekap":
+            # Hitung dulu utilitas agar semua nilai terisi
+            player.hitung_utilitas()
+
             return {
                 player.id_in_group: {
                     "selected_products_produk_riil": player.field_maybe_none("selected_products_produk_riil"),
                     "total_belanja_riil": player.field_maybe_none("total_belanja_riil"),
                     "selected_products_produk_digital": player.field_maybe_none("selected_products_produk_digital"),
                     "total_belanja_digital": player.field_maybe_none("total_belanja_digital"),
+
                     "lowinvest": player.field_maybe_none("lowinvest"),
                     "hasil_akhir_lowinvest": player.field_maybe_none("hasil_akhir_lowinvest"),
                     "untungrugi_lowinvest": player.field_maybe_none("untungrugi_lowinvest"),
+
                     "saldo_tunai": player.field_maybe_none("saldo_tunai"),
                     "saldo_digital": player.field_maybe_none("saldo_digital"),
+
                     "history_riil": player.history_riil,
                     "history_digital": player.history_digital,
                     "history_lowinvest": player.history_lowinvest,
                     "history_highinvest": player.history_highinvest,
-                    "history_tukar_uang": player.history_tukar_uang
+                    "history_tukar_uang": player.history_tukar_uang,
+
+                    # Tambahan variabel utilitas
+                    "endowment": player.endowment,
+                    "bantuan": player.bantuan,
+                    "konsumsi_dasar": player.konsumsi_dasar,
+                    "total_pasar_all": player.total_pasar_all,
+                    "total_invest_all": player.total_invest_all,
+                    "utilitas_belanja": player.field_maybe_none("utilitas_belanja"),
+                    "sisa_uang": player.field_maybe_none("sisa_uang"),
+                    "final_payment": player.payoff
                 }
             }
 
@@ -337,13 +410,13 @@ class Player(BasePlayer):
             if arah == "tunai_ke_digital":
                 if player.saldo_tunai < jumlah + biaya_admin:
                     return {player.id_in_group: dict(status="gagal", message="Saldo tunai tidak mencukupi")}
-                player.saldo_tunai -= (jumlah + biaya_admin)
+                player.saldo_tunai -= jumlah + biaya_admin
                 player.saldo_digital += jumlah
 
             elif arah == "digital_ke_tunai":
                 if player.saldo_digital < jumlah + biaya_admin:
                     return {player.id_in_group: dict(status="gagal", message="Saldo digital tidak mencukupi")}
-                player.saldo_digital -= (jumlah + biaya_admin)
+                player.saldo_digital -= jumlah + biaya_admin
                 player.saldo_tunai += jumlah
 
             else:

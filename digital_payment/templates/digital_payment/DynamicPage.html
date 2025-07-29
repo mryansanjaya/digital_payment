@@ -148,18 +148,35 @@
                                     <tbody>
                                         <tr>
                                             <td>Endowment</td>
+                                            <td>{{ formatted_endowment }}</td>
                                         </tr>
                                         <tr>
                                             <td>Bantuan</td>
+                                            <td>{{ formatted_bantuan }}</td>
                                         </tr>
                                         <tr>
                                             <td>Konsumsi Dasar</td>
+                                            <td>{{ formatted_konsumsi_dasar }}</td>
                                         </tr>
                                         <tr>
                                             <td>Total Pengeluaran Belanja (Tradisional + Digital)</td>
+                                            <td>{{ formatted_total_pasar }}</td>
                                         </tr>
                                         <tr>
                                             <td>Total Pengeluaran Investasi (Risiko Rendah + Risiko Tinggi)</td>
+                                            <td>{{ formatted_total_investasi }}</td>
+                                        </tr>
+                                        <tr class="table-success fw-bold">
+                                            <td>Utilitas Belanja (dengan randomisasi 90%/10%)</td>
+                                            <td>{{ formatted_utilitas_belanja }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Sisa Uang (tidak dibelanjakan)</td>
+                                            <td>{{ formatted_sisa_uang }}</td>
+                                        </tr>
+                                        <tr class="table-info fw-bold">
+                                            <td>Total Utilitas (Final Payment)</td>
+                                            <td>{{ formatted_final_payment }}</td>
                                         </tr>
                                     </tbody>
                                 </table>

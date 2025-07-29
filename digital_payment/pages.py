@@ -29,15 +29,21 @@ class DynamicPage(Page):
         produk_digital_list = random.sample(C.PRODUK_DIGITAL, 38)
         player = self.player
 
+        self.player.hitung_utilitas()
+
         return {
             'produk_riil_list': produk_riil_list,
             'produk_digital_list': produk_digital_list,
             'formatted_endowment': "Rp. {:,}".format(player.endowment).replace(",", "."),
             'formatted_saldo_tunai': "Rp. {:,}".format(player.saldo_tunai).replace(",", "."),
             'formatted_saldo_digital': "Rp. {:,}".format(player.saldo_digital).replace(",", "."),
-            'formatted_uang_kehadiran': "Rp. {:,}".format(player.uang_kehadiran).replace(",", "."),
-            'formatted_bantuan': "Rp. {:,}".format(player.bantuan).replace(",", "."),
-            'formatted_konsumsi_dasar': "Rp. {:,}".format(player.konsumsi_dasar).replace(",", "."),
+            'formatted_bantuan': "Rp. {:,}".format(self.player.bantuan).replace(",", "."),
+            'formatted_konsumsi_dasar': "Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
+            'formatted_total_pasar': "Rp. {:,}".format(self.player.total_pasar_all).replace(",", "."),
+            'formatted_total_investasi': "Rp. {:,}".format(self.player.total_invest_all).replace(",", "."),
+            'formatted_utilitas_belanja': "Rp. {:,}".format(self.player.utilitas_belanja).replace(",", "."),
+            'formatted_sisa_uang': "Rp. {:,}".format(self.player.sisa_uang).replace(",", "."),
+            'formatted_final_payment': "Rp. {:,}".format(self.player.payoff).replace(",", ".")
         }
 
 
