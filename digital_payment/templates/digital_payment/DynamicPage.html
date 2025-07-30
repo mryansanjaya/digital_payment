@@ -251,20 +251,26 @@
                     <div class="card-body">
                         <div class="alert p-0" role="alert">
                             <div class="d-flex flex-column">
-                                <h4 class="alert-heading">Informasi Dompet Anda</h4>
-                                <div class="table-responsive">
-                                    <table class="table table-bordered m-0">
-                                        <thead class="fs-5">
-                                            <th>Dompet Tunai</th>
-                                            <th>Dompet Digital</th>
-                                        </thead>
-                                        <tbody class="fs-5">
-                                            <tr>
-                                                <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
-                                                <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="m-0">Informasi Dompet Anda</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered m-0">
+                                                <thead class="fs-6">
+                                                    <th>Dompet Tunai</th>
+                                                    <th>Dompet Digital</th>
+                                                </thead>
+                                                <tbody class="fs-5">
+                                                    <tr>
+                                                        <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                                        <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <hr class="my-3">
@@ -322,7 +328,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="card h-100">
-                                            <img src="{{ static 'img/digital.png'}}" class="card-img-top w-100"
+                                            <img src="{{ static 'img/all_invest.png'}}" class="card-img-top w-100"
                                                  alt="image">
                                             <div class="card-body">
                                                 <div class="card-title">
@@ -503,7 +509,7 @@
                     <div class="card-body">
                         <form method="post">
                             <!-- Daftar Produk -->
-                            <div id="produkRiilContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                            <div id="produkRiilContainer" class="row row-cols-2 row-cols-md-4 g-4"></div>
                             <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
                         </form>
                     </div>
@@ -575,7 +581,7 @@
                     <div class="card-body">
                         <form method="post">
                             <!-- Daftar Produk -->
-                            <div id="produkDigitalContainer" class="row row-cols-1 row-cols-md-3 g-4"></div>
+                            <div id="produkDigitalContainer" class="row row-cols-2 row-cols-md-4 g-4"></div>
                             <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
                         </form>
                     </div>
@@ -1292,15 +1298,20 @@
                     kolom.className = 'col';
                     kolom.innerHTML = `
                         <div class="card h-100 shadow-sm">
-                            <div class="card-body">
+                            <div class="card-header bg-transparent">
                                 <div class="form-check">
                                     <input class="form-check-input produk-riil-checkbox" type="checkbox" value="${i}"
                                         id="produkRiilCard${i}" ${statusTerpilihRiil[i] ? 'checked' : ''}>
                                     <label class="form-check-label" for="produkRiilCard${i}">
-                                        <h5 class="card-title mb-1">${p.nama}</h5>
+                                        <strong class="card-title m-0">${p.nama}</strong>
                                     </label>
                                 </div>
-                                <p class="card-text text-muted mb-1">Rp${p.harga.toLocaleString('id-ID')}</p>
+                            </div>
+                            <img src="/static/img/tradisional/${p.gambar}" class="card-img-top" alt="${p.nama}">
+                            <div class="card-body">
+                                <strong class="card-text fs-4 mb-1">
+                                    Rp. ${p.harga.toLocaleString('id-ID')}
+                                </strong>
                                 <p class="card-text"><small>${p.deskripsi}</small></p>
                             </div>
                             <div class="card-footer d-flex flex-row justify-content-between align-items-center">
@@ -1584,15 +1595,20 @@
                     kolom.className = 'col';
                     kolom.innerHTML = `
                         <div class="card h-100 shadow-sm">
-                            <div class="card-body">
+                            <div class="card-header bg-transparent">
                                 <div class="form-check">
-                                    <input class="form-check-input produk-digital-checkbox" type="checkbox" value="${i}"
-                                        id="produkDigitalCard${i}" ${statusTerpilihDigital[i] ? 'checked' : ''}>
-                                    <label class="form-check-label" for="produkDigitalCard${i}">
-                                        <h5 class="card-title mb-1">${p.nama}</h5>
+                                    <input class="form-check-input produk-riil-checkbox" type="checkbox" value="${i}"
+                                        id="produkRiilCard${i}" ${statusTerpilihDigital[i] ? 'checked' : ''}>
+                                    <label class="form-check-label" for="produkRiilCard${i}">
+                                        <strong class="card-title m-0">${p.nama}</strong>
                                     </label>
                                 </div>
-                                <p class="card-text text-muted mb-1">Rp${p.harga.toLocaleString('id-ID')}</p>
+                            </div>
+                            <img src="/static/img/digital/${p.gambar}" class="card-img-top" alt="${p.nama}">
+                            <div class="card-body">
+                                <strong class="card-text fs-4 mb-1">
+                                    Rp. ${p.harga.toLocaleString('id-ID')}
+                                </strong>
                                 <p class="card-text"><small>${p.deskripsi}</small></p>
                             </div>
                             <div class="card-footer d-flex flex-row justify-content-between align-items-center">
