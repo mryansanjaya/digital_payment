@@ -6,7 +6,8 @@ SESSION_CONFIGS = [
         'name': 'digital_payment',
         'display_name': "Digital Payment Experiment",
         'num_demo_participants': 1,
-        'app_sequence': ['welcome_instructions', 'digital_payment'],
+        'app_sequence': ['digital_payment', 'payment_page'],
+        # 'app_sequence': ['welcome_instructions', 'digital_payment'],
         # 'app_sequence': ['digital_payment'],
     }
 ]
@@ -21,7 +22,11 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = []
+PARTICIPANT_FIELDS = [
+    'selected_round',
+    'final_payment',
+    'uang_kehadiran',
+]
 SESSION_FIELDS = []
 
 # ISO-639 code
