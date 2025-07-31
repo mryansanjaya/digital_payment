@@ -1950,181 +1950,163 @@
         }
 
         (function () {
-  const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
-  const doors = document.querySelectorAll('.door');
-  const spinBtn = document.querySelector('#spinner');
-  const resetBtn = document.querySelector('#resetter');
-  const inputUang = document.querySelector('#id_highinvest');
+          const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
+          const doors = document.querySelectorAll('.door');
+          const spinBtn = document.querySelector('#spinner');
+          const resetBtn = document.querySelector('#resetter');
+          const inputUang = document.querySelector('#id_highinvest');
 
-  let spinCount = 0;
+          spinBtn.addEventListener('click', spin);
+          resetBtn.addEventListener('click', resetSlot);
 
-  spinBtn.addEventListener('click', spin);
-  resetBtn.addEventListener('click', resetSlot);
+          function setButtonState(spinEnabled, resetEnabled) {
+            spinBtn.disabled = !spinEnabled;
+            resetBtn.disabled = !resetEnabled;
+          }
 
-  function setButtonState(spinEnabled, resetEnabled) {
-    spinBtn.disabled = !spinEnabled;
-    resetBtn.disabled = !resetEnabled;
-  }
+          function resetSlot() {
+            for (const door of doors) {
+              const boxes = door.querySelector('.boxes');
+              boxes.innerHTML = '';
 
-  function resetSlot() {
-    for (const door of doors) {
-      const boxes = door.querySelector('.boxes');
-      boxes.innerHTML = '';
+              for (let i = 0; i < 3; i++) {
+                const box = document.createElement('div');
+                box.classList.add('box');
+                box.textContent = '❓';
+                boxes.appendChild(box);
+              }
 
-      for (let i = 0; i < 3; i++) {
-        const box = document.createElement('div');
-        box.classList.add('box');
-        box.textContent = '❓';
-        boxes.appendChild(box);
-      }
+              boxes.style.transition = 'none';
+              boxes.style.transform = 'translateY(0)';
+            }
 
-      boxes.style.transition = 'none';
-      boxes.style.transform = 'translateY(0)';
-    }
+            inputUang.value = '';
+            setButtonState(true, false);
+          }
 
-    inputUang.value = '';
-    setButtonState(true, false);
-  }
+          function init(groups = 3, duration = 1) {
+              const spinAnimationLength = 10;
+                const visibleCount = 3;
 
-  function init(groups = 3, duration = 1) {
-      const visibleCount = 3;
-      const spinAnimationLength = 10;
-      const isWinningRound = Math.random() < 0.7;
-      const winningFruit = items[Math.floor(Math.random() * items.length)];
-      const winningStartIndex = Math.floor(Math.random() * (doors.length - 2));
+                for (let d = 0; d < doors.length; d++) {
+                  const door = doors[d];
+                  const boxes = door.querySelector('.boxes');
+                  const boxesClone = boxes.cloneNode(false);
 
-      // Simpan hasil tengah untuk digunakan nanti
-      finalMiddleSymbols = [];
+                  const pool = [];
 
-      for (let d = 0; d < doors.length; d++) {
-        const door = doors[d];
-        const boxes = door.querySelector('.boxes');
-        const boxesClone = boxes.cloneNode(false);
+                  // Random spinning
+                  for (let i = 0; i < spinAnimationLength; i++) {
+                    pool.push(items[Math.floor(Math.random() * items.length)]);
+                  }
 
-        const pool = [];
+                  let finalSymbols = [];
 
-        // Animasi awal acak
-        for (let i = 0; i < spinAnimationLength; i++) {
-          pool.push(items[Math.floor(Math.random() * items.length)]);
+                  const middle = finalSymbols[d];
+                  pool.push(items[Math.floor(Math.random() * items.length)]); // atas
+                    pool.push(items[Math.floor(Math.random() * items.length)]); // atas
+                  {#pool.push(middle); // tengah#}
+                  pool.push(items[Math.floor(Math.random() * items.length)]); // bawah
+
+                  for (let i = 0; i < pool.length; i++) {
+                    const box = document.createElement('div');
+                    box.classList.add('box');
+                    box.textContent = pool[i];
+                    boxesClone.appendChild(box);
+                  }
+
+                  const scrollTo = 110 * (pool.length - visibleCount);
+                  boxesClone.style.transition = `transform ${duration}s ease-in-out`;
+                  boxesClone.style.transform = `translateY(-${scrollTo}px)`;
+                  door.replaceChild(boxesClone, boxes);
+                }
+            }
+
+
+
+          function spin() {
+          const inputUang = document.querySelector('#id_highinvest');
+          const uangDialokasikan = parseInt(inputUang.value);
+
+          if (!uangDialokasikan || uangDialokasikan <= 0) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Oopps!',
+              text: 'Anda harus mengalokasikan uang sebelum memulai investasi.',
+              confirmButtonText: 'OK'
+            });
+            return;
+          }
+
+          const groups = 3;
+          const duration = 2.5;
+          setButtonState(false, false);
+          init(groups, duration);
+
+          // animasi putar
+          doors.forEach((door) => void door.querySelector('.boxes').offsetHeight);
+          doors.forEach((door, i) => {
+            const boxes = door.querySelector('.boxes');
+            const delay = i * 300;
+            setTimeout(() => {
+              boxes.style.transform = 'translateY(0)';
+            }, delay);
+          });
+
+          const totalDelay = duration * 1000 + doors.length * 300 + 500;
+          setTimeout(() => {
+            let menang = false;
+
+            for (let i = 0; i <= finalSymbols.length - 3; i++) {
+              const a = finalSymbols[i];
+              const b = finalSymbols[i + 1];
+              const c = finalSymbols[i + 2];
+              if (a === b && b === c) {
+                menang = true;
+                break;
+              }
+            }
+
+            const multiplier = menang ? 2 : 0;
+            const hasil = uangDialokasikan * multiplier;
+
+            Swal.fire({
+              icon: menang ? "success" : "error",
+              title: menang ? "MENANG" : "KALAH",
+              html: `
+                <p>Baris Tengah: ${finalSymbols.join(" ")}</p>
+                <p>Multiplier: ${multiplier}x</p>
+                <hr>
+                <p><strong>Alokasi: Rp${uangDialokasikan.toLocaleString('id-ID')}</strong></p>
+                <p><strong>Hasil: Rp${hasil.toLocaleString('id-ID')}</strong></p>
+              `,
+              confirmButtonText: "OK"
+            }).then(() => {
+                backendInvestasitinggi();
+
+                // Kirim hasil ke server oTree
+                liveSend({
+                  jenis: 'investasi_tinggi',
+                  jumlah: uangDialokasikan
+                });
+            });
+
+            setButtonState(false, true);
+          }, totalDelay);
         }
 
-        // Tentukan finalSymbol
-        let finalSymbol;
-        if (isWinningRound && d >= winningStartIndex && d <= winningStartIndex + 2) {
-          finalSymbol = winningFruit;
-        } else {
-          do {
-            finalSymbol = items[Math.floor(Math.random() * items.length)];
-          } while (isWinningRound && finalSymbol === winningFruit);
-        }
 
-        finalMiddleSymbols.push(finalSymbol); // simpan untuk pengecekan nanti
+          function shuffle(arr) {
+            let m = arr.length;
+            while (m) {
+              const i = Math.floor(Math.random() * m--);
+              [arr[m], arr[i]] = [arr[i], arr[m]];
+            }
+            return arr;
+          }
 
-        // Simbol akhir
-        pool.push(items[Math.floor(Math.random() * items.length)]); // atas
-        pool.push(finalSymbol);                                     // tengah
-        pool.push(items[Math.floor(Math.random() * items.length)]); // bawah
-
-        // Masukkan ke DOM
-        for (let i = 0; i < pool.length; i++) {
-          const box = document.createElement('div');
-          box.classList.add('box');
-          box.textContent = pool[i];
-          boxesClone.appendChild(box);
-        }
-
-        const scrollTo = 110 * (pool.length - visibleCount); // scroll agar finalSymbol di tengah
-        boxesClone.style.transition = `transform ${duration}s ease-in-out`;
-        boxesClone.style.transform = `translateY(-${scrollTo}px)`;
-        door.replaceChild(boxesClone, boxes);
-      }
-    }
-
-
-
-  function spin() {
-  const inputUang = document.querySelector('#id_highinvest');
-  const uangDialokasikan = parseInt(inputUang.value);
-
-  if (!uangDialokasikan || uangDialokasikan <= 0) {
-    Swal.fire({
-      icon: 'warning',
-      title: 'Oopps!',
-      text: 'Anda harus mengalokasikan uang sebelum memulai investasi.',
-      confirmButtonText: 'OK'
-    });
-    return;
-  }
-
-  const groups = 3;
-  const duration = 2.5;
-  setButtonState(false, false);
-  init(groups, duration);
-
-  // animasi putar
-  doors.forEach((door) => void door.querySelector('.boxes').offsetHeight);
-  doors.forEach((door, i) => {
-    const boxes = door.querySelector('.boxes');
-    const delay = i * 300;
-    setTimeout(() => {
-      boxes.style.transform = 'translateY(0)';
-    }, delay);
-  });
-
-  const totalDelay = duration * 1000 + doors.length * 300 + 500;
-  setTimeout(() => {
-    let menang = false;
-
-    for (let i = 0; i <= finalMiddleSymbols.length - 3; i++) {
-      const a = finalMiddleSymbols[i];
-      const b = finalMiddleSymbols[i + 1];
-      const c = finalMiddleSymbols[i + 2];
-      if (a === b && b === c) {
-        menang = true;
-        break;
-      }
-    }
-
-    const multiplier = menang ? 2 : 0;
-    const hasil = uangDialokasikan * multiplier;
-
-    Swal.fire({
-      icon: menang ? "success" : "error",
-      title: menang ? "MENANG" : "KALAH",
-      html: `
-        <p>Baris Tengah: ${finalMiddleSymbols.join(" ")}</p>
-        <p>Multiplier: ${multiplier}x</p>
-        <hr>
-        <p><strong>Alokasi: Rp${uangDialokasikan.toLocaleString('id-ID')}</strong></p>
-        <p><strong>Hasil: Rp${hasil.toLocaleString('id-ID')}</strong></p>
-      `,
-      confirmButtonText: "OK"
-    }).then(() => {
-        backendInvestasitinggi();
-
-        // Kirim hasil ke server oTree
-        liveSend({
-          jenis: 'investasi_tinggi',
-          jumlah: uangDialokasikan
-        });
-    });
-
-    setButtonState(false, true);
-  }, totalDelay);
-}
-
-
-  function shuffle(arr) {
-    let m = arr.length;
-    while (m) {
-      const i = Math.floor(Math.random() * m--);
-      [arr[m], arr[i]] = [arr[i], arr[m]];
-    }
-    return arr;
-  }
-
-  resetSlot();
-})();
+          resetSlot();
+        })();
 
 
 

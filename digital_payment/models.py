@@ -302,18 +302,20 @@ class Player(BasePlayer):
 
         elif jenis == "investasi_tinggi":
             jumlah = float(data.get("jumlah", 0))
+
             if jumlah <= 0:
                 return {player.id_in_group: dict(status="error", message="Jumlah tidak valid")}
 
-            # Slot win chance 25%
+            # Penentuan hasil di backend
             peluang = random.random()
-            if peluang <= 0.80:
+            if peluang <= 0.25:
                 hasil = int(round(jumlah * 2))
                 status = 'untung'
             else:
-                hasil = int(round(jumlah * 0))
+                hasil = 0
                 status = 'rugi'
 
+            # Simpan ke history
             history = json.loads(player.history_highinvest or "[]")
             history.append({
                 "jumlah": int(jumlah),
@@ -324,13 +326,12 @@ class Player(BasePlayer):
 
             player.history_highinvest = json.dumps(history)
 
-            # Update saldo digital
+            # Update saldo
             if status == 'untung':
                 player.saldo_digital += hasil
             else:
                 player.saldo_digital -= int(jumlah)
 
-            # Hitung dulu utilitas agar semua nilai terisi
             player.hitung_utilitas()
 
             return {

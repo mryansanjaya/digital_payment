@@ -24,6 +24,9 @@ class InfoPage(Page):
 class DynamicPage(Page):
     live_method = 'live_handle'
 
+    def js_vars(self):
+        return dict(player_id_in_group=self.player.id_in_group)
+
     def vars_for_template(self):
         produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 15)
         produk_digital_list = random.sample(C.PRODUK_DIGITAL, 15)
