@@ -18,16 +18,33 @@
 {% endblock %}
 
 {% block title  %}
-    <title>Proses Pembayaran</title>
+    <title>Eksperimen Selesai</title>
 {% endblock %}
 
 {% block content %}
-<div class="card shadow">
-    <div class="card-body text-center">
-        <h3>Terima kasih telah berpartisipasi!</h3>
-        <p>Kode Peserta Anda: <strong>{{ player.kode_peserta }}</strong></p>
-        <p>Final Payment Anda dari Ronde <strong>{{ player.selected_round }}</strong> sebesar <strong>Rp{{ player.payoff }}</strong></p>
+    <div class="container p-0">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="m-0">Eksperimen Telah Berakhir</h4>
+            </div>
+            <div class="card-body">
+                Terima kasih atas partisipasi Anda mengikuti eksperimen ini. Hasil Pembayaran mohon diberikan kepada
+                pihak terkait untuk mendapatkan pembayaran Anda dalam eksperimen ini,
+                <div class="table-responsive mt-3">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>Kode Peserta Anda</th>
+                            <th>Pembayaran Anda</th>
+                        </thead>
+                        <tbody class="fw-bold">
+                            <tr>
+                                <td>{% player.kode_peserta %}</td>
+                                <td>{% total_pembayaran %}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-
 {% endblock %}

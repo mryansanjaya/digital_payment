@@ -109,7 +109,7 @@
                     <li class="list-group-item d-flex justify-content-between align-items-start border-0 p-1">
                         <div class="ms-2 me-auto">
                             <div>
-                                <img src="{{ static 'img/ilustrasi.png' }}" class="img-fluid mb-4">
+                                <img src="{% static 'img/ilustrasi.png' %}" class="img-fluid mb-4" alt="image">
                                 <h5>Penjelasan dari Ilustrasi Ekskperimen:</h5>
                             </div>
                             <ol class="list-group list-group-numbered">
@@ -165,91 +165,105 @@
             <div class="card-header">
                 <h4 class="mb-0">Survey Data Diri</h4>
             </div>
-            <div class="card-body">
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Usia Anda (dalam tahun)</strong>
-                    </label>
-                    {{ form.usia }}
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Jenis Kelamin</strong>
-                    </label>
-                    <div class="form-check">
-                        {{ form.jenis_kelamin }}
+            <div class="card-body p-4">
+                <form>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Usia Anda (dalam tahun)</strong>
+                        </label>
+                        {% form.usia %}
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Pendidikan Terakhir</strong>
-                    </label>
-                    <div class="form-check">
-                        {{ form.pendidikan }}
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Jenis Kelamin</strong>
+                        </label>
+                        <div class="form-check">
+                            {% form.jenis_kelamin %}
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Status Pekerjaan</strong>
-                    </label>
-                    <div class="form-check">
-                        {{ form.status_pekerjaan }}
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Pendidikan Terakhir</strong>
+                        </label>
+                        <div class="form-check">
+                            {% form.pendidikan %}
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Aktivitas Utama</strong>
-                    </label>
-                    {{ form.aktivitas_utama }}
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Apakah Anda bekerja bagi seseorang untuk aktivitas utama di atas?</strong>
-                    </label>
-                    <div class="form-check">
-                        {{ form.aktivitas_untuk_seseorang }}
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Status Pekerjaan</strong>
+                        </label>
+                        <div class="form-check">
+                            {% form.status_pekerjaan %}
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Rata-rata Pengeluaran</strong>
-                    </label>
-                    <div class="form-check">
-                        {{ form.rata_pengeluaran }}
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Aktivitas Utama</strong>
+                        </label>
+                        <select class="form-select w-100" name="aktivitas_utama" aria-label="Default select example">
+                            <option value="" selected disabled>--- Pilih Aktivitas Utama ---</option>
+                            {% for choice in form.aktivitas_utama %}
+                                {% choice %}
+                            {% endfor %}
+                        </select>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Status Perkawinan</strong>
-                    </label>
-                    <div class="form-check">
-                        {{ form.status_perkawinan }}
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Apakah Anda bekerja bagi seseorang untuk aktivitas utama di atas?</strong>
+                        </label>
+                        <div class="form-check">
+                            {% form.aktivitas_untuk_seseorang %}
+                        </div>
                     </div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Jumlah Anak Anda</strong>
-                    </label>
-                    {{ form.jumlah_anak }}
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Jumlah Anak Anda yang masih Sekolah/Kuliah</strong>
-                    </label>
-                    {{ form.jumlah_anak_sekolah }}
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Jenis Rekening</strong>
-                    </label>
-                    {{ form.jenis_rekening }}
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">
-                        <strong>Nomor Rekening (sesuai yang Anda pilih di Jenis Rekening)</strong>
-                    </label>
-                    {{ form.no_rekening }}
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Rata-rata Pengeluaran</strong>
+                        </label>
+                        <div class="form-check">
+                            {% form.rata_pengeluaran %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Status Perkawinan</strong>
+                        </label>
+                        <div class="form-check">
+                            {% form.status_perkawinan %}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Jumlah Anak Anda</strong>
+                        </label>
+                        {% form.jumlah_anak %}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">
+                            <strong>Jumlah Anak Anda yang masih Sekolah/Kuliah</strong>
+                        </label>
+                        {% form.jumlah_anak_sekolah %}
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label class="form-label">
+                                <strong>Jenis Rekening</strong>
+                            </label>
+                            <select class="form-select w-100" name="jenis_rekening" aria-label="Default select example">
+                                <option value="" selected disabled>--- Pilih Jenis Rekening ---</option>
+                                {% for choice in form.jenis_rekening %}
+                                    {% choice %}
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label class="form-label">
+                                <strong>No. Rekening/E-Wallet</strong>
+                            </label>
+                            {% form.no_rekening %}
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
         <div class="d-flex justify-content-between bg-light sticky-bottom shadow p-3">

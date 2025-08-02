@@ -16,4 +16,8 @@ class BeforeInfo(Page):
     pass
 
 
-page_sequence = [Welcome_Experiment, Instruction_Page, BeforeInfo]
+class DemoPractice(Page):
+    pass
+
+
+page_sequence = [Welcome_Experiment, Instruction_Page, BeforeInfo, DemoPractice]
