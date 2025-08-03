@@ -18,9 +18,12 @@ class PaymentSelection(Page):
     form_fields = ['kode_peserta']
 
     def vars_for_template(self):
-        return dict(
-            total_pembayaran=self.player.final_payment + self.player.uang_kehadiran
-        )
+        return {
+            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", "."),
+            'formatted_uang_kehadiran': "Rp. {:,}".format(self.player.uang_kehadiran).replace(",", "."),
+            'total_pembayaran':
+                "Rp. {:,}".format(self.player.final_payment + self.player.uang_kehadiran).replace(",", ".")
+        }
 
     def before_next_page(self):
         player = self.player
@@ -28,7 +31,13 @@ class PaymentSelection(Page):
 
 
 class PaymentThanks(Page):
-    pass
+    def vars_for_template(self):
+        return {
+            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", "."),
+            'formatted_uang_kehadiran': "Rp. {:,}".format(self.player.uang_kehadiran).replace(",", "."),
+            'total_pembayaran':
+                "Rp. {:,}".format(self.player.final_payment + self.player.uang_kehadiran).replace(",", ".")
+        }
 
 
 page_sequence = [

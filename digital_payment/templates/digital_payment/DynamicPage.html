@@ -20,7 +20,6 @@
 {% block title  %}
     <title>Digital Payment Experiment</title>
 {% endblock %}
-
 {% block style %}
 <style>
 /* Highlight garis tengah slot */
@@ -741,7 +740,7 @@
                                     <div class="card-header">
                                         <h6 class="m-0">Putar & Dapatkan keuntungannya!</h6>
                                     </div>
-                                    <div class="card-body position-relative overflow-hidden" id="app">
+                                    <div class="card-body position-relative overflow-hidden">
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead class="fs-5">
@@ -1922,34 +1921,7 @@
             });
         }
 
-
-
-        function backendInvestasitinggi() {
-            liveRecv = function (data) {
-              if (data.status === "error") {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Gagal',
-                  text: data.message
-                }).then(() => {
-                    showForm('all_investasi');
-                });
-              }
-
-              const tableBody = document.querySelector('#investasi_tinggi_history');
-              const row = document.createElement('tr');
-              row.innerHTML = `
-                <td>${data.round_number}</td>
-                <td>Rp${parseInt(data.jumlah).toLocaleString('id-ID')}</td>
-                <td>Rp${parseInt(data.hasil).toLocaleString('id-ID')}</td>
-                <td>${data.status}</td>
-                {# <td>${data.untung_rugi >= 0 ? '+' : ''}Rp${parseInt(data.untung_rugi).toLocaleString('id-ID')}</td>#}
-              `;
-              tableBody.prepend(row); // tampilkan yang terbaru di atas
-            };
-        }
-
-        (function () {
+(function () {
           const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
           const doors = document.querySelectorAll('.door');
           const spinBtn = document.querySelector('#spinner');
@@ -2107,6 +2079,8 @@
 
           resetSlot();
         })();
+
+
 
 
 

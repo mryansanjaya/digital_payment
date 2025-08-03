@@ -17,42 +17,27 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}
 
-{% block title  %}
-    <title>Proses Pembayaran</title>
+{% block title %}
+    <title>Eksperimen telah berakhir</title>
 {% endblock %}
 
 {% block content %}
-     <div class="container p-0">
+    <div class="container p-0">
         <div class="card">
             <div class="card-header">
-                <h4 class="m-0">
-                    Hasil Pembayaran Anda
-                </h4>
+                <h5 class="m-0">Eksperimen Telah Berakhir</h5>
             </div>
             <div class="card-body">
-                <div class="table-reponsive">
-                    <table class="table table-responsive">
-                        <thead>
-                            <th>Ronde yang terpilih</th>
-                            <th>Pembayaran Ronde</th>
-                            <th>Uang Kehadiran</th>
-                            <th>Total Pembayaran</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Ronde {% player.selected_round %}</td>
-                                <td>{% formatted_final_payment %}</td>
-                                <td>{% formatted_uang_kehadiran %}</td>
-                                <td>{% total_pembayaran %}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <label>Masukkan Kode Peserta Anda:</label>
-                <input type="text" name="kode_peserta" class="form-control" required>
+                <p class="m-0">
+                    Selamat Anda telah menyelesaikan eksperimen. Jangan beranjak dari tempat Anda ya, karena Anda akan
+                    diarahkan menuju ke halaman Pembayaran untuk mendapatkan hasil pembayaran dari eksperimen yang telah
+                    Anda lakukan. Silahkan klik "Lanjut".
+                </p>
             </div>
             <div class="card-footer">
-                <button class="btn btn-success" type="submit">Selesaikan Pembayaran</button>
+                <button type="submit" class="btn btn-success">
+                    Lanjut
+                </button>
             </div>
         </div>
     </div>

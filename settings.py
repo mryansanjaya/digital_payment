@@ -6,8 +6,7 @@ SESSION_CONFIGS = [
         'name': 'digital_payment',
         'display_name': "Digital Payment Experiment",
         'num_demo_participants': 1,
-        # 'app_sequence': ['welcome_instructions', 'digital_payment', 'payment_page'],
-        'app_sequence': ['digital_payment', 'payment_page'],
+        'app_sequence': ['welcome_instructions', 'digital_payment', 'payment_page'],
     }
 ]
 
@@ -45,6 +44,7 @@ ROOMS = [
     dict(name='live_demo', display_name='Room for live demo (no participant labels)'),
 ]
 
+USE_LIVE_RELOAD = True
 DEBUG = True
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable

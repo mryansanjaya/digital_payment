@@ -4,12 +4,12 @@ import json
 import datetime
 
 doc = """
-Digital Payment Experiment
+Digital Payment Experiment - Practice Session
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'digital_payment'
+    NAME_IN_URL = 'digital_payment_practice'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 3
 
@@ -78,7 +78,7 @@ class C(BaseConstants):
     ]
 
     # Item untuk Mesin Slot
-    SLOT_ITEMS = ['🍎', '🍌', '🍇', '🍉', '🍍', '🍓', '🍒', '🥝']
+    SLOT_ITEMS = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
 
 
 class Subsession(BaseSubsession):
@@ -90,6 +90,9 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
+    taruhan_slot = models.IntegerField(initial=0)
+    hasil_slot = models.StringField()
+    simbol_slot = models.LongStringField()
     final_payment = models.IntegerField(initial=0, blank=True)
     sisa_uang = models.IntegerField(initial=0, blank=True)
     endowment = models.IntegerField(initial=0)
