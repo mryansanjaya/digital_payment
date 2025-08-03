@@ -20,59 +20,7 @@
 {% block title  %}
     <title>Digital Payment Experiment</title>
 {% endblock %}
-{% block style %}
-<style>
-/* Highlight garis tengah slot */
-.highlight-bar {
-    position: absolute;
-    top: 50%; /* posisikan vertikal di tengah */
-    transform: translateY(-50%);
-    height: 110px; /* tinggi 1 box */
-    width: calc(80px * 5); /* 5 kolom + 4x margin antar kolom */
-    border: 4px solid red;
-    border-radius: 10px;
-    pointer-events: none;
-    z-index: 10;
-    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
-}
 
-.doors {
-  display: flex;
-}
-
-.door {
-  background: #fafafa;
-  width: 100px;
-  height: 330px; /* 110px * 3 kotak */
-  overflow: hidden;
-  border-radius: 5px;
-  margin: 5px;
-}
-
-
-.boxes {
-  transition: transform 1s ease-in-out;
-}
-
-.box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 3rem;
-  width: 100px;
-  height: 110px; /* tinggi 1 kotak */
-}
-
-.box .tengah {
-  border: 3px solid gold;
-  border-radius: 8px;
-  box-shadow: 0 0 10px gold;
-  background-color: #fffbe6;
-  z-index: 2;
-}
-
-</style>
-{% endblock %}
 {% block content %}
     <ul class="nav nav-tabs bg-light sticky-top" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
@@ -755,48 +703,101 @@
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="doors mb-3">
-                                            <div class="door">
-                                                <div class="boxes">
-                                                    <div class="box"></div>
+                                        <div id="app">
+                                            <div class="doors">
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="door">
-                                                <div class="boxes">
-                                                    <div class="box"></div>
+                                            <div class="doors border border-3 border-danger">
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="door">
-                                                <div class="boxes">
-                                                    <div class="box"></div>
+                                            <div class="doors">
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="door">
-                                                <div class="boxes">
-                                                    <div class="box"></div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="door">
-                                                <div class="boxes">
-                                                    <div class="box"></div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
+                                                </div>
+                                                <div class="door">
+                                                    <div class="boxes">
+                                                        <!-- <div class="box">?</div> -->
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="highlight-bar"></div>
-                                        <div>
-                                            <label for="id_highinvest" class="form-label fw-bold">
-                                                Masukkan jumlah yang ingin Anda invetastikan
-                                            </label>
-                                            <input type="number" name="highinvest" id="id_highinvest"
-                                                   class="form-control" min="0" step="1">
-                                        </div>
+                                        <label for="id_highinvest" class="form-label fw-bold">
+                                            Masukkan jumlah yang ingin Anda invetastikan
+                                        </label>
+                                        <input type="number" name="highinvest" id="id_highinvest"
+                                            class="form-control" min="0" step="1">
                                     </div>
                                     <div class="card-footer text-center">
                                         <button type="button" class="btn btn-success" id="spinner">
                                             <i class="fa-solid fa-circle-dollar-to-slot"></i>
                                             <span>Putar</span>
                                         </button>
-                                        <button type="button" class="btn btn-danger" id="resetter" disabled>
+                                        <button type="button" class="btn btn-danger" id="resetter">
                                             <i class="fa-solid fa-rotate-right"></i>
                                             <span>Reset</span>
                                         </button>
@@ -1003,6 +1004,231 @@
         </div>
     </div>
     <script>
+        (function () {
+            const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
+            const doors = document.querySelectorAll('.door');
+
+            document.querySelector('#spinner').addEventListener('click', spin);
+            document.querySelector('#resetter').addEventListener('click', () => {
+                document.querySelector('.doors').dataset.winningSymbol = "";
+                init();
+            });
+
+            // function init(firstInit = true, groups = 1, duration = 1) {
+            //     function shuffle([...arr]) {
+            //         let m = arr.length;
+            //         while (m) {
+            //             const i = Math.floor(Math.random() * m--);
+            //             [arr[m], arr[i]] = [arr[i], arr[m]];
+            //         }
+            //         return arr;
+            //     }
+            //
+            //     for (const door of doors) {
+            //         if (firstInit) {
+            //             door.dataset.spinned = '0';
+            //         }
+            //         else if (door.dataset.spinned === '1') {
+            //             return;
+            //         }
+            //
+            //         const boxes = door.querySelector('.boxes');
+            //         const boxesClone = boxes.cloneNode(false);
+            //         const pool = ['❓'];
+            //
+            //         if (!firstInit) {
+            //             const arr = [];
+            //             for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
+            //                 arr.push(...items);
+            //             }
+            //             pool.push(...shuffle(arr));
+            //
+            //             boxesClone.addEventListener(
+            //                 'transitionstart',
+            //                 function () {
+            //                     door.dataset.spinned = '1';
+            //                         this.querySelectorAll('.box').forEach((box) => {
+            //                             box.style.filter = 'blur(1px)';
+            //                         });
+            //                     },
+            //                 { once: true }
+            //             );
+            //
+            //             boxesClone.addEventListener(
+            //                 'transitionend',
+            //                 function () {
+            //                     this.querySelectorAll('.box').forEach((box, index) => {
+            //                         box.style.filter = 'blur(0)';
+            //                         if (index > 0) this.removeChild(box);
+            //                     });
+            //                 },
+            //                 { once: true }
+            //             );
+            //         }
+            //
+            //         for (let i = pool.length - 1; i >= 0; i--) {
+            //             const box = document.createElement('div');
+            //             box.classList.add('box');
+            //             box.style.width = door.clientWidth + 'px';
+            //             box.style.height = door.clientHeight + 'px';
+            //             box.textContent = pool[i];
+            //             boxesClone.appendChild(box);
+            //         }
+            //
+            //         boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
+            //         boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
+            //         door.replaceChild(boxesClone, boxes);
+            //     }
+            // }
+
+            function init(firstInit = true, groups = 1, duration = 1) {
+                function shuffle([...arr]) {
+                    let m = arr.length;
+                    while (m) {
+                        const i = Math.floor(Math.random() * m--);
+                        [arr[m], arr[i]] = [arr[i], arr[m]];
+                    }
+                    return arr;
+                }
+    const isWin = !firstInit && Math.random() < 0.4; // 80% peluang menang
+
+    for (let i = 0; i < doors.length; i++) {
+        const door = doors[i];
+
+        if (firstInit) {
+            door.dataset.spinned = '0';
+        } else if (door.dataset.spinned === '1') {
+            continue;
+        }
+
+        const boxes = door.querySelector('.boxes');
+        const boxesClone = boxes.cloneNode(false);
+        const pool = ['❓'];
+
+        // Jika bukan init pertama, tentukan hasilnya:
+        if (!firstInit) {
+            const arr = [];
+            if (isWin && i >= 5 && i < 10) {
+    // baris tengah → atur agar ada 3 simbol sama berurutan
+    if (!document.querySelector('.doors').dataset.winningSymbol) {
+        const winningSymbol = items[Math.floor(Math.random() * items.length)];
+        document.querySelector('.doors').dataset.winningSymbol = winningSymbol;
+    }
+
+    const forcedSymbol = document.querySelector('.doors').dataset.winningSymbol;
+
+    const baseIndex = i - 5;
+    if (baseIndex <= 2) {
+        // isi dengan 10 item supaya animasi tetap lancar
+        for (let j = 0; j < 10; j++) {
+            pool.push(forcedSymbol);
+        }
+    } else {
+        for (let j = 0; j < 10; j++) {
+            pool.push(items[Math.floor(Math.random() * items.length)]);
+        }
+    }
+            } else {
+                // Acak biasa
+                for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
+                    arr.push(...items);
+                }
+                pool.push(...shuffle(arr));
+            }
+
+            boxesClone.addEventListener(
+                'transitionstart',
+                function () {
+                    door.dataset.spinned = '1';
+                    this.querySelectorAll('.box').forEach((box) => {
+                        box.style.filter = 'blur(1px)';
+                    });
+                },
+                { once: true }
+            );
+
+            boxesClone.addEventListener(
+                'transitionend',
+                function () {
+                    this.querySelectorAll('.box').forEach((box, index) => {
+                        box.style.filter = 'blur(0)';
+                        if (index > 0) this.removeChild(box);
+                    });
+                },
+                { once: true }
+            );
+        }
+
+        for (let i = pool.length - 1; i >= 0; i--) {
+            const box = document.createElement('div');
+            box.classList.add('box');
+            box.style.width = door.clientWidth + 'px';
+            box.style.height = door.clientHeight + 'px';
+            box.textContent = pool[i];
+            boxesClone.appendChild(box);
+        }
+
+        boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
+        boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
+        door.replaceChild(boxesClone, boxes);
+    }
+}
+
+
+            async function spin() {
+    init(false, 1, 2);
+    for (const door of doors) {
+        const boxes = door.querySelector('.boxes');
+        const duration = parseInt(boxes.style.transitionDuration);
+        boxes.style.transform = 'translateY(0)';
+        await new Promise((resolve) => setTimeout(resolve, duration * 100));
+    }
+
+    // Setelah animasi selesai, ambil hasil dari 5 box di tengah (doors ke-6 sampai ke-10)
+    const middleBoxes = Array.from(doors)
+        .slice(5, 10)
+        .map(door => door.querySelector('.boxes .box').textContent);
+
+    // Cek kemenangan: 3 simbol berurutan sama (posisi 0-1-2, 1-2-3, atau 2-3-4)
+    let isWinner = false;
+    for (let i = 0; i <= 2; i++) {
+        if (
+            middleBoxes[i] === middleBoxes[i + 1] &&
+            middleBoxes[i] === middleBoxes[i + 2]
+        ) {
+            isWinner = true;
+            break;
+        }
+    }
+
+    if (isWinner) {
+        alert("🎉 Selamat! Anda menang!");
+        // Optional: Tambah logika update saldo, dll
+    } else {
+        alert("💸 Coba lagi. Anda belum menang.");
+    }
+
+    liveSend({
+    jenis: 'investasi_tinggi',
+    jumlah: jumlahYangDiinputUser,
+    menang: isWin, // true/false dari hasil spin
+    simbol_kemenangan: isWin ? symbolYangMenang : null
+});
+}
+
+
+            init();
+        })();
+
+
+
+
+
+
+
+
+
+
         // Data produk dari server
             const produk_riil_list = {{ produk_riil_list|safe }}
             const produk_digital_list = {{ produk_digital_list|safe }}
@@ -1920,166 +2146,6 @@
                 tbody.appendChild(row);
             });
         }
-
-(function () {
-          const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑'];
-          const doors = document.querySelectorAll('.door');
-          const spinBtn = document.querySelector('#spinner');
-          const resetBtn = document.querySelector('#resetter');
-          const inputUang = document.querySelector('#id_highinvest');
-
-          spinBtn.addEventListener('click', spin);
-          resetBtn.addEventListener('click', resetSlot);
-
-          function setButtonState(spinEnabled, resetEnabled) {
-            spinBtn.disabled = !spinEnabled;
-            resetBtn.disabled = !resetEnabled;
-          }
-
-          function resetSlot() {
-            for (const door of doors) {
-              const boxes = door.querySelector('.boxes');
-              boxes.innerHTML = '';
-
-              for (let i = 0; i < 3; i++) {
-                const box = document.createElement('div');
-                box.classList.add('box');
-                box.textContent = '❓';
-                boxes.appendChild(box);
-              }
-
-              boxes.style.transition = 'none';
-              boxes.style.transform = 'translateY(0)';
-            }
-
-            inputUang.value = '';
-            setButtonState(true, false);
-          }
-
-          function init(groups = 3, duration = 1) {
-              const spinAnimationLength = 10;
-                const visibleCount = 3;
-
-                for (let d = 0; d < doors.length; d++) {
-                  const door = doors[d];
-                  const boxes = door.querySelector('.boxes');
-                  const boxesClone = boxes.cloneNode(false);
-
-                  const pool = [];
-
-                  // Random spinning
-                  for (let i = 0; i < spinAnimationLength; i++) {
-                    pool.push(items[Math.floor(Math.random() * items.length)]);
-                  }
-
-                  let finalSymbols = [];
-
-                  const middle = finalSymbols[d];
-                  pool.push(items[Math.floor(Math.random() * items.length)]); // atas
-                    pool.push(items[Math.floor(Math.random() * items.length)]); // atas
-                  {#pool.push(middle); // tengah#}
-                  pool.push(items[Math.floor(Math.random() * items.length)]); // bawah
-
-                  for (let i = 0; i < pool.length; i++) {
-                    const box = document.createElement('div');
-                    box.classList.add('box');
-                    box.textContent = pool[i];
-                    boxesClone.appendChild(box);
-                  }
-
-                  const scrollTo = 110 * (pool.length - visibleCount);
-                  boxesClone.style.transition = `transform ${duration}s ease-in-out`;
-                  boxesClone.style.transform = `translateY(-${scrollTo}px)`;
-                  door.replaceChild(boxesClone, boxes);
-                }
-            }
-
-
-
-          function spin() {
-          const inputUang = document.querySelector('#id_highinvest');
-          const uangDialokasikan = parseInt(inputUang.value);
-
-          if (!uangDialokasikan || uangDialokasikan <= 0) {
-            Swal.fire({
-              icon: 'warning',
-              title: 'Oopps!',
-              text: 'Anda harus mengalokasikan uang sebelum memulai investasi.',
-              confirmButtonText: 'OK'
-            });
-            return;
-          }
-
-          const groups = 3;
-          const duration = 2.5;
-          setButtonState(false, false);
-          init(groups, duration);
-
-          // animasi putar
-          doors.forEach((door) => void door.querySelector('.boxes').offsetHeight);
-          doors.forEach((door, i) => {
-            const boxes = door.querySelector('.boxes');
-            const delay = i * 300;
-            setTimeout(() => {
-              boxes.style.transform = 'translateY(0)';
-            }, delay);
-          });
-
-          const totalDelay = duration * 1000 + doors.length * 300 + 500;
-          setTimeout(() => {
-            let menang = false;
-
-            for (let i = 0; i <= finalSymbols.length - 3; i++) {
-              const a = finalSymbols[i];
-              const b = finalSymbols[i + 1];
-              const c = finalSymbols[i + 2];
-              if (a === b && b === c) {
-                menang = true;
-                break;
-              }
-            }
-
-            const multiplier = menang ? 2 : 0;
-            const hasil = uangDialokasikan * multiplier;
-
-            Swal.fire({
-              icon: menang ? "success" : "error",
-              title: menang ? "MENANG" : "KALAH",
-              html: `
-                <p>Baris Tengah: ${finalSymbols.join(" ")}</p>
-                <p>Multiplier: ${multiplier}x</p>
-                <hr>
-                <p><strong>Alokasi: Rp${uangDialokasikan.toLocaleString('id-ID')}</strong></p>
-                <p><strong>Hasil: Rp${hasil.toLocaleString('id-ID')}</strong></p>
-              `,
-              confirmButtonText: "OK"
-            }).then(() => {
-                backendInvestasitinggi();
-
-                // Kirim hasil ke server oTree
-                liveSend({
-                  jenis: 'investasi_tinggi',
-                  jumlah: uangDialokasikan
-                });
-            });
-
-            setButtonState(false, true);
-          }, totalDelay);
-        }
-
-
-          function shuffle(arr) {
-            let m = arr.length;
-            while (m) {
-              const i = Math.floor(Math.random() * m--);
-              [arr[m], arr[i]] = [arr[i], arr[m]];
-            }
-            return arr;
-          }
-
-          resetSlot();
-        })();
-
 
 
 

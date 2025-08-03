@@ -304,46 +304,70 @@ class Player(BasePlayer):
             }
 
         elif jenis == "investasi_tinggi":
+
             jumlah = float(data.get("jumlah", 0))
+
+            menang = data.get("menang", False)
 
             if jumlah <= 0:
                 return {player.id_in_group: dict(status="error", message="Jumlah tidak valid")}
 
-            # Penentuan hasil di backend
-            peluang = random.random()
-            if peluang <= 0.25:
+            if menang:
+
                 hasil = int(round(jumlah * 2))
+
                 status = 'untung'
+
             else:
+
                 hasil = 0
+
                 status = 'rugi'
 
             # Simpan ke history
+
             history = json.loads(player.history_highinvest or "[]")
+
             history.append({
+
                 "jumlah": int(jumlah),
+
                 "hasil": hasil,
+
                 "status": status,
+
                 "round_number": player.round_number
+
             })
 
             player.history_highinvest = json.dumps(history)
 
-            # Update saldo
+            # Update saldo digital
+
             if status == 'untung':
+
                 player.saldo_digital += hasil
+
             else:
+
                 player.saldo_digital -= int(jumlah)
 
             player.hitung_utilitas()
 
             return {
+
                 player.id_in_group: dict(
+
                     status=status,
+
                     hasil=hasil,
+
                     jumlah=jumlah,
+
                     saldo_digital=player.saldo_digital
+
                 )
+
             }
 
         elif jenis == "minta_rekap":
