@@ -674,7 +674,7 @@
                 </div>
             </div>
 
-            <!-- INVESTASI RISIKO RENDAH -->
+            <!-- INVESTASI RISIKO TINGGI -->
             <div id="investasi_tinggi" style="display: none;">
                 <div class="card">
                     <div class="card-header d-flex flex-row justify-content-between align-items-center">
@@ -1004,231 +1004,6 @@
         </div>
     </div>
     <script>
-        (function () {
-            const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
-            const doors = document.querySelectorAll('.door');
-
-            document.querySelector('#spinner').addEventListener('click', spin);
-            document.querySelector('#resetter').addEventListener('click', () => {
-                document.querySelector('.doors').dataset.winningSymbol = "";
-                init();
-            });
-
-            // function init(firstInit = true, groups = 1, duration = 1) {
-            //     function shuffle([...arr]) {
-            //         let m = arr.length;
-            //         while (m) {
-            //             const i = Math.floor(Math.random() * m--);
-            //             [arr[m], arr[i]] = [arr[i], arr[m]];
-            //         }
-            //         return arr;
-            //     }
-            //
-            //     for (const door of doors) {
-            //         if (firstInit) {
-            //             door.dataset.spinned = '0';
-            //         }
-            //         else if (door.dataset.spinned === '1') {
-            //             return;
-            //         }
-            //
-            //         const boxes = door.querySelector('.boxes');
-            //         const boxesClone = boxes.cloneNode(false);
-            //         const pool = ['❓'];
-            //
-            //         if (!firstInit) {
-            //             const arr = [];
-            //             for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
-            //                 arr.push(...items);
-            //             }
-            //             pool.push(...shuffle(arr));
-            //
-            //             boxesClone.addEventListener(
-            //                 'transitionstart',
-            //                 function () {
-            //                     door.dataset.spinned = '1';
-            //                         this.querySelectorAll('.box').forEach((box) => {
-            //                             box.style.filter = 'blur(1px)';
-            //                         });
-            //                     },
-            //                 { once: true }
-            //             );
-            //
-            //             boxesClone.addEventListener(
-            //                 'transitionend',
-            //                 function () {
-            //                     this.querySelectorAll('.box').forEach((box, index) => {
-            //                         box.style.filter = 'blur(0)';
-            //                         if (index > 0) this.removeChild(box);
-            //                     });
-            //                 },
-            //                 { once: true }
-            //             );
-            //         }
-            //
-            //         for (let i = pool.length - 1; i >= 0; i--) {
-            //             const box = document.createElement('div');
-            //             box.classList.add('box');
-            //             box.style.width = door.clientWidth + 'px';
-            //             box.style.height = door.clientHeight + 'px';
-            //             box.textContent = pool[i];
-            //             boxesClone.appendChild(box);
-            //         }
-            //
-            //         boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
-            //         boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
-            //         door.replaceChild(boxesClone, boxes);
-            //     }
-            // }
-
-            function init(firstInit = true, groups = 1, duration = 1) {
-                function shuffle([...arr]) {
-                    let m = arr.length;
-                    while (m) {
-                        const i = Math.floor(Math.random() * m--);
-                        [arr[m], arr[i]] = [arr[i], arr[m]];
-                    }
-                    return arr;
-                }
-    const isWin = !firstInit && Math.random() < 0.8; // 80% peluang menang
-
-    for (let i = 0; i < doors.length; i++) {
-        const door = doors[i];
-
-        if (firstInit) {
-            door.dataset.spinned = '0';
-        } else if (door.dataset.spinned === '1') {
-            continue;
-        }
-
-        const boxes = door.querySelector('.boxes');
-        const boxesClone = boxes.cloneNode(false);
-        const pool = ['❓'];
-
-        // Jika bukan init pertama, tentukan hasilnya:
-        if (!firstInit) {
-            const arr = [];
-            if (isWin && i >= 5 && i < 10) {
-    // baris tengah → atur agar ada 3 simbol sama berurutan
-    if (!document.querySelector('.doors').dataset.winningSymbol) {
-        const winningSymbol = items[Math.floor(Math.random() * items.length)];
-        document.querySelector('.doors').dataset.winningSymbol = winningSymbol;
-    }
-
-    const forcedSymbol = document.querySelector('.doors').dataset.winningSymbol;
-
-    const baseIndex = i - 5;
-    if (baseIndex <= 2) {
-        // isi dengan 10 item supaya animasi tetap lancar
-        for (let j = 0; j < 10; j++) {
-            pool.push(forcedSymbol);
-        }
-    } else {
-        for (let j = 0; j < 10; j++) {
-            pool.push(items[Math.floor(Math.random() * items.length)]);
-        }
-    }
-            } else {
-                // Acak biasa
-                for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
-                    arr.push(...items);
-                }
-                pool.push(...shuffle(arr));
-            }
-
-            boxesClone.addEventListener(
-                'transitionstart',
-                function () {
-                    door.dataset.spinned = '1';
-                    this.querySelectorAll('.box').forEach((box) => {
-                        box.style.filter = 'blur(1px)';
-                    });
-                },
-                { once: true }
-            );
-
-            boxesClone.addEventListener(
-                'transitionend',
-                function () {
-                    this.querySelectorAll('.box').forEach((box, index) => {
-                        box.style.filter = 'blur(0)';
-                        if (index > 0) this.removeChild(box);
-                    });
-                },
-                { once: true }
-            );
-        }
-
-        for (let i = pool.length - 1; i >= 0; i--) {
-            const box = document.createElement('div');
-            box.classList.add('box');
-            box.style.width = door.clientWidth + 'px';
-            box.style.height = door.clientHeight + 'px';
-            box.textContent = pool[i];
-            boxesClone.appendChild(box);
-        }
-
-        boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
-        boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
-        door.replaceChild(boxesClone, boxes);
-    }
-}
-
-
-            async function spin() {
-    init(false, 1, 2);
-    for (const door of doors) {
-        const boxes = door.querySelector('.boxes');
-        const duration = parseInt(boxes.style.transitionDuration);
-        boxes.style.transform = 'translateY(0)';
-        await new Promise((resolve) => setTimeout(resolve, duration * 100));
-    }
-
-    // Setelah animasi selesai, ambil hasil dari 5 box di tengah (doors ke-6 sampai ke-10)
-    const middleBoxes = Array.from(doors)
-        .slice(5, 10)
-        .map(door => door.querySelector('.boxes .box').textContent);
-
-    // Cek kemenangan: 3 simbol berurutan sama (posisi 0-1-2, 1-2-3, atau 2-3-4)
-    let isWinner = false;
-    for (let i = 0; i <= 2; i++) {
-        if (
-            middleBoxes[i] === middleBoxes[i + 1] &&
-            middleBoxes[i] === middleBoxes[i + 2]
-        ) {
-            isWinner = true;
-            break;
-        }
-    }
-
-    if (isWinner) {
-        alert("🎉 Selamat! Anda menang!");
-        // Optional: Tambah logika update saldo, dll
-    } else {
-        alert("💸 Coba lagi. Anda belum menang.");
-    }
-
-    liveSend({
-    jenis: 'investasi_tinggi',
-    jumlah: jumlahYangDiinputUser,
-    menang: isWin, // true/false dari hasil spin
-    simbol_kemenangan: isWin ? symbolYangMenang : null
-});
-}
-
-
-            init();
-        })();
-
-
-
-
-
-
-
-
-
-
         // Data produk dari server
             const produk_riil_list = {{ produk_riil_list|safe }}
             const produk_digital_list = {{ produk_digital_list|safe }}
@@ -2047,85 +1822,85 @@
         // Akhir Source Code - JavaScript untuk Pasar Digital
 
         // JavaScript untuk Investasi Resiko Rendah
-        function tampilkanHistoryInvestasiRendah(historyJson) {
-            const tbody = document.querySelector("#investasi_rendah_history");
-            tbody.innerHTML = "";
+            function tampilkanHistoryInvestasiRendah(historyJson) {
+                const tbody = document.querySelector("#investasi_rendah_history");
+                tbody.innerHTML = "";
 
-            const history = JSON.parse(historyJson);
-            if (history.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
-                return;
-            }
-
-            history.forEach((item, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
-                    <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
-                    <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
-
-        function backendLowInvest() {
-            liveRecv = function (data) {
-                const hasil = data.hasil;
-
-                if (data.status === 'untung') {
-                    UpdateSaldoAll(data);
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Investasi Anda Menguntungkan',
-                        html: `
-                            Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
-                        `
-                    }).then(() => {
-                        document.getElementById('id_lowinvest').value = '';
-                        showForm('investasi_rendah');
-                    });
+                const history = JSON.parse(historyJson);
+                if (history.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
+                    return;
                 }
 
-                else if (data.status === 'rugi') {
-                    UpdateSaldoAll(data);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Investasi Anda Merugi',
-                        html: `
-                            Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
-                        `
-                    }).then(() => {
-                        document.getElementById('id_lowinvest').value = '';
-                        showForm('investasi_rendah');
-                    });
-                }
-            };
-        }
-
-        function submitInvestasiRendah() {
-            const input = document.getElementById('id_lowinvest');
-            const jumlah = parseFloat(input.value);
-
-            if (isNaN(jumlah) || jumlah <= 0) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Jumlah tidak valid',
-                    text: 'Masukkan jumlah yang ingin Anda investasikan.',
+                history.forEach((item, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
+                        <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
+                        <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+                    `;
+                    tbody.appendChild(row);
                 });
-                return;
             }
 
-            backendLowInvest();
+            function backendLowInvest() {
+                liveRecv = function (data) {
+                    const hasil = data.hasil;
 
-            // Kirim data ke backend menggunakan liveSend
-            liveSend({
-                jenis: 'investasi_rendah',
-                jumlah: jumlah
-            });
-        }
+                    if (data.status === 'untung') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Investasi Anda Menguntungkan',
+                            html: `
+                                Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
+                            `
+                        }).then(() => {
+                            document.getElementById('id_lowinvest').value = '';
+                            showForm('investasi_rendah');
+                        });
+                    }
+
+                    else if (data.status === 'rugi') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Investasi Anda Merugi',
+                            html: `
+                                Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
+                            `
+                        }).then(() => {
+                            document.getElementById('id_lowinvest').value = '';
+                            showForm('investasi_rendah');
+                        });
+                    }
+                };
+            }
+
+            function submitInvestasiRendah() {
+                const input = document.getElementById('id_lowinvest');
+                const jumlah = parseFloat(input.value);
+
+                if (isNaN(jumlah) || jumlah <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Jumlah tidak valid',
+                        text: 'Masukkan jumlah yang ingin Anda investasikan.',
+                    });
+                    return;
+                }
+
+                backendLowInvest();
+
+                // Kirim data ke backend menggunakan liveSend
+                liveSend({
+                    jenis: 'investasi_rendah',
+                    jumlah: jumlah
+                });
+            }
         // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
-        function tampilkanHistoryInvestasiTinggi(historyJson) {
+            function tampilkanHistoryInvestasiTinggi(historyJson) {
             const tbody = document.querySelector("#investasi_tinggi_history");
             tbody.innerHTML = "";
 
@@ -2147,14 +1922,222 @@
             });
         }
 
+            (function () {
+                const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
+                const doors = document.querySelectorAll('.door');
+                const spinBtn = document.getElementById('spinner');
+                const resetBtn = document.getElementById('resetter');
+                const inputInvest = document.getElementById('id_highinvest');
+
+                // Event handler
+                spinBtn.addEventListener('click', spin);
+                resetBtn.addEventListener('click', resetGame);
+                resetBtn.disabled = true
+
+                function resetGame() {
+                    document.querySelector('.doors').dataset.winningSymbol = "";
+                    inputInvest.value = '';
+                    init(true); // reset posisi simbol
+                    spinBtn.disabled = false;
+                    resetBtn.disabled = true;
+                }
+
+                function init(firstInit = true, groups = 1, duration = 1) {
+                    function shuffle([...arr]) {
+                        let m = arr.length;
+                        while (m) {
+                            const i = Math.floor(Math.random() * m--);
+                            [arr[m], arr[i]] = [arr[i], arr[m]];
+                        }
+                        return arr;
+                    }
+
+                    const isWin = !firstInit && Math.random() < 0.8; // 80% peluang menang
+
+                    for (let i = 0; i < doors.length; i++) {
+                        const door = doors[i];
+
+                        if (firstInit) {
+                            door.dataset.spinned = '0';
+                        }
+                        else if (door.dataset.spinned === '1') {
+                            continue;
+                        }
+
+                        const boxes = door.querySelector('.boxes');
+                        const boxesClone = boxes.cloneNode(false);
+                        const pool = ['❓'];
+
+                        // Jika bukan init pertama, tentukan hasilnya:
+                        if (!firstInit) {
+                            const arr = [];
+                            if (isWin && i >= 5 && i < 10) {
+                                // baris tengah → atur agar ada 3 simbol sama berurutan
+                                if (!document.querySelector('.doors').dataset.winningSymbol) {
+                                    const winningSymbol = items[Math.floor(Math.random() * items.length)];
+                                    document.querySelector('.doors').dataset.winningSymbol = winningSymbol;
+                                }
+
+                                const forcedSymbol = document.querySelector('.doors').dataset.winningSymbol;
+                                const baseIndex = i - 5;
+
+                                if (baseIndex <= 2) {
+                                    // isi dengan 10 item supaya animasi tetap lancar
+                                    for (let j = 0; j < 10; j++) {
+                                        pool.push(forcedSymbol);
+                                    }
+                                }
+                                else {
+                                    for (let j = 0; j < 10; j++) {
+                                        pool.push(items[Math.floor(Math.random() * items.length)]);
+                                    }
+                                }
+                            }
+                            else {
+                                // Acak biasa
+                                for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
+                                    arr.push(...items);
+                                }
+
+                                pool.push(...shuffle(arr));
+                            }
+
+                            boxesClone.addEventListener(
+                                'transitionstart',
+                                function () {
+                                    door.dataset.spinned = '1';
+                                    this.querySelectorAll('.box').forEach((box) => {
+                                        box.style.filter = 'blur(1px)';
+                                    });
+                                },
+                                { once: true }
+                            );
+
+                            boxesClone.addEventListener(
+                                'transitionend',
+                                function () {
+                                    this.querySelectorAll('.box').forEach((box, index) => {
+                                        box.style.filter = 'blur(0)';
+                                        if (index > 0) this.removeChild(box);
+                                    });
+                                },
+                                { once: true }
+                            );
+                        }
+
+                        for (let i = pool.length - 1; i >= 0; i--) {
+                            const box = document.createElement('div');
+                            box.classList.add('box');
+                            box.style.width = '98px';
+                            box.style.height = '108px';
+                            box.textContent = pool[i];
+                            boxesClone.appendChild(box);
+                        }
+
+                        boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
+                        boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
+                        door.replaceChild(boxesClone, boxes);
+                    }
+                }
 
 
+                async function spin() {
+                    const jumlah = parseInt(inputInvest.value);
+                    const saldoString = document.querySelector('.saldo_digital_display')?.innerText || '0';
 
+                    // Convert "Rp. 15.000" → 15000
+                    const saldo = parseInt(saldoString.replace(/[^\d]/g, ''));
 
+                    if (isNaN(jumlah) || jumlah <= 0) {
+                        Swal.fire("Perhatian", "Masukkan jumlah investasi", "error");
+                        return;
+                    }
 
+                    if (jumlah > saldo) {
+                        Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
+                        return;
+                    }
 
+                    // Disable semua tombol saat spin
+                    spinBtn.disabled = true;
+                    resetBtn.disabled = true;
 
+                    init(false, 1, 2); // animasi dimulai
 
+                    for (const door of doors) {
+                        const boxes = door.querySelector('.boxes');
+                        const duration = parseInt(boxes.style.transitionDuration);
+                        boxes.style.transform = 'translateY(0)';
+                        await new Promise(resolve => setTimeout(resolve, duration * 100));
+                    }
+
+                    // Cek hasil kemenangan
+                    const middleBoxes = Array.from(doors)
+                        .slice(5, 10)
+                        .map(door => door.querySelector('.boxes .box').textContent);
+
+                    let isWinner = false;
+                    for (let i = 0; i <= 2; i++) {
+                        if (
+                            middleBoxes[i] === middleBoxes[i + 1] &&
+                            middleBoxes[i] === middleBoxes[i + 2]
+                        ) {
+                            isWinner = true;
+                            break;
+                        }
+                    }
+
+                    liveRecv = function (data) {
+                        const jumlah = data.jumlah;
+
+                        if (isWinner && data.status === 'untung') {
+                            UpdateSaldoAll(data);
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'MENANG 🎉',
+                                html: `
+                                    <p>💰 Investasi Awal: Rp ${jumlah.toLocaleString('id-ID')}</p>
+                                    <p>📈 Hasil Akhir: <strong>Rp ${(jumlah * 2).toLocaleString('id-ID')}</strong></p>
+                                `,
+                                confirmButtonText: 'Lanjut',
+                                allowOutsideClick: false
+                            }).then(() => {
+                                document.getElementById('id_highinvest').value = ''
+                                showForm('investasi_tinggi')
+                                document.getElementById('resetter').disabled = false
+                            });
+                        }
+
+                        else if (data.status === 'rugi') {
+                            UpdateSaldoAll(data);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'KALAH 😢',
+                                html: `
+                                    <p>💰 Investasi Awal: Rp ${jumlah.toLocaleString('id-ID')}</p>
+                                    <p>📉 Hasil Akhir: <strong>Rp 0</strong></p>
+                                `,
+                                confirmButtonText: 'Coba Lagi',
+                                allowOutsideClick: false
+                            }).then(() => {
+                                document.getElementById('id_highinvest').value = ''
+                                showForm('investasi_tinggi')
+                                document.getElementById('resetter').disabled = false
+                            });
+                        }
+                    };
+
+                    // Kirim hasil ke oTree
+                    liveSend({
+                        jenis: 'investasi_tinggi',
+                        jumlah: jumlah,
+                        menang: isWinner
+                    });
+
+                    // Jangan aktifkan tombol di sini — biarkan `liveRecv` yang melakukannya
+                }
+                init();
+            })();
         //
         function mintaRekapRonde() {
             // Override liveRecv SEBELUM mengirim liveSend
