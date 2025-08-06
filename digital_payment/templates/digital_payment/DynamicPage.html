@@ -102,28 +102,24 @@
                                             <td id="util_bantuan"></td>
                                         </tr>
                                         <tr>
-                                            <td>Konsumsi Dasar</td>
-                                            <td id="util_konsumsi_dasar"></td>
+                                            <td class="fw-bold text-danger">Konsumsi Dasar</td>
+                                            <td class="fw-bold text-danger" id="util_konsumsi_dasar"></td>
                                         </tr>
                                         <tr>
                                             <td>Total Belanja (Tradisional + Digital)</td>
                                             <td id="util_total_belanja"></td>
                                         </tr>
                                         <tr>
-                                            <td>Total Investasi</td>
+                                            <td>Total Investasi (Risiko Rendah + Risiko Tinggi)</td>
                                             <td id="util_total_invest"></td>
                                         </tr>
-                                        <tr>
-                                            <td>Sisa Uang</td>
+                                        <tr class="fw-bold">
+                                            <td>Sisa Uang Anda</td>
                                             <td id="util_sisa_uang"></td>
                                         </tr>
                                         <tr>
-                                            <td>Utilitas Belanja (Randomisasi)</td>
-                                            <td id="util_utilitas_belanja"></td>
-                                        </tr>
-                                        <tr>
-                                            <td><strong>Final Payment (Total Utilitas)</strong></td>
-                                            <td id="util_final_payment"><strong></strong></td>
+                                            <td>Final Payment Ronde</td>
+                                            <td id="util_final_payment"></td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -196,6 +192,26 @@
                         <span class="badge fs-6 bg-secondary bg-gradient">Ronde: {{ player.round_number }}</span>
                     </div>
                     <div class="card-body">
+                        <div id="tombolProsesRiil" class="alert alert-danger" role="alert"
+                             style="display: none;">
+                            <p class="m-0">
+                                Ada belajaan yang belum dibeli nih di Pasar Tradisional. Silahkan lakukan proses
+                                pembelian belanja Anda.
+                            </p>
+                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaRiil()">
+                                Selesaikan Belanja Anda
+                            </button>
+                        </div>
+                        <div id="tombolProsesDigital" class="alert alert-danger" role="alert"
+                             style="display: none;">
+                            <p class="m-0">
+                                Ada belajaan yang belum dibeli nih di Pasar Digital. Silahkan lakukan proses pembelian
+                                belanja Anda.
+                            </p>
+                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaDigital()">
+                                Selesaikan Belanja Anda
+                            </button>
+                        </div>
                         <div class="alert p-0" role="alert">
                             <div class="d-flex flex-column">
                                 <div class="card">
@@ -226,7 +242,7 @@
                                 <div class="row row-cols-1 row-cols-md-3 g-4">
                                     <div class="col">
                                         <div class="card h-100">
-                                            <img src="{{ static 'img/tradisional.png'}}" class="card-img-top w-100"
+                                            <img src="{% static 'img/tradisional.png'%}" class="card-img-top w-100"
                                                  alt="image">
                                             <div class="card-body">
                                                 <div class="card-title">
@@ -250,7 +266,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="card h-100">
-                                            <img src="{{ static 'img/digital.png'}}" class="card-img-top w-100"
+                                            <img src="{% static 'img/digital.png'%}" class="card-img-top w-100"
                                                  alt="image">
                                             <div class="card-body">
                                                 <div class="card-title">
@@ -275,7 +291,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="card h-100">
-                                            <img src="{{ static 'img/all_invest.png'}}" class="card-img-top w-100"
+                                            <img src="{% static 'img/all_invest.png'%}" class="card-img-top w-100"
                                                  alt="image">
                                             <div class="card-body">
                                                 <div class="card-title">
@@ -300,26 +316,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div id="tombolProsesRiil" class="alert alert-danger" role="alert"
-                             style="display: none;">
-                            <p class="m-0">
-                                Ada belajaan yang belum dibeli nih di Pasar Tradisional. Silahkan lakukan proses
-                                pembelian belanja Anda.
-                            </p>
-                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaRiil()">
-                                Selesaikan Belanja Anda
-                            </button>
-                        </div>
-                        <div id="tombolProsesDigital" class="alert alert-danger" role="alert"
-                             style="display: none;">
-                            <p class="m-0">
-                                Ada belajaan yang belum dibeli nih di Pasar Digital. Silahkan lakukan proses pembelian
-                                belanja Anda.
-                            </p>
-                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaDigital()">
-                                Selesaikan Belanja Anda
-                            </button>
                         </div>
                         <div class="row">
                             <div class="col-sm-6 mb-3 mb-sm-0">
@@ -392,7 +388,7 @@
                         <div class="row row-cols-1 row-cols-md-2 g-4">
                             <div class="col">
                                 <div class="card h-100">
-                                    <img src="{{ static 'img/low_invest.png'}}" class="card-img-top" alt="image">
+                                    <img src="{% static 'img/low_invest.png'%}" class="card-img-top" alt="image">
                                     <div class="card-body">
                                         <div class="card-title">
                                             <h3>Investasi Risiko Rendah</h3>
@@ -415,7 +411,7 @@
                             </div>
                             <div class="col">
                                 <div class="card h-100">
-                                    <img src="{{ static 'img/high_invest.png'}}" class="card-img-top" alt="image">
+                                    <img src="{% static 'img/high_invest.png'%}" class="card-img-top" alt="image">
                                     <div class="card-body">
                                         <div class="card-title">
                                             <h3>Investasi Risiko Tinggi</h3>
@@ -705,85 +701,25 @@
                                         </div>
                                         <div id="app">
                                             <div class="doors">
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
                                             </div>
                                             <div class="doors border border-3 border-danger">
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
                                             </div>
                                             <div class="doors">
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
-                                                <div class="door">
-                                                    <div class="boxes">
-                                                        <!-- <div class="box">?</div> -->
-                                                    </div>
-                                                </div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
                                             </div>
                                         </div>
                                         <label for="id_highinvest" class="form-label fw-bold">
@@ -860,7 +796,7 @@
                                     <div class="card-header">
                                         <h5 class="m-0">Pertukaran Uang 1</h5>
                                     </div>
-                                    <img src="{{ static 'img/tunai_digital.png'}}" class="card-img-top" alt="image">
+                                    <img src="{% static 'img/tunai_digital.png'%}" class="card-img-top" alt="image">
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             Tunai
@@ -884,7 +820,7 @@
                                     <div class="card-header">
                                         <h5 class="m-0">Pertukaran Uang 2</h5>
                                     </div>
-                                    <img src="{{ static 'img/digital_tunai.png'}}" class="card-img-top" alt="image">
+                                    <img src="{% static 'img/digital_tunai.png'%}" class="card-img-top" alt="image">
                                     <div class="card-body">
                                         <h5 class="card-title">
                                             Digital
@@ -1049,119 +985,121 @@
                 }
             }
 
-            function showForm(formIdToShow) {
-            // Hanya elemen-elemen ini yang akan disembunyikan, bukan tab-pane/tab utama
-            const forms = [
-                'menu_utama',
-                'rekap_ronde',
-                'pasar_riil',
-                'result_pasar_riil',
-                'pasar_digital',
-                'result_pasar_digital',
-                'all_investasi',
-                'investasi_rendah',
-                'investasi_tinggi',
-                'pertukaran_uang',
-                'tunai_digital',
-                'digital_tunai'
-            ];
+            function showForm(formIdToShow, callback = null) {
+                const forms = [
+                    'menu_utama',
+                    'rekap_ronde',
+                    'pasar_riil',
+                    'result_pasar_riil',
+                    'pasar_digital',
+                    'result_pasar_digital',
+                    'all_investasi',
+                    'investasi_rendah',
+                    'investasi_tinggi',
+                    'pertukaran_uang',
+                    'tunai_digital',
+                    'digital_tunai'
+                ];
 
-            // Sembunyikan semua sub-formulir
-            forms.forEach(function (formId) {
-                const el = document.getElementById(formId);
-                if (el) el.style.display = 'none';
-            });
-
-            // Tampilkan form yang diminta
-            const formToShow = document.getElementById(formIdToShow);
-            if (formToShow) formToShow.style.display = 'block';
-
-            // Tindakan khusus saat kembali ke Menu Utama
-            if (formIdToShow === 'menu_utama') {
-                // === Pasar Riil ===
-                const listBodyRiil = document.getElementById('listBelanjaRiilBody');
-                const listFooterRiil = document.getElementById('listBelanjaRiilFooter');
-                listBodyRiil.innerHTML = '';
-                listFooterRiil.innerHTML = '';
-                let totalRiil = 0;
-                let adaBelanjaRiil = false;
-
-                produk_riil_list.forEach((p, i) => {
-                    const jumlah = jumlahBeliRiil[i];
-                    if (jumlah > 0) {
-                        adaBelanjaRiil = true;
-                        const subtotal = jumlah * p.harga;
-                        totalRiil += subtotal;
-
-                        const item = document.createElement('p');
-                        item.classList.add('mb-1');
-                        item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
-                        listBodyRiil.appendChild(item);
-                    }
+                forms.forEach(function (formId) {
+                    const el = document.getElementById(formId);
+                    if (el) el.style.display = 'none';
                 });
 
-                if (!adaBelanjaRiil) {
-                    listBodyRiil.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
-                    document.getElementById('tombolProsesRiil').style.display = 'none';
-                } else {
-                    listFooterRiil.innerHTML = `<strong>Total Belanja: Rp${totalRiil.toLocaleString('id-ID')}</strong>`;
-                    document.getElementById('tombolProsesRiil').style.display = 'block';
+                const formToShow = document.getElementById(formIdToShow);
+                if (formToShow) formToShow.style.display = 'block';
+
+                // Tambahan: callback dipanggil setelah form ditampilkan
+                if (typeof callback === 'function') {
+                    setTimeout(callback, 10);  // Delay kecil untuk memastikan DOM update
                 }
 
-                tampilkanListBelanjaRiil();
+                // Tindakan khusus saat kembali ke Menu Utama
+                if (formIdToShow === 'menu_utama') {
+                    // === Pasar Riil ===
+                    const listBodyRiil = document.getElementById('listBelanjaRiilBody');
+                    const listFooterRiil = document.getElementById('listBelanjaRiilFooter');
+                    listBodyRiil.innerHTML = '';
+                    listFooterRiil.innerHTML = '';
+                    let totalRiil = 0;
+                    let adaBelanjaRiil = false;
 
-                // === Pasar Digital ===
-                const listBodyDigital = document.getElementById('listBelanjaDigitalBody');
-                const listFooterDigital = document.getElementById('listBelanjaDigitalFooter');
-                listBodyDigital.innerHTML = '';
-                listFooterDigital.innerHTML = '';
-                let totalDigital = 0;
-                let adaBelanjaDigital = false;
+                    produk_riil_list.forEach((p, i) => {
+                        const jumlah = jumlahBeliRiil[i];
+                        if (jumlah > 0) {
+                            adaBelanjaRiil = true;
+                            const subtotal = jumlah * p.harga;
+                            totalRiil += subtotal;
 
-                produk_digital_list.forEach((p, i) => {
-                    const jumlah = jumlahBeliDigital[i];
-                    if (jumlah > 0) {
-                        adaBelanjaDigital = true;
-                        const subtotal = jumlah * p.harga;
-                        totalDigital += subtotal;
+                            const item = document.createElement('p');
+                            item.classList.add('mb-1');
+                            item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                            listBodyRiil.appendChild(item);
+                        }
+                    });
 
-                        const item = document.createElement('p');
-                        item.classList.add('mb-1');
-                        item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
-                        listBodyDigital.appendChild(item);
+                    if (!adaBelanjaRiil) {
+                        listBodyRiil.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                        document.getElementById('tombolProsesRiil').style.display = 'none';
+                    } else {
+                        listFooterRiil.innerHTML = `<strong>Total Belanja: Rp${totalRiil.toLocaleString('id-ID')}</strong>`;
+                        document.getElementById('tombolProsesRiil').style.display = 'block';
                     }
-                });
 
-                if (!adaBelanjaDigital) {
-                    listBodyDigital.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
-                    document.getElementById('tombolProsesDigital').style.display = 'none';
-                } else {
-                    listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${totalDigital.toLocaleString('id-ID')}</strong>`;
-                    document.getElementById('tombolProsesDigital').style.display = 'block';
+                    tampilkanListBelanjaRiil();
+
+                    // === Pasar Digital ===
+                    const listBodyDigital = document.getElementById('listBelanjaDigitalBody');
+                    const listFooterDigital = document.getElementById('listBelanjaDigitalFooter');
+                    listBodyDigital.innerHTML = '';
+                    listFooterDigital.innerHTML = '';
+                    let totalDigital = 0;
+                    let adaBelanjaDigital = false;
+
+                    produk_digital_list.forEach((p, i) => {
+                        const jumlah = jumlahBeliDigital[i];
+                        if (jumlah > 0) {
+                            adaBelanjaDigital = true;
+                            const subtotal = jumlah * p.harga;
+                            totalDigital += subtotal;
+
+                            const item = document.createElement('p');
+                            item.classList.add('mb-1');
+                            item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                            listBodyDigital.appendChild(item);
+                        }
+                    });
+
+                    if (!adaBelanjaDigital) {
+                        listBodyDigital.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                        document.getElementById('tombolProsesDigital').style.display = 'none';
+                    } else {
+                        listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${totalDigital.toLocaleString('id-ID')}</strong>`;
+                        document.getElementById('tombolProsesDigital').style.display = 'block';
+                    }
+
+                    tampilkanListBelanjaDigital();
                 }
 
-                tampilkanListBelanjaDigital();
-            }
+                // Tambahan: Jika membuka form investasi rendah dan tinggi, ambil datanya
+                if (formIdToShow === 'investasi_rendah') {
+                    liveSend({ jenis: "minta_rekap" });
+                    liveRecv = (data) => {
+                        if (data.history_lowinvest) {
+                            tampilkanHistoryInvestasiRendah(data.history_lowinvest);
+                        }
+                    };
+                }
 
-            // Tambahan: Jika membuka form investasi rendah, ambil datanya
-            if (formIdToShow === 'investasi_rendah') {
-                liveSend({ jenis: "minta_rekap" });
-                liveRecv = (data) => {
-                    if (data.history_lowinvest) {
-                        tampilkanHistoryInvestasiRendah(data.history_lowinvest);
-                    }
-                };
+                if (formIdToShow === 'investasi_tinggi') {
+                    liveSend({ jenis: "minta_rekap" });
+                    liveRecv = (data) => {
+                        if (data.history_highinvest) {
+                            tampilkanHistoryInvestasiTinggi(data.history_highinvest);
+                        }
+                    };
+                }
             }
-
-            if (formIdToShow === 'investasi_tinggi') {
-                liveSend({ jenis: "minta_rekap" });
-                liveRecv = (data) => {
-                    if (data.history_highinvest) {
-                        tampilkanHistoryInvestasiTinggi(data.history_highinvest);
-                    }
-                };
-            }
-        }
 
             function konfirmasiLanjutRonde() {
                 Swal.fire({
@@ -1498,6 +1436,7 @@
                             renderHalamanRiil(0);
                             document.querySelector('#result_pasar_riil .card-body').innerHTML = '';
 
+                            location.reload();
                             // Kembali ke menu utama
                             showForm('menu_utama');
                         });
@@ -1597,9 +1536,9 @@
                         <div class="card h-100 shadow-sm">
                             <div class="card-header bg-transparent">
                                 <div class="form-check">
-                                    <input class="form-check-input produk-riil-checkbox" type="checkbox" value="${i}"
-                                        id="produkRiilCard${i}" ${statusTerpilihDigital[i] ? 'checked' : ''}>
-                                    <label class="form-check-label" for="produkRiilCard${i}">
+                                    <input class="form-check-input produk-digital-checkbox" type="checkbox" value="${i}"
+                                        id="produkDigitalCard${i}" ${statusTerpilihDigital[i] ? 'checked' : ''}>
+                                    <label class="form-check-label" for="produkDigitalCard${i}">
                                         <strong class="card-title m-0">${p.nama}</strong>
                                     </label>
                                 </div>
@@ -1777,6 +1716,8 @@
                             updateTotalHargaDigital();
                             renderHalamanDigital(0);
                             document.querySelector('#result_pasar_digital .card-body').innerHTML = '';
+
+                            location.reload();
                             showForm('menu_utama');
                         });
 
@@ -1880,7 +1821,11 @@
 
             function submitInvestasiRendah() {
                 const input = document.getElementById('id_lowinvest');
-                const jumlah = parseFloat(input.value);
+                const jumlah = parseInt(input.value);
+                const saldoString = document.querySelector('.saldo_digital_display')?.innerText || '0';
+
+                // Convert "Rp. 15.000" → 15000
+                const saldo = parseInt(saldoString.replace(/[^\d]/g, ''));
 
                 if (isNaN(jumlah) || jumlah <= 0) {
                     Swal.fire({
@@ -1891,6 +1836,13 @@
                     return;
                 }
 
+                if (jumlah > saldo) {
+                        Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
+                        return;
+                    }
+
+
+
                 backendLowInvest();
 
                 // Kirim data ke backend menggunakan liveSend
@@ -1900,27 +1852,29 @@
                 });
             }
         // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
+
+        // JavaScript untuk Investasi Resiko Tinggi
             function tampilkanHistoryInvestasiTinggi(historyJson) {
-            const tbody = document.querySelector("#investasi_tinggi_history");
-            tbody.innerHTML = "";
+                const tbody = document.querySelector("#investasi_tinggi_history");
+                tbody.innerHTML = "";
 
-            const history = JSON.parse(historyJson);
-            if (history.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
-                return;
+                const history = JSON.parse(historyJson);
+                if (history.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
+                    return;
+                }
+
+                history.forEach((item, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
+                        <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
+                        <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
             }
-
-            history.forEach((item, index) => {
-                const row = document.createElement("tr");
-                row.innerHTML = `
-                    <td>${index + 1}</td>
-                    <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
-                    <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
-                    <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
-                `;
-                tbody.appendChild(row);
-            });
-        }
 
             (function () {
                 const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
@@ -1952,7 +1906,7 @@
                         return arr;
                     }
 
-                    const isWin = !firstInit && Math.random() < 0.8; // 80% peluang menang
+                    const isWin = !firstInit && Math.random() < 0.50; // 80% peluang menang
 
                     for (let i = 0; i < doors.length; i++) {
                         const door = doors[i];
@@ -2028,8 +1982,8 @@
                         for (let i = pool.length - 1; i >= 0; i--) {
                             const box = document.createElement('div');
                             box.classList.add('box');
-                            box.style.width = '98px';
-                            box.style.height = '108px';
+                            box.style.width = '100%';
+                            box.style.height = '109px';
                             box.textContent = pool[i];
                             boxesClone.appendChild(box);
                         }
@@ -2093,6 +2047,7 @@
                         if (isWinner && data.status === 'untung') {
                             UpdateSaldoAll(data);
                             Swal.fire({
+                                position: "top-end",
                                 icon: 'success',
                                 title: 'MENANG 🎉',
                                 html: `
@@ -2138,276 +2093,278 @@
                 }
                 init();
             })();
-        //
-        function mintaRekapRonde() {
-            // Override liveRecv SEBELUM mengirim liveSend
-            liveRecv = function (data) {
-                if (
-                    data.selected_products_produk_riil !== undefined ||
-                    data.selected_products_produk_digital !== undefined ||
-                    data.lowinvest !== undefined ||
-                    data.highinvest !== undefined
-                ) {
-                    tampilkanRekapRonde(data);
-                    updateUtilitasView(data);
+        // Akhir Source Code - JavaScript untuk Investasi Resiko Tinggi
+
+        // JavaScript untuk Rekap Ronde + Utilitas
+            function mintaRekapRonde() {
+                // Override liveRecv SEBELUM mengirim liveSend
+                liveRecv = function (data) {
+                    if (
+                        data.selected_products_produk_riil !== undefined ||
+                        data.selected_products_produk_digital !== undefined ||
+                        data.lowinvest !== undefined ||
+                        data.highinvest !== undefined
+                    ) {
+                        tampilkanRekapRonde(data);
+                        updateUtilitasView(data);
+                    }
+                };
+
+                liveSend({ jenis: "minta_rekap" });
+
+                // Sembunyikan info_ronde saat rekap diminta
+                document.getElementById('info_ronde').style.display = 'none';
+            }
+
+            function tampilkanRekapRonde(data) {
+                // === Pasar Riil ===
+                const rekapRiil = document.getElementById('rekapRiil');
+                const historyRiil = JSON.parse(data.history_riil || '[]');
+
+                if (historyRiil.length === 0) {
+                    rekapRiil.innerHTML = '<p class="text-muted">Belum ada belanja di pasar riil.</p>';
+                } else {
+                    let totalAll = 0;
+                    const rows = historyRiil.map((entry, i) => {
+                        totalAll += entry.total;
+                        const itemRows = entry.produk.map(p => `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${p.nama}</td>
+                                <td>${p.jumlah} ${p.satuan}</td>
+                                <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
+                            </tr>
+                        `).join('');
+                        return itemRows;
+                    }).join('');
+                    rekapRiil.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <th>#</th>
+                                <th>Produk</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                        <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3" role="alert">
+                            <strong>Total Belanja:</strong>
+                            <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
+                        </div>
+                    `;
                 }
-            };
 
-            liveSend({ jenis: "minta_rekap" });
+                // === Pasar Digital ===
+                const rekapDigital = document.getElementById('rekapDigital');
+                const historyDigital = JSON.parse(data.history_digital || '[]');
 
-            // Sembunyikan info_ronde saat rekap diminta
-            document.getElementById('info_ronde').style.display = 'none';
-        }
-
-        function tampilkanRekapRonde(data) {
-            // === Pasar Riil ===
-            const rekapRiil = document.getElementById('rekapRiil');
-            const historyRiil = JSON.parse(data.history_riil || '[]');
-
-            if (historyRiil.length === 0) {
-                rekapRiil.innerHTML = '<p class="text-muted">Belum ada belanja di pasar riil.</p>';
-            } else {
-                let totalAll = 0;
-                const rows = historyRiil.map((entry, i) => {
-                    totalAll += entry.total;
-                    const itemRows = entry.produk.map(p => `
-                        <tr>
-                            <td>${i + 1}</td>
-                            <td>${p.nama}</td>
-                            <td>${p.jumlah} ${p.satuan}</td>
-                            <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
-                        </tr>
-                    `).join('');
-                    return itemRows;
-                }).join('');
-                rekapRiil.innerHTML = `
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-light">
-                            <th>#</th>
-                            <th>Produk</th>
-                            <th>Jumlah</th>
-                            <th>Subtotal</th>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                    <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3" role="alert">
-                        <strong>Total Belanja:</strong>
-                        <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
-                    </div>
-                `;
-            }
-
-            // === Pasar Digital ===
-            const rekapDigital = document.getElementById('rekapDigital');
-            const historyDigital = JSON.parse(data.history_digital || '[]');
-
-            if (historyDigital.length === 0) {
-                rekapDigital.innerHTML = '<p class="text-muted">Belum ada belanja di pasar digital.</p>';
-            } else {
-                let totalAll = 0;
-                const rows = historyDigital.map((entry, i) => {
-                    totalAll += entry.total;
-                    const itemRows = entry.produk.map(p => `
-                        <tr>
-                            <td>${i + 1}</td>
-                            <td>${p.nama}</td>
-                            <td>${p.jumlah} ${p.satuan}</td>
-                            <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
-                        </tr>
-                    `).join('');
-                    return itemRows;
-                }).join('');
-                rekapDigital.innerHTML = `
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-light">
-                            <th>#</th>
-                            <th>Produk</th>
-                            <th>Jumlah</th>
-                            <th>Subtotal</th>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                    <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3" role="alert">
-                        <strong>Total Belanja:</strong>
-                        <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
-                    </div>
-                `;
-            }
-
-            // === Investasi Risiko Rendah ===
-            const rekapInvestasi = document.getElementById('rekapInvestasiRendah');
-            const historyInvest = JSON.parse(data.history_lowinvest || '[]');
-
-            if (historyInvest.length === 0) {
-                rekapInvestasi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
-            } else {
-                let totalJumlah = 0, totalHasil = 0;
-                let totalUntung = 0, totalRugi = 0;
-
-                const rows = historyInvest.map((entry, i) => {
-                    totalJumlah += entry.jumlah;
-                    totalHasil += entry.hasil;
-
-                    if (entry.status === 'untung') {
-                        totalUntung += entry.hasil - entry.jumlah;
-                    } else if (entry.status === 'rugi') {
-                        totalRugi += entry.jumlah - entry.hasil;
-                    }
-
-                    return `
-                        <tr>
-                            <td>Investasi ke ${i + 1}</td>
-                            <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
-                            <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
-                            <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
-                                ${entry.status.toUpperCase()}
-                            </td>
-                        </tr>
-                    `;
-                }).join('');
-
-                rekapInvestasi.innerHTML = `
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-light">
+                if (historyDigital.length === 0) {
+                    rekapDigital.innerHTML = '<p class="text-muted">Belum ada belanja di pasar digital.</p>';
+                } else {
+                    let totalAll = 0;
+                    const rows = historyDigital.map((entry, i) => {
+                        totalAll += entry.total;
+                        const itemRows = entry.produk.map(p => `
                             <tr>
-                                <th>List Investasi</th>
-                                <th>Jumlah Investasi</th>
-                                <th>Hasil</th>
-                                <th>Status</th>
+                                <td>${i + 1}</td>
+                                <td>${p.nama}</td>
+                                <td>${p.jumlah} ${p.satuan}</td>
+                                <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            ${rows}
-                        </tbody>
-                    </table>
-                    <div class="alert p-0" role="alert">
-                        <h5 class="alert-heading m-0">Total Investasi Risiko Rendah</h5>
-                        <hr>
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>Total Jumlah Investasi</th>
-                                <th>Total Hasil Investasi</th>
-                                <th>Total Keuntungan Investasi</th>
-                                <th>Total Kerugian Investasi</th>
+                        `).join('');
+                        return itemRows;
+                    }).join('');
+                    rekapDigital.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <th>#</th>
+                                <th>Produk</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                        <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3" role="alert">
+                            <strong>Total Belanja:</strong>
+                            <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
+                        </div>
+                    `;
+                }
+
+                // === Investasi Risiko Rendah ===
+                const rekapInvestasi = document.getElementById('rekapInvestasiRendah');
+                const historyInvest = JSON.parse(data.history_lowinvest || '[]');
+
+                if (historyInvest.length === 0) {
+                    rekapInvestasi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
+                } else {
+                    let totalJumlah = 0, totalHasil = 0;
+                    let totalUntung = 0, totalRugi = 0;
+
+                    const rows = historyInvest.map((entry, i) => {
+                        totalJumlah += entry.jumlah;
+                        totalHasil += entry.hasil;
+
+                        if (entry.status === 'untung') {
+                            totalUntung += entry.hasil - entry.jumlah;
+                        } else if (entry.status === 'rugi') {
+                            totalRugi += entry.jumlah - entry.hasil;
+                        }
+
+                        return `
+                            <tr>
+                                <td>Investasi ke ${i + 1}</td>
+                                <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
+                                <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
+                                <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                    ${entry.status.toUpperCase()}
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                    rekapInvestasi.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>List Investasi</th>
+                                    <th>Jumlah Investasi</th>
+                                    <th>Hasil</th>
+                                    <th>Status</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
-                                </tr>
+                                ${rows}
                             </tbody>
                         </table>
-                    </div>
-                `;
-            }
-
-            // === Investasi Risiko tinggi ===
-            const rekapInvestasiTinggi = document.getElementById('rekapInvestasiTinggi');
-            const historyInvestTinggi = JSON.parse(data.history_highinvest || '[]');
-
-            if (historyInvestTinggi.length === 0) {
-                rekapInvestasiTinggi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
-            } else {
-                let totalJumlah = 0, totalHasil = 0;
-                let totalUntung = 0, totalRugi = 0;
-
-                const rows = historyInvestTinggi.map((entry, i) => {
-                    totalJumlah += entry.jumlah;
-                    totalHasil += entry.hasil;
-
-                    if (entry.status === 'untung') {
-                        totalUntung += entry.hasil - entry.jumlah;
-                    } else if (entry.status === 'rugi') {
-                        totalRugi += entry.jumlah - entry.hasil;
-                    }
-
-                    return `
-                        <tr>
-                            <td>Investasi ke ${i + 1}</td>
-                            <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
-                            <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
-                            <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
-                                ${entry.status.toUpperCase()}
-                            </td>
-                        </tr>
+                        <div class="alert p-0" role="alert">
+                            <h5 class="alert-heading m-0">Total Investasi Risiko Rendah</h5>
+                            <hr>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Total Jumlah Investasi</th>
+                                    <th>Total Hasil Investasi</th>
+                                    <th>Total Keuntungan Investasi</th>
+                                    <th>Total Kerugian Investasi</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     `;
-                }).join('');
+                }
 
-                rekapInvestasiTinggi.innerHTML = `
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-light">
+                // === Investasi Risiko tinggi ===
+                const rekapInvestasiTinggi = document.getElementById('rekapInvestasiTinggi');
+                const historyInvestTinggi = JSON.parse(data.history_highinvest || '[]');
+
+                if (historyInvestTinggi.length === 0) {
+                    rekapInvestasiTinggi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
+                } else {
+                    let totalJumlah = 0, totalHasil = 0;
+                    let totalUntung = 0, totalRugi = 0;
+
+                    const rows = historyInvestTinggi.map((entry, i) => {
+                        totalJumlah += entry.jumlah;
+                        totalHasil += entry.hasil;
+
+                        if (entry.status === 'untung') {
+                            totalUntung += entry.hasil - entry.jumlah;
+                        } else if (entry.status === 'rugi') {
+                            totalRugi += entry.jumlah - entry.hasil;
+                        }
+
+                        return `
                             <tr>
-                                <th>List Investasi</th>
-                                <th>Jumlah Investasi</th>
-                                <th>Hasil</th>
-                                <th>Status</th>
+                                <td>Investasi ke ${i + 1}</td>
+                                <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
+                                <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
+                                <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                    ${entry.status.toUpperCase()}
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            ${rows}
-                        </tbody>
-                    </table>
-                    <div class="alert p-0" role="alert">
-                        <h5 class="alert-heading m-0">Total Investasi Risiko Tinggi</h5>
-                        <hr>
-                        <table class="table table-bordered">
-                            <thead>
-                                <th>Total Jumlah Investasi</th>
-                                <th>Total Hasil Investasi</th>
-                                <th>Total Keuntungan Investasi</th>
-                                <th>Total Kerugian Investasi</th>
+                        `;
+                    }).join('');
+
+                    rekapInvestasiTinggi.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>List Investasi</th>
+                                    <th>Jumlah Investasi</th>
+                                    <th>Hasil</th>
+                                    <th>Status</th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
-                                    <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
-                                </tr>
+                                ${rows}
                             </tbody>
                         </table>
-                    </div>
-                `;
+                        <div class="alert p-0" role="alert">
+                            <h5 class="alert-heading m-0">Total Investasi Risiko Tinggi</h5>
+                            <hr>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Total Jumlah Investasi</th>
+                                    <th>Total Hasil Investasi</th>
+                                    <th>Total Keuntungan Investasi</th>
+                                    <th>Total Kerugian Investasi</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                // === Penukaran Uang ===
+                const rekapTukar = document.getElementById('rekapPenukaranUang');
+                const historyTukar = JSON.parse(data.history_tukar_uang || '[]');
+                if (historyTukar.length === 0) {
+                    rekapTukar.innerHTML = '<p class="text-muted">Belum ada pertukaran uang.</p>';
+                } else {
+                    const rows = historyTukar.map((entry, i) => `
+                        <tr>
+                            <td>${entry.waktu}</td>
+                            <td>${entry.arah === 'tunai_ke_digital' ? 'Tunai → Digital' : 'Digital → Tunai'}</td>
+                            <td>Rp${parseInt(entry.jumlah).toLocaleString('id-ID')}</td>
+                            <td>Rp${parseInt(entry.admin).toLocaleString('id-ID')}</td>
+                        </tr>
+                    `).join('');
+                    rekapTukar.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr><th>Waktu</th><th>Jenis</th><th>Jumlah</th><th>Biaya Admin</th></tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    `;
+                }
+
+                showForm('rekap_ronde');
             }
 
-            // === Penukaran Uang ===
-            const rekapTukar = document.getElementById('rekapPenukaranUang');
-            const historyTukar = JSON.parse(data.history_tukar_uang || '[]');
-            if (historyTukar.length === 0) {
-                rekapTukar.innerHTML = '<p class="text-muted">Belum ada pertukaran uang.</p>';
-            } else {
-                const rows = historyTukar.map((entry, i) => `
-                    <tr>
-                        <td>${entry.waktu}</td>
-                        <td>${entry.arah === 'tunai_ke_digital' ? 'Tunai → Digital' : 'Digital → Tunai'}</td>
-                        <td>Rp${parseInt(entry.jumlah).toLocaleString('id-ID')}</td>
-                        <td>Rp${parseInt(entry.admin).toLocaleString('id-ID')}</td>
-                    </tr>
-                `).join('');
-                rekapTukar.innerHTML = `
-                    <table class="table table-sm table-bordered">
-                        <thead class="table-light">
-                            <tr><th>Waktu</th><th>Jenis</th><th>Jumlah</th><th>Biaya Admin</th></tr>
-                        </thead>
-                        <tbody>${rows}</tbody>
-                    </table>
-                `;
+            function updateUtilitasView(data) {
+                document.getElementById('util_endowment').textContent = `Rp. ${data.endowment.toLocaleString('id-ID')}`;
+                document.getElementById('util_bantuan').textContent = `Rp. ${data.bantuan.toLocaleString('id-ID')}`;
+                document.getElementById('util_konsumsi_dasar').textContent = `Rp. ${data.konsumsi_dasar.toLocaleString('id-ID')}`;
+                document.getElementById('util_total_belanja').textContent = `Rp. ${(data.total_belanja_riil + data.total_belanja_digital).toLocaleString('id-ID')}`;
+                document.getElementById('util_total_invest').textContent = `Rp. ${data.total_invest_all.toLocaleString('id-ID')}`;
+                document.getElementById('util_sisa_uang').textContent = `Rp. ${data.sisa_uang.toLocaleString('id-ID')}`;
+                document.getElementById('util_final_payment').textContent = `Rp. ${data.final_payment.toLocaleString('id-ID')}`;
             }
-
-            showForm('rekap_ronde');
-        }
-
-        function updateUtilitasView(data) {
-            document.getElementById('util_endowment').textContent = `Rp. ${data.endowment.toLocaleString('id-ID')}`;
-            document.getElementById('util_bantuan').textContent = `Rp. ${data.bantuan.toLocaleString('id-ID')}`;
-            document.getElementById('util_konsumsi_dasar').textContent = `Rp. ${data.konsumsi_dasar.toLocaleString('id-ID')}`;
-            document.getElementById('util_total_belanja').textContent = `Rp. ${(data.total_belanja_riil + data.total_belanja_digital).toLocaleString('id-ID')}`;
-            document.getElementById('util_total_invest').textContent = `Rp. ${data.total_invest_all.toLocaleString('id-ID')}`;
-            document.getElementById('util_sisa_uang').textContent = `Rp. ${data.sisa_uang.toLocaleString('id-ID')}`;
-            document.getElementById('util_utilitas_belanja').textContent = `Rp. ${data.utilitas_belanja.toLocaleString('id-ID')}`;
-            document.getElementById('util_final_payment').textContent = `Rp. ${data.final_payment.toLocaleString('id-ID')}`;
-        }
+        // Akhir Source Code - JavaScript untuk Rekap ROnde + Utilitas
     </script>
 {% endblock %}

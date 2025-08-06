@@ -29,22 +29,6 @@ class InfoPage(Page):
 class DynamicPage(Page):
     live_method = 'live_handle'
 
-    # def js_vars(self):
-    #     # Acak hasil 5 kolom × 3 baris
-    #
-    #     result = [[random.choice(C.SLOT_ITEMS) for _ in range(3)] for _ in range(5)]
-    #     # Tentukan menang (30% peluang)
-    #     is_win = random.randint(1, 100) <= 80
-    #     if is_win:
-    #         win_symbol = random.choice(C.SLOT_ITEMS)
-    #         for i in range(2):  # Kolom 0, 1, 2 — baris tengah
-    #             result[i][1] = win_symbol
-    #
-    #     return dict(
-    #         result=result,
-    #         is_win=is_win
-    #     )
-
     def vars_for_template(self):
         produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 15)
         produk_digital_list = random.sample(C.PRODUK_DIGITAL, 15)
@@ -62,12 +46,19 @@ class DynamicPage(Page):
             'formatted_konsumsi_dasar': "Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
             'formatted_total_pasar': "Rp. {:,}".format(self.player.total_pasar_all).replace(",", "."),
             'formatted_total_investasi': "Rp. {:,}".format(self.player.total_invest_all).replace(",", "."),
-            'formatted_utilitas_belanja': "Rp. {:,}".format(self.player.utilitas_belanja).replace(",", "."),
             'formatted_sisa_uang': "Rp. {:,}".format(self.player.sisa_uang).replace(",", "."),
             'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", ".")
         }
 
     def before_next_page(self):
+        if self.player.sisa_uang < self.player.konsumsi_dasar:
+            self.player.denda_penalty = self.player.sisa_uang - self.player.konsumsi_dasar
+            self.player.sisa_uang = 0
+            self.player.uang_kehadiran += self.player.denda_penalty
+        else:
+            self.player.denda_penalty = 0
+            self.player.sisa_uang -= self.player.konsumsi_dasar
+
         player = self.player
         participant = player.participant
 
@@ -89,11 +80,21 @@ class AfterRound(Page):
             'formatted_saldo_digital': "Rp. {:,}".format(self.player.saldo_digital).replace(",", "."),
             'formatted_bantuan': "Rp. {:,}".format(self.player.bantuan).replace(",", "."),
             'formatted_konsumsi_dasar': "Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
-            'formatted_total_pasar': "Rp. {:,}".format(self.player.total_pasar_all).replace(",", "."),
-            'formatted_total_investasi': "Rp. {:,}".format(self.player.total_invest_all).replace(",", "."),
-            'formatted_utilitas_belanja': "Rp. {:,}".format(self.player.utilitas_belanja).replace(",", "."),
+            'formatted_total_pasar_riil': "Rp. {:,}".format(self.player.total_belanja_riil).replace(
+                ",", "."),
+            'formatted_total_pasar_digital': "Rp. {:,}".format(self.player.total_belanja_digital).replace(
+                ",", "."),
+            'formatted_total_untung_investasi_rendah': "Rp. {:,}".format(self.player.total_untung_lowinvest).replace(
+                ",", "."),
+            'formatted_total_rugi_investasi_rendah': "Rp. {:,}".format(self.player.total_rugi_lowinvest).replace(
+                ",", "."),
+            'formatted_total_untung_investasi_tinggi': "Rp. {:,}".format(self.player.total_untung_highinvest).replace(
+                ",", "."),
+            'formatted_total_rugi_investasi_tinggi': "Rp. {:,}".format(self.player.total_rugi_highinvest).replace(
+                ",", "."),
             'formatted_sisa_uang': "Rp. {:,}".format(self.player.sisa_uang).replace(",", "."),
-            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", ".")
+            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", "."),
+            'formatted_denda': "Rp. {:,}".format(self.player.denda_penalty).replace(",", ".")
         }
 
 

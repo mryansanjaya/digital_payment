@@ -40,6 +40,12 @@
                         Berikut di bawah ini informasi Rekapan dari Ronde {% player.round_number %}
                     </p>
                     <hr>
+                    {% if player.denda_penalty != 0 %}
+                        <div class="alert alert-danger fw-bold" role="alert">
+                            Anda kekurangan uang untuk membayar Konsumsi Dasar. Kekurangan tersebut akan diambil
+                            dari Uang Kehadiran Anda sebesar {% formatted_denda %}
+                        </div>
+                    {% endif %}
                     <div class="table-responsive mb-4">
                         <table class="table table-bordered">
                             <thead>
@@ -49,21 +55,31 @@
                             <tbody class="fs-6">
                                 <tr>
                                     <td>Endowment</td>
+                                    <td> {% formatted_endowment %}</td>
                                 </tr>
                                 <tr>
                                     <td>Bantuan</td>
+                                    <td> {% formatted_bantuan %}</td>
                                 </tr>
                                 <tr>
                                     <td>Dompet Tunai</td>
+                                    <td> {% formatted_saldo_tunai %}</td>
                                 </tr>
                                 <tr>
                                     <td>Dompet Digital</td>
+                                    <td> {% formatted_saldo_digital %}</td>
                                 </tr>
                                 <tr>
                                     <td>Konsumsi Dasar</td>
+                                    <td> {% formatted_konsumsi_dasar %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Sisa Uang</td>
+                                    <td> {% formatted_sisa_uang %}</td>
                                 </tr>
                                 <tr>
                                     <td>Denda/Penalty</td>
+                                    <td> {% formatted_denda %}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -79,9 +95,11 @@
                             <tbody class="fs-6">
                                 <tr>
                                     <td>Total Belanja Pasar Tradisional</td>
+                                    <td> {% formatted_total_pasar_riil %}</td>
                                 </tr>
                                 <tr>
                                     <td>Total Belanja Pasar Digital</td>
+                                    <td> {% formatted_total_pasar_digital %}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -97,15 +115,19 @@
                             <tbody class="fs-6">
                                 <tr>
                                     <td>Total Keuntungan Investasi Risiko Rendah</td>
+                                    <td> {% formatted_total_untung_investasi_rendah %}</td>
                                 </tr>
                                 <tr>
                                     <td>Total Kerugian Investasi Risiko Rendah</td>
+                                    <td> {% formatted_total_rugi_investasi_rendah %}</td>
                                 </tr>
                                 <tr>
                                     <td>Total Keuntungan Investasi Risiko Tinggi</td>
+                                    <td> {% formatted_total_untung_investasi_tinggi %}</td>
                                 </tr>
                                 <tr>
                                     <td>Total Kerugian Investasi Risiko Tinggi</td>
+                                    <td> {% formatted_total_rugi_investasi_tinggi %}</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -9,7 +9,7 @@ Digital Payment Experiment - Practice Session
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'digital_payment_practice'
+    NAME_IN_URL = 'digital_payment'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 3
 
@@ -45,40 +45,37 @@ class C(BaseConstants):
     ]
 
     PRODUK_DIGITAL = [
-        {"nama": "Kemeja Kerja Premium", "harga": 80000, "deskripsi": "Kemeja kerja premium per pcs", "satuan": "pcs",
-         "gambar": "kemejapremium.jpg"},
-        {"nama": "Kaos T-Shirt", "harga": 55000, "deskripsi": "Kaos T-Shirt per pcs", "satuan": "pcs",
-         "gambar": "kaos.jpg"},
-        {"nama": "Sabun Batang", "harga": 3000, "deskripsi": "Sabun Batang wangi per pcs", "satuan": "pcs",
-         "gambar": "sabun.jpg"},
-        {"nama": "Buku Tulis", "harga": 3000, "deskripsi": "Buku Tulis menarik per pcs", "satuan": "pcs",
-         "gambar": "bukutulis.png"},
-        {"nama": "Charger HP 1A", "harga": 13000, "deskripsi": "Adaptor charger fast charge", "satuan": "pcs",
-         "gambar": "chargerhp.jpg"},
-        {"nama": "Kabel Roll Panjang", "harga": 20000, "deskripsi": "Kabel listrik roll 1.5 meter", "satuan": "pcs",
-         "gambar": "kabelroll.png"},
-        {"nama": "Gunting Mini", "harga": 5000, "deskripsi": "Gunting kecil lipat", "satuan": "pcs",
-         "gambar": "guntingmini.jpg"},
-        {"nama": "Masker Kain 3 Lapis", "harga": 3000, "deskripsi": "Masker kain washable", "satuan": "pcs",
-         "gambar": "masker.jpg"},
-        {"nama": "Dompet", "harga": 10000, "deskripsi": "Dompet elegan untuk pria", "satuan": "pcs",
-         "gambar": "dompet.jpg"},
-        {"nama": "Kerudung/Jilbab Premium", "harga": 25000, "deskripsi": "Kerudung/Jilbab Premium", "satuan": "pcs",
-         "gambar": "kerudungpremium.jpg"},
-        {"nama": "Pulpen Gel Murah", "harga": 1000, "deskripsi": "Pulpen warna hitam", "satuan": "pcs",
-         "gambar": "pulpengel.jpg"},
-        {"nama": "Kabel Data Micro USB", "harga": 8000, "deskripsi": "Kabel USB Micro", "satuan": "pcs",
-         "gambar": "kabelmicro.jpg"},
-        {"nama": "Sapu", "harga": 10000, "deskripsi": "Sapu berkualitas", "satuan": "pcs",
-         "gambar": "sapu.png"},
+        {"nama": "Case HP", "harga": 125000, "deskripsi": "Case HP menarik & fungsional", "satuan": "pcs",
+         "gambar": "Case HP-Digital-12500.jpg"},
+        {"nama": "Celana Jeans Pria", "harga": 75000, "deskripsi": "Celana Jeans pilihan cocok untuk pria", "satuan":
+            "pcs", "gambar": "Celana Jins Pria-Digital-75000.jpeg"},
+        {"nama": "Cincin Safir", "harga": 55000, "deskripsi": "Cincin Safir dibuat dari bahan berkualitas tinggi",
+         "satuan": "pcs", "gambar": "Cincin Safir-Digital-55000.jpg"},
+        {"nama": "Dompet Pria", "harga": 45000, "deskripsi": "Dompet elegan untuk pria", "satuan": "pcs",
+         "gambar": "Dompet Pria-Digital-45000.jpeg"},
+        {"nama": "Dompet Wanita", "harga": 30000, "deskripsi": "Dompet elegan untuk wanita", "satuan": "pcs",
+         "gambar": "Dompet Wanita-Digital-30000.jpeg"},
+        {"nama": "Jaket ", "harga": 65000, "deskripsi": "Tampil stylish dengan Jaket berbahan kualitas tinggi",
+         "satuan": "pcs", "gambar": "jaket-Digital-65000.jpg"},
+        {"nama": "Jam Tangan Unisex", "harga": 60000, "deskripsi": "Jam Tangan elegan dapat dipakai pria maupun wanita",
+         "satuan": "pcs", "gambar": "Jam Tangan Unisex-Digital-60000.jpeg"},
+        {"nama": "Kacamata Hitam", "harga": 45000, "deskripsi": "Kacamata Hitam tampil menawan", "satuan": "pcs",
+         "gambar": "Kacamata Hitam-Digital-45000.jpeg"},
+        {"nama": "Paket Skin Care", "harga": 60000, "deskripsi": "All in One Skin Care", "satuan": "pcs",
+         "gambar": "Paket Skin Care-Digital-60000.jpeg"},
+        {"nama": "Parfum 35ml", "harga": 30000, "deskripsi": "Parfum wangi tahan lama", "satuan": "pcs",
+         "gambar": "Parfum 35ml-Digital-30000.jpeg"},
+        {"nama": "Pashmina", "harga": 20000, "deskripsi": "Tampil menawan dengan Pashmina", "satuan": "pcs",
+         "gambar": "Pashmina-Digital-20000.jpeg"},
+        {"nama": "Sepatu Lari", "harga": 70000, "deskripsi": "Sepatu berkualitas terbaik", "satuan": "pcs",
+         "gambar": "Sepatu Lari-Digital-70000.jpeg"},
+        {"nama": "Sepatu Slip Wanita", "harga": 52000, "deskripsi": "Sepatu Slip terbaik untuk wanita", "satuan": "pcs",
+         "gambar": "Sepatu Slip Wanita-Digital-52000.jpeg"},
         {"nama": "Tas Ransel", "harga": 40000, "deskripsi": "Tas Ransel murah", "satuan": "pcs",
-         "gambar": "ransel.png"},
-        {"nama": "Sepatu", "harga": 25000, "deskripsi": "Sepatu berkualitas terbaik", "satuan": "pcs",
-         "gambar": "sepatu.png"},
+         "gambar": "Tas Ransel-Digital-40000.jpeg"},
+        {"nama": "Tas Selempang Pria", "harga": 55000, "deskripsi": "Tas Selempang murah untuk pria", "satuan": "pcs",
+         "gambar": "Tas Selempang Pria-Digital-55000.jpg"},
     ]
-
-    # Item untuk Mesin Slot
-    SLOT_ITEMS = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
 
 
 class Subsession(BaseSubsession):
@@ -90,9 +87,6 @@ class Group(BaseGroup):
 
 
 class Player(BasePlayer):
-    taruhan_slot = models.IntegerField(initial=0)
-    hasil_slot = models.StringField()
-    simbol_slot = models.LongStringField()
     final_payment = models.IntegerField(initial=0, blank=True)
     sisa_uang = models.IntegerField(initial=0, blank=True)
     endowment = models.IntegerField(initial=0)
@@ -101,10 +95,18 @@ class Player(BasePlayer):
     bantuan = models.IntegerField(initial=50000)
     saluran_bantuan = models.StringField()
     konsumsi_dasar = models.IntegerField(initial=0)
+    denda_penalty = models.IntegerField(initial=0)
+    uang_kehadiran = models.IntegerField(initial=200000)
     total_pasar_all = models.IntegerField(initial=0)
     total_invest_all = models.IntegerField(initial=0)
-    uang_kehadiran = models.IntegerField(initial=200000)
-    utilitas_belanja = models.IntegerField(initial=0, blank=True)
+
+    # Total masing-masing platform
+    total_belanja_riil = models.CurrencyField(blank=True, initial=0)
+    total_belanja_digital = models.CurrencyField(blank=True, initial=0)
+    total_untung_lowinvest = models.CurrencyField(blank=True, initial=0)
+    total_rugi_lowinvest = models.CurrencyField(blank=True, initial=0)
+    total_untung_highinvest = models.CurrencyField(blank=True, initial=0)
+    total_rugi_highinvest = models.CurrencyField(blank=True, initial=0)
 
     # History Aktivitas Beli & Investasi
     history_riil = models.LongStringField(blank=True, initial='[]')
@@ -112,14 +114,6 @@ class Player(BasePlayer):
     history_lowinvest = models.LongStringField(blank=True, initial='[]')
     history_highinvest = models.LongStringField(blank=True, initial='[]')
     history_tukar_uang = models.LongStringField(blank=True, initial='[]')
-
-    # Total masing-masing platform
-    total_belanja_riil = models.CurrencyField(blank=True, initial=None)
-    total_belanja_digital = models.CurrencyField(blank=True, initial=None)
-    total_untung_lowinvest = models.CurrencyField(blank=True, initial=None)
-    total_rugi_lowinvest = models.CurrencyField(blank=True, initial=None)
-    total_untung_highinvest = models.CurrencyField(blank=True, initial=None)
-    total_rugi_highinvest = models.CurrencyField(blank=True, initial=None)
 
     # Investasi Risiko Rendah
     lowinvest = models.IntegerField(blank=True, initial=None)
@@ -188,17 +182,31 @@ class Player(BasePlayer):
         utilitas_konsumsi = self.konsumsi_dasar
 
         # Hitung utilitas belanja: 90% dikali 1, 10% dikali 1.05
-        acakan_utilitas = random.randrange(90, 10, -80)
+        acakan_utilitas = random.randrange(90, 10, -10)
         if acakan_utilitas <= 90:
-            self.utilitas_belanja = self.total_pasar_all
+            utilitas_belanja = self.total_pasar_all
         elif acakan_utilitas <= 10:
-            self.utilitas_belanja = int(round(self.total_pasar_all * 1.05))
+            utilitas_belanja = self.total_pasar_all * 1.05
 
         # Sisa uang = saldo tunai + saldo digital
-        self.sisa_uang = (self.saldo_tunai + self.saldo_digital) - utilitas_konsumsi
+        self.sisa_uang = (self.saldo_tunai + self.saldo_digital)
+
+        # Denda / Penalty jika Subjek tidak mampu membayar Konsumsi Dasar
+        if self.sisa_uang < utilitas_konsumsi:
+            self.denda_penalty = self.sisa_uang - utilitas_konsumsi
 
         # Final Payment adalah total utilitas
-        self.final_payment = self.sisa_uang + utilitas_konsumsi + self.utilitas_belanja
+        if self.total_pasar_all == 0 and self.total_invest_all == 0:
+            self.final_payment = int(self.sisa_uang)
+        elif self.total_invest_all == 0:
+            self.final_payment = int(self.sisa_uang + utilitas_belanja)
+        elif self.total_pasar_all == 0:
+            self.final_payment = int(self.sisa_uang + (self.total_untung_lowinvest + self.total_untung_highinvest) -
+                                     (self.total_rugi_lowinvest + self.total_rugi_highinvest))
+        else:
+            self.final_payment = int(self.sisa_uang + (self.total_pasar_all * 1.05) +
+                                     (self.total_untung_lowinvest + self.total_untung_highinvest) -
+                                     (self.total_rugi_lowinvest + self.total_rugi_highinvest))
 
     def live_handle(player, data):
         jenis = data.get("jenis")
@@ -273,9 +281,11 @@ class Player(BasePlayer):
             if peluang <= 0.50:
                 hasil = int(round(jumlah * 1.25))
                 status = 'untung'
+                player.total_untung_lowinvest += (hasil - int(jumlah))
             else:
                 hasil = int(round(jumlah * 0.75))
                 status = 'rugi'
+                player.total_rugi_lowinvest += (int(jumlah) - hasil)
 
             history = json.loads(player.history_lowinvest or "[]")
             history.append({
@@ -290,7 +300,7 @@ class Player(BasePlayer):
             if status == 'untung':
                 player.saldo_digital += hasil
             else:
-                player.saldo_digital -= int(jumlah)
+                player.saldo_digital -= (int(jumlah) - hasil)
 
             # Hitung dulu utilitas agar semua nilai terisi
             player.hitung_utilitas()
@@ -310,10 +320,11 @@ class Player(BasePlayer):
             if menang:
                 hasil = int(round(jumlah * 2))
                 status = 'untung'
-
+                player.total_untung_highinvest += int(hasil - round(jumlah))
             else:
                 hasil = 0
                 status = 'rugi'
+                player.total_rugi_highinvest += (int(jumlah) - hasil)
 
             # Simpan ke history
             history = json.loads(player.history_highinvest or "[]")
@@ -357,6 +368,10 @@ class Player(BasePlayer):
                     "lowinvest": player.field_maybe_none("lowinvest"),
                     "hasil_akhir_lowinvest": player.field_maybe_none("hasil_akhir_lowinvest"),
                     "untungrugi_lowinvest": player.field_maybe_none("untungrugi_lowinvest"),
+                    "total_untung_investasi_rendah": player.total_untung_lowinvest,
+                    "total_rugi_investasi_rendah": player.total_rugi_highinvest,
+                    "total_untung_investasi_tinggi": player.total_untung_highinvest,
+                    "total_rugi_investasi_tinggi": player.total_rugi_highinvest,
 
                     "saldo_tunai": player.field_maybe_none("saldo_tunai"),
                     "saldo_digital": player.field_maybe_none("saldo_digital"),
@@ -373,7 +388,6 @@ class Player(BasePlayer):
                     "konsumsi_dasar": player.konsumsi_dasar,
                     "total_pasar_all": player.total_pasar_all,
                     "total_invest_all": player.total_invest_all,
-                    "utilitas_belanja": player.field_maybe_none("utilitas_belanja"),
                     "sisa_uang": player.field_maybe_none("sisa_uang"),
                     "final_payment": player.field_maybe_none("final_payment"),
                 }
