@@ -298,7 +298,8 @@ class Player(BasePlayer):
 
             # Update saldo digital
             if status == 'untung':
-                player.saldo_digital += hasil
+                player.saldo_digital += (hasil - int(jumlah))
+
             else:
                 player.saldo_digital -= (int(jumlah) - hasil)
 
@@ -340,7 +341,7 @@ class Player(BasePlayer):
 
             # Update saldo digital
             if status == 'untung':
-                player.saldo_digital += hasil
+                player.saldo_digital += int(hasil)
             else:
                 player.saldo_digital -= int(jumlah)
 
