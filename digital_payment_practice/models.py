@@ -4,14 +4,14 @@ import json
 import datetime
 
 doc = """
-Digital Payment Experiment
+Digital Payment Experiment - Practice Session
 """
 
 
 class C(BaseConstants):
-    NAME_IN_URL = 'digital_payment'
+    NAME_IN_URL = 'digital_payment_practice'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 1
 
     # Daftar produk pasar
     PRODUK_TRADISIONAL = [

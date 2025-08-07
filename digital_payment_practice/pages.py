@@ -1,0 +1,85 @@
+from otree.api import *
+from .models import C, Player
+import random
+import json
+
+
+class InfoPage(Page):
+    def vars_for_template(self):
+        self.player.set_saldo_awal()
+        return dict(
+            formatted_endowment="Rp. {:,}".format(self.player.endowment).replace(",", "."),
+            formatted_saldo_tunai="Rp. {:,}".format(self.player.saldo_tunai).replace(",", "."),
+            formatted_saldo_digital="Rp. {:,}".format(self.player.saldo_digital).replace(",", "."),
+            formatted_uang_kehadiran="Rp. {:,}".format(self.player.uang_kehadiran).replace(",", "."),
+            formatted_bantuan="Rp. {:,}".format(self.player.bantuan).replace(",", "."),
+            formatted_konsumsi_dasar="Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
+            info_bansos="Dompet Tunai" if self.player.saluran_bantuan == "tunai" else "Dompet Digital"
+        )
+
+    def before_next_page(self):
+        self.player.final_saldo_awal()
+
+
+class DynamicPage(Page):
+    live_method = 'live_handle'
+
+    def vars_for_template(self):
+        produk_riil_list = random.sample(C.PRODUK_TRADISIONAL, 15)
+        produk_digital_list = random.sample(C.PRODUK_DIGITAL, 15)
+        player = self.player
+
+        self.player.hitung_utilitas()
+
+        return {
+            'produk_riil_list': produk_riil_list,
+            'produk_digital_list': produk_digital_list,
+            'formatted_endowment': "Rp. {:,}".format(player.endowment).replace(",", "."),
+            'formatted_saldo_tunai': "Rp. {:,}".format(player.saldo_tunai).replace(",", "."),
+            'formatted_saldo_digital': "Rp. {:,}".format(player.saldo_digital).replace(",", "."),
+            'formatted_bantuan': "Rp. {:,}".format(self.player.bantuan).replace(",", "."),
+            'formatted_konsumsi_dasar': "Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
+            'formatted_total_pasar': "Rp. {:,}".format(self.player.total_pasar_all).replace(",", "."),
+            'formatted_total_investasi': "Rp. {:,}".format(self.player.total_invest_all).replace(",", "."),
+            'formatted_sisa_uang': "Rp. {:,}".format(self.player.sisa_uang).replace(",", "."),
+            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", ".")
+        }
+
+    def before_next_page(self):
+        if self.player.sisa_uang < self.player.konsumsi_dasar:
+            self.player.denda_penalty = self.player.sisa_uang - self.player.konsumsi_dasar
+            self.player.sisa_uang = 0
+            self.player.uang_kehadiran += self.player.denda_penalty
+        else:
+            self.player.denda_penalty = 0
+            self.player.sisa_uang -= self.player.konsumsi_dasar
+
+
+class AfterRound(Page):
+    def vars_for_template(self):
+        return {
+            'next_round_number': self.player.round_number + 1,
+            'formatted_endowment': "Rp. {:,}".format(self.player.endowment).replace(",", "."),
+            'formatted_saldo_tunai': "Rp. {:,}".format(self.player.saldo_tunai).replace(",", "."),
+            'formatted_saldo_digital': "Rp. {:,}".format(self.player.saldo_digital).replace(",", "."),
+            'formatted_bantuan': "Rp. {:,}".format(self.player.bantuan).replace(",", "."),
+            'formatted_konsumsi_dasar': "Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
+            'formatted_total_pasar_riil': "Rp. {:,}".format(self.player.total_belanja_riil).replace(
+                ",", "."),
+            'formatted_total_pasar_digital': "Rp. {:,}".format(self.player.total_belanja_digital).replace(
+                ",", "."),
+            'formatted_total_untung_investasi_rendah': "Rp. {:,}".format(self.player.total_untung_lowinvest).replace(
+                ",", "."),
+            'formatted_total_rugi_investasi_rendah': "Rp. {:,}".format(self.player.total_rugi_lowinvest).replace(
+                ",", "."),
+            'formatted_total_untung_investasi_tinggi': "Rp. {:,}".format(self.player.total_untung_highinvest).replace(
+                ",", "."),
+            'formatted_total_rugi_investasi_tinggi': "Rp. {:,}".format(self.player.total_rugi_highinvest).replace(
+                ",", "."),
+            'formatted_sisa_uang': "Rp. {:,}".format(self.player.sisa_uang).replace(",", "."),
+            'formatted_final_payment': "Rp. {:,}".format(self.player.final_payment).replace(",", "."),
+            'formatted_denda': "Rp. {:,}".format(self.player.denda_penalty).replace(",", ".")
+        }
+
+
+page_sequence = [InfoPage, DynamicPage, AfterRound]

@@ -1,0 +1,149 @@
+{% block styles %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+          crossorigin="anonymous">
+    <link href="{% static 'fontawesome/css/all.css' %}" rel="stylesheet"/>
+    <link href="{% static 'fontawesome/css/solid.css' %}" rel="stylesheet"/>
+    <link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
+    <link href="{% static 'global/custom_css.css' %}" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block title  %}
+    <title>Digital Payment Experiment</title>
+{% endblock %}
+
+{% block content %}
+    <div class="container p-0">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="m-0">
+                    Ronde Latihan Telah Selesai
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="alert p-0" role="alert">
+                    <div class="alert alert-success fw-bold" role="alert">
+                        Anda telah menyelesaikan Ronde Latihan. <br>
+                        Hasil yang Anda dapatkan dari Ronde Latihan adalah
+                        {% formatted_final_payment %}
+                    </div>
+                    <p class="m-0">
+                        Berikut di bawah ini informasi Rekapan dari Ronde Latihan
+                    </p>
+                    <hr>
+                    {% if player.denda_penalty != 0 %}
+                        <div class="alert alert-danger fw-bold" role="alert">
+                            Anda kekurangan uang untuk membayar Konsumsi Dasar. Kekurangan tersebut akan diambil
+                            dari Uang Kehadiran Anda sebesar {% formatted_denda %}
+                        </div>
+                    {% endif %}
+                    <div class="table-responsive mb-4">
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Nama Utilitas</th>
+                                <th>Jumlah</th>
+                            </thead>
+                            <tbody class="fs-6">
+                                <tr>
+                                    <td>Endowment</td>
+                                    <td> {% formatted_endowment %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Bantuan</td>
+                                    <td> {% formatted_bantuan %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Dompet Tunai</td>
+                                    <td> {% formatted_saldo_tunai %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Dompet Digital</td>
+                                    <td> {% formatted_saldo_digital %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Konsumsi Dasar</td>
+                                    <td> {% formatted_konsumsi_dasar %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Sisa Uang</td>
+                                    <td> {% formatted_sisa_uang %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Denda/Penalty</td>
+                                    <td> {% formatted_denda %}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive mb-4">
+                        <h5 class="m-0">Platform Pasar (Tradisional & Digital)</h5>
+                        <hr>
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Nama Utilitas</th>
+                                <th>Jumlah</th>
+                            </thead>
+                            <tbody class="fs-6">
+                                <tr>
+                                    <td>Total Belanja Pasar Tradisional</td>
+                                    <td> {% formatted_total_pasar_riil %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Belanja Pasar Digital</td>
+                                    <td> {% formatted_total_pasar_digital %}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-responsive">
+                        <h5 class="m-0">Platform Investasi (Risiko Rendah & Tinggi)</h5>
+                        <hr>
+                        <table class="table table-bordered">
+                            <thead>
+                                <th>Nama Utilitas</th>
+                                <th>Jumlah</th>
+                            </thead>
+                            <tbody class="fs-6">
+                                <tr>
+                                    <td>Total Keuntungan Investasi Risiko Rendah</td>
+                                    <td> {% formatted_total_untung_investasi_rendah %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Kerugian Investasi Risiko Rendah</td>
+                                    <td> {% formatted_total_rugi_investasi_rendah %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Keuntungan Investasi Risiko Tinggi</td>
+                                    <td> {% formatted_total_untung_investasi_tinggi %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Kerugian Investasi Risiko Tinggi</td>
+                                    <td> {% formatted_total_rugi_investasi_tinggi %}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer bg-light sticky-bottom">
+                <button type="submit" class="btn btn-sm btn-success bg-gradient">
+                    <i class="fa-solid fa-check me-1"></i>
+                    {% if player.round_number == C.NUM_ROUNDS %}
+                        <span>Selesaikan Latihan Eksperimen</span>
+                    {% else %}
+                        <span>Lanjut menuju Ronde Latihan berikutnya</span>
+                    {% endif %}
+                </button>
+            </div>
+        </div>
+    </div>
+{% endblock %}

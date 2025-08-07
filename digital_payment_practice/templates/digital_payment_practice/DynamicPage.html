@@ -1,0 +1,2374 @@
+{% block styles %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr"
+          crossorigin="anonymous">
+    <link href="{% static 'fontawesome/css/all.css' %}" rel="stylesheet"/>
+    <link href="{% static 'fontawesome/css/solid.css' %}" rel="stylesheet"/>
+    <link href="{% static 'fontawesome/css/brands.css' %}" rel="stylesheet"/>
+    <link href="{% static 'global/custom_css.css' %}" rel="stylesheet"/>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-7qAoOXltbVP82dhxHAUje59V5r2YsVfBafyUDxEdApLPmcdhBPg1DKg1ERo0BZlK"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block title  %}
+    <title>Digital Payment Experiment - Practice Session</title>
+{% endblock %}
+
+{% block content %}
+    <ul class="nav nav-tabs bg-light sticky-top" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane"
+                type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">
+                Informasi Ronde
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane"
+                type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">
+                Menu Utama
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane"
+                type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">
+                Pertukaran Uang
+            </button>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade p-2 show active" id="home-tab-pane" role="tabpanel"
+            aria-labelledby="home-tab" tabindex="0">
+            <div id="info_ronde">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="m-0">
+                            Anda sekarang berada di Ronde Latihan
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            Anda berada di laman latihan eksperimen. Di sini Anda dapat melakukan konsumsi tambahan
+                            (selain konsumsi dasar yang menjadi tanggungan utama Anda) dan investasi untuk meningkatkan
+                            jumlah uang Anda.
+                        </p>
+                        <p>
+                            Anda akan mendapatkan keuntungan tambahan jika Anda membeli barang dari pasar tradisional
+                            maupun digital yang akan menjadi pembayaran Anda dari eksperimen ini.
+                        </p>
+                        <p>
+                            Anda juga bisa meningkatkan jumlah uang Anda dengan investasi di platform investasi.
+                            Uang yang Anda peroleh juga akan menambah pembayaran Anda dari eksperimen ini
+                        </p>
+                        <p>Namun jangan lupa untuk tetap menyisakan uang untuk membiayai konsumsi dasar</p>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success bg-gradient" onclick="mintaRekapRonde()">
+                            <i class="fa-solid fa-flag-checkered me-1"></i>
+                            <span>Rekap Ronde Latihan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="rekap_ronde" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Rekap History Ronde Latihan</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h4 class="m-0">Utilitas Anda</h4>
+                            </div>
+                            <div class="card-body">
+                                <table class="table">
+                                    <thead>
+                                        <th>Nama Utilitas</th>
+                                        <th>Jumlah</th>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Endowment</td>
+                                            <td id="util_endowment"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bantuan</td>
+                                            <td id="util_bantuan"></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="fw-bold text-danger">Konsumsi Dasar</td>
+                                            <td class="fw-bold text-danger" id="util_konsumsi_dasar"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Belanja (Tradisional + Digital)</td>
+                                            <td id="util_total_belanja"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Total Investasi (Risiko Rendah + Risiko Tinggi)</td>
+                                            <td id="util_total_invest"></td>
+                                        </tr>
+                                        <tr class="fw-bold">
+                                            <td>Sisa Uang Anda</td>
+                                            <td id="util_sisa_uang"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Final Payment Ronde Latihan</td>
+                                            <td id="util_final_payment"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="card-footer"></div>
+                        </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Pasar Tradisional</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapRiil"></div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Pasar Digital</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapDigital"></div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Investasi Risiko Rendah</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapInvestasiRendah"></div>
+                            </div>
+                        </div>
+                        <div class="card mb-4 shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Investasi Risiko Tinggi</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapInvestasiTinggi"></div>
+                            </div>
+                        </div>
+                        <div class="card shadow">
+                            <div class="card-header">
+                                <h5 class="m-0">Rekap History - Penukaran Uang</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="rekapPenukaranUang"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <form method="post">
+                            <button type="submit" id="submit-lanjut" style="display: none;"></button>
+                        </form>
+                        <button type="button" class="btn btn-warning bg-gradient" onclick="konfirmasiLanjutRonde()">
+                            <i class="fa-regular fa-circle-play me-1"></i>
+                            {% if player.round_number > 1 %}
+                                <span>Lanjut menuju Ronde Latihan berikutnya</span>
+                            {% else %}
+                                <span>Selesaikan Ronde Latihan</span>
+                            {% endif %}
+                        </button>
+                        <button type="button" class="btn btn-primary bg-gradient" onclick="showForm('info_ronde')">
+                            <i class="fa-regular fa-circle-play me-1"></i>
+                            <span>Kembali ke Informasi Ronde Latihan</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade p-2" id="profile-tab-pane" role="tabpanel">
+            <!-- MENU UTAMA & HISTORY RONDE -->
+            <div id="menu_utama">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h6 class="m-0">Menu Utama Platform Eksperimen</h6>
+                        <span class="badge fs-6 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="tombolProsesRiil" class="alert alert-danger" role="alert"
+                             style="display: none;">
+                            <p class="m-0">
+                                Ada belajaan yang belum dibeli nih di Pasar Tradisional. Silahkan lakukan proses
+                                pembelian belanja Anda.
+                            </p>
+                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaRiil()">
+                                Selesaikan Belanja Anda
+                            </button>
+                        </div>
+                        <div id="tombolProsesDigital" class="alert alert-danger" role="alert"
+                             style="display: none;">
+                            <p class="m-0">
+                                Ada belajaan yang belum dibeli nih di Pasar Digital. Silahkan lakukan proses pembelian
+                                belanja Anda.
+                            </p>
+                            <button type="button" class="btn btn-success mt-2" onclick="tampilkanHasilBelanjaDigital()">
+                                Selesaikan Belanja Anda
+                            </button>
+                        </div>
+                        <div class="alert p-0" role="alert">
+                            <div class="d-flex flex-column">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="m-0">Informasi Dompet Anda</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered m-0">
+                                                <thead class="fs-6">
+                                                    <th>Dompet Tunai</th>
+                                                    <th>Dompet Digital</th>
+                                                </thead>
+                                                <tbody class="fs-5">
+                                                    <tr>
+                                                        <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                                        <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr class="my-3">
+                            <h4 class="text-center m-0">Silahkan pilih platform yang tersedia:</h4>
+                            <div class="container p-0 mt-3">
+                                <div class="row row-cols-1 row-cols-md-3 g-4">
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <img src="{% static 'img/tradisional.png'%}" class="card-img-top w-100"
+                                                 alt="image">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h4 class="m-0">Pasar Tradisional</h4>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p class="m-0">
+                                                        Pasar Tradisonal terdapat berbagai macam produk belanja seperti
+                                                        Tahu, Tempe, Kecap, Daging dan lain sebagainya.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-danger w-100"
+                                                        onclick="showForm('pasar_riil')">
+                                                    <i class="fa-solid fa-shop"></i>
+                                                    <span>Platform Pasar Tradisional</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <img src="{% static 'img/digital.png'%}" class="card-img-top w-100"
+                                                 alt="image">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h4 class="m-0">Pasar Digital</h4>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p class="m-0">
+                                                        Pasar Digital terdapat berbagai macam produk belanja seperti
+                                                        barang Eletronik, Aksesoris, Peralatan Kerja, Alat Tulis Kantor
+                                                        dan lain sebagainya.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-warning w-100"
+                                                        onclick="showForm('pasar_digital')">
+                                                    <i class="fa-solid fa-shop"></i>
+                                                    <span>Platform Pasar Digital</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="card h-100">
+                                            <img src="{% static 'img/all_invest.png'%}" class="card-img-top w-100"
+                                                 alt="image">
+                                            <div class="card-body">
+                                                <div class="card-title">
+                                                    <h4 class="m-0">Platform Investasi</h4>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p class="m-0">
+                                                        "Main Aman Bisa, Mau Greget Juga Bisa!", Kami mengerti, tiap
+                                                        orang punya gaya investasi beda-beda. Tenang aja — dari yang
+                                                        stabil sampai yang ngebut, semuanya ada di satu tempat!
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button type="button" class="btn btn-success w-100"
+                                                        onclick="showForm('all_investasi')">
+                                                    <i class="fa-solid fa-money-bill-trend-up"></i>
+                                                    <span>Platform Investasi</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6 mb-3 mb-sm-0">
+                                <!-- Card List Belanja Pasar Riil -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Daftar Belanja yang belum dibeli - Pasar Tradisional</strong>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive p-2">
+                                            <table class="table table-sm table-striped m-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Produk</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="listBelanjaRiilBody">
+                                                    <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-end fw-bold" id="listBelanjaRiilFooter">
+                                        <!-- total akan muncul di sini -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Card List Belanja Pasar Digital -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <strong>Daftar Belanja yang belum dibeli - Pasar Digital</strong>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive p-2">
+                                            <table class="table table-sm table-striped m-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Produk</th>
+                                                        <th>Jumlah</th>
+                                                        <th>Subtotal</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="listBelanjaDigitalBody">
+                                                    <tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer text-end fw-bold" id="listBelanjaDigitalFooter">
+                                        <!-- total akan muncul di sini -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PLATFORM INVESTASI (RENDAH & TINGGI) -->
+            <div id="all_investasi" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Platform Investasi</h5>
+                        <span class="badge fs-6 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="{% static 'img/low_invest.png'%}" class="card-img-top" alt="image">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3>Investasi Risiko Rendah</h3>
+                                        </div>
+                                        <div class="card-text">
+                                            <p class="m-0">
+                                                <strong>"Investasi Tenang, Hasil Aman"</strong>, Nggak perlu pusing
+                                                mikirin rugi besar! Pilih Investasi Risiko Rendah, cocok buat kamu yang
+                                                pengin cuan tapi tetap main aman.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success"
+                                                onclick="showForm('investasi_rendah')">
+                                            Pilih Investasi Risiko Rendah
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="{% static 'img/high_invest.png'%}" class="card-img-top" alt="image">
+                                    <div class="card-body">
+                                        <div class="card-title">
+                                            <h3>Investasi Risiko Tinggi</h3>
+                                        </div>
+                                        <div class="card-text">
+                                            <p class="m-0">
+                                                <strong>"Mau Untung Besar? Siap Hadapi Tantangannya!"</strong>,
+                                                Investasi Risiko Tinggi cocok buat kamu yang visioner dan siap
+                                                menghadapi dinamika pasar demi hasil yang luar biasa.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="showForm('investasi_tinggi')">
+                                            Pilih Investasi Risiko Tinggi
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                            Kembali ke Menu Utama
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASAR RIIL -->
+            <div id="pasar_riil" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Pasar Tradisional</h5>
+                        <span class="badge fs-6 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <!-- Daftar Produk -->
+                            <div id="produkRiilContainer" class="row row-cols-2 row-cols-md-4 g-4"></div>
+                            <input type="hidden" name="selected_products_produk_riil" id="selected_products_produk_riil">
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light sticky-bottom">
+                        <table class="table table-bordered bg-light">
+                            <thead>
+                                <th>Dompet Tunai Anda</th>
+                                <th>Total Belanja Anda</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                    <!-- Total Belanja -->
+                                    <td id="totalHargaRiil">Rp. 0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex flex-row justify-content-between">
+                            <button type="button" class="btn btn-success" onclick="tampilkanHasilBelanjaRiil()">
+                                Selesaikan Belanja Anda
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                                Kembali ke Menu Utama
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="result_pasar_riil" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">List Belanja Anda</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered m-0">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Jumlah</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultBelanjaRiilBody">
+                                <!-- baris produk akan dimasukkan di sini -->
+                            </tbody>
+                            <tfoot id="resultBelanjaRiilFooter">
+                                <!-- total belanja akan ditampilkan di sini -->
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="simpanBelanjaRiil()">
+                            Beli
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('pasar_riil')">
+                            Kembali ke Pasar Riil
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASAR RIIL -->
+            <div id="pasar_digital" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Pasar Digital</h5>
+                        <span class="badge fs-6 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            <!-- Daftar Produk -->
+                            <div id="produkDigitalContainer" class="row row-cols-2 row-cols-md-4 g-4"></div>
+                            <input type="hidden" name="selected_products_produk_digital" id="selected_products_produk_digital">
+                        </form>
+                    </div>
+                    <div class="card-footer bg-light sticky-bottom">
+                        <table class="table table-bordered bg-light">
+                            <thead>
+                                <th>Dompet Digital Anda</th>
+                                <th>Total Belanja Anda</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
+                                    <!-- Total Belanja -->
+                                    <td id="totalHargaDigital">Rp. 0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="d-flex flex-row justify-content-between">
+                            <button type="button" class="btn btn-success" onclick="tampilkanHasilBelanjaDigital()">
+                                Selesaikan Belanja Anda
+                            </button>
+                            <button type="button" class="btn btn-primary" onclick="showForm('menu_utama')">
+                                Kembali ke Menu Utama
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="result_pasar_digital" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="m-0">Hasil Belanja Anda</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-sm table-bordered m-0">
+                            <thead>
+                                <tr>
+                                    <th>Produk</th>
+                                    <th>Jumlah</th>
+                                    <th>Subtotal</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultBelanjaDigitalBody">
+                                <!-- baris produk akan dimasukkan di sini -->
+                            </tbody>
+                            <tfoot id="resultBelanjaDigitalFooter">
+                                <!-- total belanja akan ditampilkan di sini -->
+                            </tfoot>
+                        </table>
+                    </div>
+                    <div class="card-footer d-flex flex-row justify-content-between">
+                        <button type="button" class="btn btn-success" onclick="simpanBelanjaDigital()">
+                            Beli
+                        </button>
+                        <button type="button" class="btn btn-primary" onclick="showForm('pasar_digital')">
+                            Kembali ke Pasar Digital
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INVESTASI RISIKO RENDAH -->
+            <div id="investasi_rendah" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Investasi Risiko Rendah</h5>
+                        <span class="badge fs-6 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">Investasikan Uang Anda dan dapatkan keuntungannya!</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group">
+                                            <li class="list-group-item text-bg-success">
+                                                Anda memiliki kesempatan untuk membuat uang Anda menjadi
+                                                <b>1.25 kali lipat</b> dengan peluang <b>75%</b>.
+                                            </li>
+                                            <li class="list-group-item text-bg-danger">
+                                                Namun uang Anda juga bisa berkurang menjadi <b>3/4</b> dari alokasi
+                                                Anda dengan peluang <b>25%</b>.
+                                            </li>
+                                        </ul>
+                                        <hr>
+                                        <div class="d-flex flex-column">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead class="fs-5">
+                                                        <th>Dompet Digital Anda</th>
+                                                    </thead>
+                                                    <tbody class="fs-5">
+                                                        <tr>
+                                                            <td class="saldo_digital_display">
+                                                                {{ formatted_saldo_digital }}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <label for="id_lowinvest" class="form-label fw-bold">
+                                                Masukkan jumlah yang ingin Anda invetastikan
+                                            </label>
+                                            <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" min="0" step="1">
+                                        </div>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
+                                            Proses Investasi Anda
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">History Investasi Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>#</th>
+                                                <th>Jumlah</th>
+                                                <th>Hasil Investasi</th>
+                                                <th>Untung/Rugi</th>
+                                            </thead>
+                                            <tbody id="investasi_rendah_history">
+                                                <!-- history tampil disini-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
+                            Kembali ke Menu Investasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INVESTASI RISIKO TINGGI -->
+            <div id="investasi_tinggi" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Investasi Risiko Tinggi</h5>
+                        <span class="badge fs-6 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">Putar & Dapatkan keuntungannya!</h6>
+                                    </div>
+                                    <div class="card-body position-relative overflow-hidden">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered">
+                                                <thead class="fs-5">
+                                                    <th>Dompet Digital Anda</th>
+                                                </thead>
+                                                <tbody class="fs-5">
+                                                    <tr>
+                                                        <td class="saldo_digital_display">
+                                                            {{ formatted_saldo_digital }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div id="app">
+                                            <div class="doors">
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                            </div>
+                                            <div class="doors border border-3 border-danger">
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                            </div>
+                                            <div class="doors">
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                                <div class="door"><div class="boxes"></div></div>
+                                            </div>
+                                        </div>
+                                        <label for="id_highinvest" class="form-label fw-bold">
+                                            Masukkan jumlah yang ingin Anda invetastikan
+                                        </label>
+                                        <input type="number" name="highinvest" id="id_highinvest"
+                                            class="form-control" min="0" step="1">
+                                    </div>
+                                    <div class="card-footer text-center">
+                                        <button type="button" class="btn btn-success" id="spinner">
+                                            <i class="fa-solid fa-circle-dollar-to-slot"></i>
+                                            <span>Putar</span>
+                                        </button>
+                                        <button type="button" class="btn btn-danger" id="resetter">
+                                            <i class="fa-solid fa-rotate-right"></i>
+                                            <span>Reset</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6 class="m-0">History Investasi Anda</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <th>#</th>
+                                                <th>Jumlah</th>
+                                                <th>Hasil Investasi</th>
+                                                <th>Untung/Rugi</th>
+                                            </thead>
+                                            <tbody id="investasi_tinggi_history">
+                                                <!-- history tampil disini-->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-primary" onclick="showForm('all_investasi')">
+                            Kembali ke Menu Investasi
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade p-2" id="contact-tab-pane" role="tabpanel">
+            <div id="pertukaran_uang">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Pertukaran Uang</h5>
+                        <span class="badge fs-5 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-bordered">
+                            <thead class="fs-5">
+                                <th>Dompet Tunai Anda</th>
+                                <th>Dompet Digital Anda</th>
+                            </thead>
+                            <tbody class="fs-5">
+                                <tr>
+                                    <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                    <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row row-cols-1 row-cols-md-2 g-4">
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <h5 class="m-0">Pertukaran Uang 1</h5>
+                                    </div>
+                                    <img src="{% static 'img/tunai_digital.png'%}" class="card-img-top" alt="image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Tunai
+                                            <i class="fa-solid fa-money-bill-transfer text-bg-info p-2 rounded-3"></i>
+                                            Digital
+                                        </h5>
+                                        <p class="card-text">
+                                            Penukaran Uang dari Dompet TUNAI ke Dompet DIGITAL
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success"
+                                                onclick="showForm('tunai_digital')">
+                                            Pilih Pertukaran Uang 1
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <div class="card-header">
+                                        <h5 class="m-0">Pertukaran Uang 2</h5>
+                                    </div>
+                                    <img src="{% static 'img/digital_tunai.png'%}" class="card-img-top" alt="image">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            Digital
+                                            <i class="fa-solid fa-money-bill-transfer text-bg-info p-2 rounded-3"></i>
+                                            Tunai
+                                        </h5>
+                                        <p class="card-text">
+                                            Penukaran Uang dari Dompet DIGITAL ke Dompet TUNAI
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <button type="button" class="btn btn-success"
+                                                onclick="showForm('digital_tunai')">
+                                            Pilih Pertukaran Uang 2
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tunai_digital" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Pertukaran Uang 1</h5>
+                        <span class="badge fs-5 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="m-0">Tukarkan Uang Anda</h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered m-0">
+                                    <thead class="fs-5">
+                                        <th>Dompet Tunai</th>
+                                        <th>Dompet Digital</th>
+                                    </thead>
+                                    <tbody class="fs-5">
+                                        <tr>
+                                            <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                            <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="mt-3">
+                                    <label class="form-label">
+                                        Masukkan jumlah uang yang ingin Anda tukar:
+                                    </label>
+                                    <input type="number" id="jumlahTukarUangTunai" class="form-control"
+                                           placeholder="Masukkan jumlah" min="1">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="tukarUangTunai('tunai_ke_digital')">
+                                    Proses Pertukaran Uang Anda
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success" onclick="showForm('pertukaran_uang')">
+                            Kembali ke Menu Pertukaran Uang
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div id="digital_tunai" style="display: none;">
+                <div class="card">
+                    <div class="card-header d-flex flex-row justify-content-between align-items-center">
+                        <h5 class="m-0">Pertukaran Uang 2</h5>
+                        <span class="badge fs-5 bg-secondary bg-gradient">Ronde Latihan</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="m-0">Tukarkan Uang Anda</h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-bordered m-0">
+                                    <thead class="fs-5">
+                                        <th>Dompet Digital</th>
+                                        <th>Dompet Tunai</th>
+                                    </thead>
+                                    <tbody class="fs-5">
+                                        <tr>
+                                            <td class="saldo_digital_display">{{ formatted_saldo_digital }}</td>
+                                            <td class="saldo_tunai_display">{{ formatted_saldo_tunai }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="mt-3">
+                                    <label class="form-label">
+                                        Masukkan jumlah uang yang ingin Anda tukar:
+                                    </label>
+                                    <input type="number" id="jumlahTukarUangDigital" class="form-control"
+                                           placeholder="Masukkan jumlah" min="1">
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <button type="button" class="btn btn-primary"
+                                        onclick="tukarUangDigital('digital_ke_tunai')">
+                                    Proses Pertukaran Uang Anda
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" class="btn btn-success" onclick="showForm('pertukaran_uang')">
+                            Kembali ke Menu Pertukaran Uang
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Data produk dari server
+            const produk_riil_list = {{ produk_riil_list|safe }}
+            const produk_digital_list = {{ produk_digital_list|safe }}
+            const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'pcs', 'lembar', 'sisir',
+                'butir', 'botol', 'pasang', 'pak', 'sachet'];
+
+            document.addEventListener("DOMContentLoaded", function () {
+                const InfoRondeTab = document.getElementById('home-tab');
+                const menuUtamaTab = document.getElementById('profile-tab');
+                const PertukaranUangTab = document.getElementById('contact-tab');
+
+                InfoRondeTab.addEventListener('shown.bs.tab', function () {
+                    // Saat tab Informasi Ronde aktif, tampilkan info_ronde dan sembunyikan form lainnya
+                    showForm('info_ronde');
+                });
+
+                menuUtamaTab.addEventListener('shown.bs.tab', function () {
+                    // Saat tab Menu Utama aktif, tampilkan menu_utama dan sembunyikan form lainnya
+                    showForm('menu_utama');
+                });
+
+                PertukaranUangTab.addEventListener('shown.bs.tab', function () {
+                    // Saat tab Menu Utama aktif, tampilkan menu_utama dan sembunyikan form lainnya
+                    showForm('pertukaran_uang');
+                });
+            });
+
+            // formatRupiah helper
+            function formatRupiah(number) {
+              return 'Rp. ' + Number(number).toLocaleString('id-ID');
+            }
+
+            function UpdateSaldoAll(data){
+                if (data.saldo_tunai !== undefined) {
+                    document.querySelectorAll('.saldo_tunai_display').forEach(el => {
+                       el.innerText = `Rp. ${data.saldo_tunai.toLocaleString('id-ID')}`;
+                    });
+                }
+                if (data.saldo_digital !== undefined) {
+                    document.querySelectorAll('.saldo_digital_display').forEach(el => {
+                        el.innerText = `Rp. ${data.saldo_digital.toLocaleString('id-ID')}`;
+                    });
+                }
+            }
+
+            function showForm(formIdToShow, callback = null) {
+                const forms = [
+                    'menu_utama',
+                    'rekap_ronde',
+                    'pasar_riil',
+                    'result_pasar_riil',
+                    'pasar_digital',
+                    'result_pasar_digital',
+                    'all_investasi',
+                    'investasi_rendah',
+                    'investasi_tinggi',
+                    'pertukaran_uang',
+                    'tunai_digital',
+                    'digital_tunai'
+                ];
+
+                forms.forEach(function (formId) {
+                    const el = document.getElementById(formId);
+                    if (el) el.style.display = 'none';
+                });
+
+                const formToShow = document.getElementById(formIdToShow);
+                if (formToShow) formToShow.style.display = 'block';
+
+                // Tambahan: callback dipanggil setelah form ditampilkan
+                if (typeof callback === 'function') {
+                    setTimeout(callback, 10);  // Delay kecil untuk memastikan DOM update
+                }
+
+                // Tindakan khusus saat kembali ke Menu Utama
+                if (formIdToShow === 'menu_utama') {
+                    // === Pasar Riil ===
+                    const listBodyRiil = document.getElementById('listBelanjaRiilBody');
+                    const listFooterRiil = document.getElementById('listBelanjaRiilFooter');
+                    listBodyRiil.innerHTML = '';
+                    listFooterRiil.innerHTML = '';
+                    let totalRiil = 0;
+                    let adaBelanjaRiil = false;
+
+                    produk_riil_list.forEach((p, i) => {
+                        const jumlah = jumlahBeliRiil[i];
+                        if (jumlah > 0) {
+                            adaBelanjaRiil = true;
+                            const subtotal = jumlah * p.harga;
+                            totalRiil += subtotal;
+
+                            const item = document.createElement('p');
+                            item.classList.add('mb-1');
+                            item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                            listBodyRiil.appendChild(item);
+                        }
+                    });
+
+                    if (!adaBelanjaRiil) {
+                        listBodyRiil.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                        document.getElementById('tombolProsesRiil').style.display = 'none';
+                    } else {
+                        listFooterRiil.innerHTML = `<strong>Total Belanja: Rp${totalRiil.toLocaleString('id-ID')}</strong>`;
+                        document.getElementById('tombolProsesRiil').style.display = 'block';
+                    }
+
+                    tampilkanListBelanjaRiil();
+
+                    // === Pasar Digital ===
+                    const listBodyDigital = document.getElementById('listBelanjaDigitalBody');
+                    const listFooterDigital = document.getElementById('listBelanjaDigitalFooter');
+                    listBodyDigital.innerHTML = '';
+                    listFooterDigital.innerHTML = '';
+                    let totalDigital = 0;
+                    let adaBelanjaDigital = false;
+
+                    produk_digital_list.forEach((p, i) => {
+                        const jumlah = jumlahBeliDigital[i];
+                        if (jumlah > 0) {
+                            adaBelanjaDigital = true;
+                            const subtotal = jumlah * p.harga;
+                            totalDigital += subtotal;
+
+                            const item = document.createElement('p');
+                            item.classList.add('mb-1');
+                            item.textContent = `${p.nama} (${jumlah} ${p.satuan}) = Rp${subtotal.toLocaleString('id-ID')}`;
+                            listBodyDigital.appendChild(item);
+                        }
+                    });
+
+                    if (!adaBelanjaDigital) {
+                        listBodyDigital.innerHTML = `<div class="text-muted">Belum ada belanja.</div>`;
+                        document.getElementById('tombolProsesDigital').style.display = 'none';
+                    } else {
+                        listFooterDigital.innerHTML = `<strong>Total Belanja: Rp${totalDigital.toLocaleString('id-ID')}</strong>`;
+                        document.getElementById('tombolProsesDigital').style.display = 'block';
+                    }
+
+                    tampilkanListBelanjaDigital();
+                }
+
+                // Tambahan: Jika membuka form investasi rendah dan tinggi, ambil datanya
+                if (formIdToShow === 'investasi_rendah') {
+                    liveSend({ jenis: "minta_rekap" });
+                    liveRecv = (data) => {
+                        if (data.history_lowinvest) {
+                            tampilkanHistoryInvestasiRendah(data.history_lowinvest);
+                        }
+                    };
+                }
+
+                if (formIdToShow === 'investasi_tinggi') {
+                    liveSend({ jenis: "minta_rekap" });
+                    liveRecv = (data) => {
+                        if (data.history_highinvest) {
+                            tampilkanHistoryInvestasiTinggi(data.history_highinvest);
+                        }
+                    };
+                }
+            }
+
+            function konfirmasiLanjutRonde() {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Anda akan diarahkan menuju Rekap Hasil Latihan',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, Lanjut',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Submit form oTree
+                        document.getElementById("submit-lanjut").click();
+                    }
+                });
+            }
+
+            function tukarUangTunai(jenis) {
+                const jumlah = parseInt(document.getElementById('jumlahTukarUangTunai').value);
+                if (!jumlah || jumlah <= 0) {
+                    Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
+                    return;
+                }
+                liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
+                backendRekap()
+            }
+
+            function tukarUangDigital(jenis) {
+                const jumlah = parseInt(document.getElementById('jumlahTukarUangDigital').value);
+                if (!jumlah || jumlah <= 0) {
+                    Swal.fire('Jumlah tidak valid', 'Masukkan jumlah lebih dari 0', 'warning');
+                    return;
+                }
+                liveSend({ jenis: 'tukar_uang', arah: jenis, jumlah });
+                backendRekap()
+            }
+
+            function backendRekap() {
+                liveRecv = function (data) {
+                    if (data.status === 'sukses') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            title: 'Berhasil',
+                            text: 'Pertukaran Uang Anda berhasil dilakukan',
+                            icon: 'success',
+                        }).then(() => {
+                           document.getElementById('jumlahTukarUangTunai').value = '';
+                           document.getElementById('jumlahTukarUangDigital').value = '';
+                            showForm('pertukaran_uang');
+                        });
+                    } else if (data.status === 'gagal') {
+                        Swal.fire('Gagal!', data.message, 'error');
+                    }
+                }
+            }
+
+            function loadHistoryTukarUang() {
+                liveSend({ jenis: "minta_rekap" });
+
+                liveRecv = function (data) {
+
+                    const history = JSON.parse(data.history_tukar_uang || '[]');
+                    const table = document.getElementById("historyTukarUangTable");
+
+                    if (history.length === 0) {
+                        table.innerHTML = `<tr><td colspan="6" class="text-muted text-center">Belum ada data pertukaran.</td></tr>`;
+                        return;
+                    }
+
+                    table.innerHTML = history.map((entry, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${entry.waktu}</td>
+                            <td>${entry.arah === "tunai_ke_digital" ? "Tunai → Digital" : "Digital → Tunai"}</td>
+                            <td>Rp${parseInt(entry.jumlah).toLocaleString("id-ID")}</td>
+                            <td>Rp${parseInt(entry.admin).toLocaleString("id-ID")}</td>
+                        </tr>
+                    `).join('');
+                };
+            }
+
+        // JavaScript untuk Pasar Riil
+            function tampilkanListBelanjaRiil() {
+                const listBody = document.getElementById('listBelanjaRiilBody');
+                const listFooter = document.getElementById('listBelanjaRiilFooter');
+                listBody.innerHTML = '';
+                let total = 0;
+                let adaProduk = false;
+
+                produk_riil_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliRiil[i];
+                    if (jumlah > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
+                    }
+                });
+
+                if (!adaProduk) {
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
+                    listFooter.innerHTML = '';
+                } else {
+                    listFooter.innerHTML = `Total: Rp${total.toLocaleString('id-ID')}`;
+                }
+            }
+
+            // Element HTML
+            const formRiil = document.querySelector('form');
+            const inputTerpilihRiil = document.getElementById('selected_products_produk_riil');
+            const jumlahBeliRiil = Array(produk_riil_list.length).fill(0);
+            const containerProdukRiil = document.getElementById('produkRiilContainer');
+
+            // Status pilihan
+            const statusTerpilihRiil = Array(produk_riil_list.length).fill(false);
+
+            // Tampilkan 15 produk pertama
+            function renderHalamanRiil() {
+                containerProdukRiil.innerHTML = '';
+
+                const akhir = Math.min(15, produk_riil_list.length);
+
+                for (let i = 0; i < akhir; i++) {
+                    const p = produk_riil_list[i];
+
+                    const kolom = document.createElement('div');
+                    kolom.className = 'col';
+                    kolom.innerHTML = `
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-transparent">
+                                <div class="form-check">
+                                    <input class="form-check-input produk-riil-checkbox" type="checkbox" value="${i}"
+                                        id="produkRiilCard${i}" ${statusTerpilihRiil[i] ? 'checked' : ''}>
+                                    <label class="form-check-label" for="produkRiilCard${i}">
+                                        <strong class="card-title m-0">${p.nama}</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <img src="/static/img/tradisional/${p.gambar}" class="card-img-top" alt="${p.nama}">
+                            <div class="card-body">
+                                <strong class="card-text fs-4 mb-1">
+                                    Rp. ${p.harga.toLocaleString('id-ID')}
+                                </strong>
+                                <p class="card-text"><small>${p.deskripsi}</small></p>
+                            </div>
+                            <div class="card-footer d-flex flex-row justify-content-between align-items-center">
+                                <span>Jumlah (${p.satuan}):</span>
+                                <div class="d-flex flex-row align-items-center d-none" id="jumlahDivRiil${i}">
+                                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                                        onclick="ubahJumlahRiil(${i}, 1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <span class="mx-2" id="jumlahRiil${i}">0</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
+                                        onclick="ubahJumlahRiil(${i}, -1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    containerProdukRiil.appendChild(kolom);
+                }
+                pasangEventCheckboxRiil();
+            }
+
+            function ubahJumlahRiil(index, delta) {
+                if (!statusTerpilihRiil[index]) return;
+
+                const satuan = produk_riil_list[index].satuan;
+                const isBulat = satuanTidakBolehSetengah.includes(satuan);
+
+                let jumlah = jumlahBeliRiil[index] || 0;
+                jumlah += delta;
+
+                if (jumlah < 0) jumlah = 0;
+
+                // Validasi untuk satuan yang tidak boleh setengah
+                if (isBulat) {
+                    jumlah = Math.round(jumlah); // bulatkan
+                } else {
+                    jumlah = Math.round(jumlah * 2) / 2; // boleh setengah, pembulatan 0.5
+                }
+
+                jumlahBeliRiil[index] = jumlah;
+                document.getElementById(`jumlahRiil${index}`).textContent = jumlah;
+                updateTotalHargaRiil(); // refresh total harga
+            }
+
+            // Event checkbox
+            function pasangEventCheckboxRiil() {
+                // Update ketika checkbox dicentang atau di-uncheck
+                document.querySelectorAll('.produk-riil-checkbox').forEach((checkbox, i) => {
+                    checkbox.addEventListener('change', function () {
+                        statusTerpilihRiil[i] = this.checked;
+
+                        const jumlahDiv = document.getElementById(`jumlahDivRiil${i}`);
+                        if (this.checked) {
+                            // Tampilkan tombol jumlah
+                            jumlahDiv.classList.remove('d-none');
+
+                            // Jika sebelumnya jumlah belum di-set, beri default 1
+                            if (jumlahBeliRiil[i] === 0) {
+                                jumlahBeliRiil[i] = 1;
+                                document.getElementById(`jumlahRiil${i}`).textContent = "1";
+                            }
+
+                        } else {
+                            // Sembunyikan tombol jumlah dan reset jumlah
+                            jumlahDiv.classList.add('d-none');
+                            jumlahBeliRiil[i] = 0;
+                            document.getElementById(`jumlahRiil${i}`).textContent = "0";
+                        }
+
+                        updateTotalHargaRiil(); // Re-hit total
+                    });
+                });
+            }
+
+            // Hitung total
+            function updateTotalHargaRiil() {
+                let total = 0;
+                statusTerpilihRiil.forEach((selected, i) => {
+                    if (selected && jumlahBeliRiil[i] > 0) {
+                        total += jumlahBeliRiil[i] * produk_riil_list[i].harga;
+                    }
+                });
+
+                document.getElementById('totalHargaRiil').textContent =
+                    `Rp. ${total.toLocaleString('id-ID')}`;
+            }
+
+            // Saat submit form
+            formRiil.addEventListener('submit', function () {
+                const indexTerpilih = [];
+                statusTerpilihRiil.forEach((checked, i) => {
+                    if (checked) indexTerpilih.push(i);
+                });
+                inputTerpilihRiil.value = JSON.stringify(indexTerpilih);
+            });
+
+            // Inisialisasi
+            renderHalamanRiil();
+            updateTotalHargaRiil();
+
+            function tampilkanHasilBelanjaRiil() {
+                const listBody = document.getElementById('resultBelanjaRiilBody');
+                const listFooter = document.getElementById('resultBelanjaRiilFooter');
+                listBody.innerHTML = '';
+                listFooter.innerHTML = '';
+
+                let total = 0;
+                let adaProduk = false;
+
+                produk_riil_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliRiil[i];
+                    if (jumlah > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
+                    }
+                });
+
+                if (!adaProduk) {
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
+                } else {
+                    const footerRow = document.createElement('tr');
+                    footerRow.innerHTML = `
+                        <td colspan="2"><strong>Total Belanja:</strong></td>
+                        <td><strong>Rp${total.toLocaleString('id-ID')}</strong></td>
+                    `;
+                    listFooter.appendChild(footerRow);
+                }
+
+                showForm('result_pasar_riil');
+            }
+
+            // Tambah event ke tombol selesai belanja
+            const tombolSelesai = document.querySelector("#pasar_riil .btn-success");
+            tombolSelesai.addEventListener("click", tampilkanHasilBelanjaRiil);
+
+            // Tombol beli di hasil belanja
+            const tombolBeli = document.querySelector('#result_pasar_riil .btn-success');
+            tombolBeli.addEventListener('click', () => {
+                const selectedIndex = statusTerpilihRiil.map((v, i) => v ? i : null).filter(v => v !== null);
+                const selectedProduk = selectedIndex.map(i => produk_riil_list[i]);
+                const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
+                const payload = {
+                    action: 'beli_produk_riil',
+                    selected_produk: selectedProduk,
+                    total: totalHarga
+                };
+                liveSend(payload);
+            });
+
+            // Fungsi menerima balasan dari server (live_method)
+            function backendRiil() {
+                liveRecv = function (data) {
+                    if (data.status === 'success') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembelian Berhasil',
+                            text: data.message
+                        }).then(() => {
+                            for (let i = 0; i < statusTerpilihRiil.length; i++) statusTerpilihRiil[i] = false;
+                            // Reset jumlah beli
+                            for (let i = 0; i < jumlahBeliRiil.length; i++) {
+                                jumlahBeliRiil[i] = 0;
+                            }
+
+                            // Kosongkan list belanja di menu utama
+                            const listBody = document.getElementById('listBelanjaRiilBody');
+                            const listFooter = document.getElementById('listBelanjaRiilFooter');
+                            if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
+                            if (listFooter) listFooter.innerHTML = '';
+
+                            updateTotalHargaRiil();
+                            renderHalamanRiil(0);
+                            document.querySelector('#result_pasar_riil .card-body').innerHTML = '';
+
+                            location.reload();
+                            // Kembali ke menu utama
+                            showForm('menu_utama');
+                        });
+
+                    } else if (data.status === 'error') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Pembelian Gagal',
+                            text: data.message
+                        });
+                    }
+                }
+            }
+
+            function simpanBelanjaRiil() {
+                const produkTerpilih = produk_riil_list.map((p, i) => {
+                    const jumlah = jumlahBeliRiil[i] || 0;
+                    if (jumlah > 0) {
+                        const satuan = p.satuan;
+                        const isBulat = satuanTidakBolehSetengah.includes(satuan);
+                        if (isBulat && jumlah % 1 !== 0) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Jumlah tidak valid',
+                                text: `Produk "${p.nama}" hanya bisa dibeli dalam jumlah bulat.`,
+                            });
+                            throw new Error('Jumlah tidak valid');
+                        }
+                        return { ...p, jumlah };
+                    }
+                    return null;
+                }).filter(p => p !== null);
+
+                const total = produkTerpilih.reduce((sum, p) => sum + (p.harga * p.jumlah), 0);
+
+                liveSend({
+                    jenis: "belanja_riil",
+                    produk_terpilih: produkTerpilih,
+                    total_belanja: total
+                });
+
+                backendRiil();
+            }
+        // Akhir Source Code - JavaScript untuk Pasar Riil
+
+        // JavaScript untuk Pasar Digital
+            function tampilkanListBelanjaDigital() {
+                const listBody = document.getElementById('listBelanjaDigitalBody');
+                const listFooter = document.getElementById('listBelanjaDigitalFooter');
+                listBody.innerHTML = '';
+                let total = 0;
+                let adaProduk = false;
+
+                produk_digital_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliDigital[i];
+                    if (jumlah > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
+                    }
+                });
+
+                if (!adaProduk) {
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
+                    listFooter.innerHTML = '';
+                } else {
+                    listFooter.innerHTML = `Total: Rp${total.toLocaleString('id-ID')}`;
+                }
+            }
+
+            const formDigital = document.querySelector('form');
+            const inputTerpilihDigital = document.getElementById('selected_products_produk_digital');
+            const jumlahBeliDigital = Array(produk_digital_list.length).fill(0);
+            const containerProdukDigital = document.getElementById('produkDigitalContainer');
+
+            const statusTerpilihDigital = Array(produk_digital_list.length).fill(false);
+
+            function renderHalamanDigital() {
+                containerProdukDigital.innerHTML = '';
+
+                const akhir = Math.min(15, produk_digital_list.length);
+
+                for (let i = 0; i < akhir; i++) {
+                    const p = produk_digital_list[i];
+
+                    const kolom = document.createElement('div');
+                    kolom.className = 'col';
+                    kolom.innerHTML = `
+                        <div class="card h-100 shadow-sm">
+                            <div class="card-header bg-transparent">
+                                <div class="form-check">
+                                    <input class="form-check-input produk-digital-checkbox" type="checkbox" value="${i}"
+                                        id="produkDigitalCard${i}" ${statusTerpilihDigital[i] ? 'checked' : ''}>
+                                    <label class="form-check-label" for="produkDigitalCard${i}">
+                                        <strong class="card-title m-0">${p.nama}</strong>
+                                    </label>
+                                </div>
+                            </div>
+                            <img src="/static/img/digital/${p.gambar}" class="card-img-top" alt="${p.nama}">
+                            <div class="card-body">
+                                <strong class="card-text fs-4 mb-1">
+                                    Rp. ${p.harga.toLocaleString('id-ID')}
+                                </strong>
+                                <p class="card-text"><small>${p.deskripsi}</small></p>
+                            </div>
+                            <div class="card-footer d-flex flex-row justify-content-between align-items-center">
+                                <span>Jumlah (${p.satuan}):</span>
+                                <div class="d-flex flex-row align-items-center d-none" id="jumlahDivDigital${i}">
+                                    <button type="button" class="btn btn-sm btn-outline-success rounded-3"
+                                        onclick="ubahJumlahDigital(${i}, 1)">
+                                        <i class="fa-solid fa-plus"></i>
+                                    </button>
+                                    <span class="mx-2" id="jumlahDigital${i}">0</span>
+                                    <button type="button" class="btn btn-sm btn-outline-danger rounded-3"
+                                        onclick="ubahJumlahDigital(${i}, -1)">
+                                        <i class="fa-solid fa-minus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    containerProdukDigital.appendChild(kolom);
+                }
+                pasangEventCheckboxDigital();
+            }
+
+            function ubahJumlahDigital(index, delta) {
+                if (!statusTerpilihDigital[index]) return;
+
+                const satuan = produk_digital_list[index].satuan;
+                const isBulat = satuanTidakBolehSetengah.includes(satuan);
+
+                let jumlah = jumlahBeliDigital[index] || 0;
+                jumlah += delta;
+
+                if (jumlah < 0) jumlah = 0;
+
+                if (isBulat) {
+                    jumlah = Math.round(jumlah);
+                } else {
+                    jumlah = Math.round(jumlah * 2) / 2;
+                }
+
+                jumlahBeliDigital[index] = jumlah;
+                document.getElementById(`jumlahDigital${index}`).textContent = jumlah;
+                updateTotalHargaDigital();
+            }
+
+            function pasangEventCheckboxDigital() {
+                document.querySelectorAll('.produk-digital-checkbox').forEach((checkbox, i) => {
+                    checkbox.addEventListener('change', function () {
+                        statusTerpilihDigital[i] = this.checked;
+
+                        const jumlahDiv = document.getElementById(`jumlahDivDigital${i}`);
+                        if (this.checked) {
+                            jumlahDiv.classList.remove('d-none');
+
+                            if (jumlahBeliDigital[i] === 0) {
+                                jumlahBeliDigital[i] = 1;
+                                document.getElementById(`jumlahDigital${i}`).textContent = "1";
+                            }
+                        } else {
+                            jumlahDiv.classList.add('d-none');
+                            jumlahBeliDigital[i] = 0;
+                            document.getElementById(`jumlahDigital${i}`).textContent = "0";
+                        }
+
+                        updateTotalHargaDigital();
+                    });
+                });
+            }
+
+            function updateTotalHargaDigital() {
+                let total = 0;
+                statusTerpilihDigital.forEach((selected, i) => {
+                    if (selected && jumlahBeliDigital[i] > 0) {
+                        total += jumlahBeliDigital[i] * produk_digital_list[i].harga;
+                    }
+                });
+
+                document.getElementById('totalHargaDigital').textContent =
+                    `Rp. ${total.toLocaleString('id-ID')}`;
+            }
+
+            formDigital.addEventListener('submit', function () {
+                const indexTerpilih = [];
+                statusTerpilihDigital.forEach((checked, i) => {
+                    if (checked) indexTerpilih.push(i);
+                });
+                inputTerpilihDigital.value = JSON.stringify(indexTerpilih);
+            });
+
+            renderHalamanDigital();
+            updateTotalHargaDigital();
+
+            function tampilkanHasilBelanjaDigital() {
+                const listBody = document.getElementById('resultBelanjaDigitalBody');
+                const listFooter = document.getElementById('resultBelanjaDigitalFooter');
+                listBody.innerHTML = '';
+                listFooter.innerHTML = '';
+
+                let total = 0;
+                let adaProduk = false;
+
+                produk_digital_list.forEach((p, i) => {
+                    const jumlah = jumlahBeliDigital[i];
+                    if (jumlah > 0) {
+                        adaProduk = true;
+                        const subtotal = jumlah * p.harga;
+                        total += subtotal;
+
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${p.nama}</td>
+                            <td>${jumlah} ${p.satuan}</td>
+                            <td>Rp${subtotal.toLocaleString('id-ID')}</td>
+                        `;
+                        listBody.appendChild(row);
+                    }
+                });
+
+                if (!adaProduk) {
+                    listBody.innerHTML = `<tr><td colspan="3" class="text-muted">Belum ada belanja.</td></tr>`;
+                } else {
+                    const footerRow = document.createElement('tr');
+                    footerRow.innerHTML = `
+                        <td colspan="2"><strong>Total Belanja:</strong></td>
+                        <td><strong>Rp${total.toLocaleString('id-ID')}</strong></td>
+                    `;
+                    listFooter.appendChild(footerRow);
+                }
+
+                showForm('result_pasar_digital');
+            }
+
+            const tombolSelesaiDigital = document.querySelector("#pasar_digital .btn-success");
+            tombolSelesaiDigital.addEventListener("click", tampilkanHasilBelanjaDigital);
+
+            const tombolBeliDigital = document.querySelector('#result_pasar_digital .btn-success');
+            tombolBeliDigital.addEventListener('click', () => {
+                const selectedIndex = statusTerpilihDigital.map((v, i) => v ? i : null).filter(v => v !== null);
+                const selectedProduk = selectedIndex.map(i => produk_digital_list[i]);
+                const totalHarga = selectedProduk.reduce((sum, p) => sum + p.harga, 0);
+                const payload = {
+                    action: 'beli_produk_digital',
+                    selected_produk: selectedProduk,
+                    total: totalHarga
+                };
+                liveSend(payload);
+            });
+
+            function backendDigital() {
+                liveRecv = function (data) {
+                    if (data.status === 'success') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Pembelian Berhasil',
+                            text: data.message
+                        }).then(() => {
+                            for (let i = 0; i < statusTerpilihDigital.length; i++) statusTerpilihDigital[i] = false;
+                            for (let i = 0; i < jumlahBeliDigital.length; i++) jumlahBeliDigital[i] = 0;
+
+                            const listBody = document.getElementById('listBelanjaDigitalBody');
+                            const listFooter = document.getElementById('listBelanjaDigitalFooter');
+                            if (listBody) listBody.innerHTML = '<div class="text-muted">Belum ada belanja.</div>';
+                            if (listFooter) listFooter.innerHTML = '';
+
+                            updateTotalHargaDigital();
+                            renderHalamanDigital(0);
+                            document.querySelector('#result_pasar_digital .card-body').innerHTML = '';
+
+                            location.reload();
+                            showForm('menu_utama');
+                        });
+
+                    } else if (data.status === 'error') {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Pembelian Gagal',
+                            text: data.message
+                        });
+                    }
+                }
+            }
+
+            function simpanBelanjaDigital() {
+                const produkTerpilih = produk_digital_list.map((p, i) => {
+                    const jumlah = jumlahBeliDigital[i] || 0;
+                    if (jumlah > 0) {
+                        const satuan = p.satuan;
+                        const isBulat = satuanTidakBolehSetengah.includes(satuan);
+                        if (isBulat && jumlah % 1 !== 0) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Jumlah tidak valid',
+                                text: `Produk "${p.nama}" hanya bisa dibeli dalam jumlah bulat.`,
+                            });
+                            throw new Error('Jumlah tidak valid');
+                        }
+                        return { ...p, jumlah };
+                    }
+                    return null;
+                }).filter(p => p !== null);
+
+                const total = produkTerpilih.reduce((sum, p) => sum + (p.harga * p.jumlah), 0);
+
+                liveSend({
+                    jenis: "belanja_digital",
+                    produk_terpilih: produkTerpilih,
+                    total_belanja: total
+                });
+
+                backendDigital();
+            }
+        // Akhir Source Code - JavaScript untuk Pasar Digital
+
+        // JavaScript untuk Investasi Resiko Rendah
+            function tampilkanHistoryInvestasiRendah(historyJson) {
+                const tbody = document.querySelector("#investasi_rendah_history");
+                tbody.innerHTML = "";
+
+                const history = JSON.parse(historyJson);
+                if (history.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
+                    return;
+                }
+
+                history.forEach((item, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
+                        <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
+                        <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            function backendLowInvest() {
+                liveRecv = function (data) {
+                    const hasil = data.hasil;
+
+                    if (data.status === 'untung') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Investasi Anda Menguntungkan',
+                            html: `
+                                Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
+                            `
+                        }).then(() => {
+                            document.getElementById('id_lowinvest').value = '';
+                            showForm('investasi_rendah');
+                        });
+                    }
+
+                    else if (data.status === 'rugi') {
+                        UpdateSaldoAll(data);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Investasi Anda Merugi',
+                            html: `
+                                Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
+                            `
+                        }).then(() => {
+                            document.getElementById('id_lowinvest').value = '';
+                            showForm('investasi_rendah');
+                        });
+                    }
+                };
+            }
+
+            function submitInvestasiRendah() {
+                const input = document.getElementById('id_lowinvest');
+                const jumlah = parseInt(input.value);
+                const saldoString = document.querySelector('.saldo_digital_display')?.innerText || '0';
+
+                // Convert "Rp. 15.000" → 15000
+                const saldo = parseInt(saldoString.replace(/[^\d]/g, ''));
+
+                if (isNaN(jumlah) || jumlah <= 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Jumlah tidak valid',
+                        text: 'Masukkan jumlah yang ingin Anda investasikan.',
+                    });
+                    return;
+                }
+
+                if (jumlah > saldo) {
+                        Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
+                        return;
+                    }
+
+
+
+                backendLowInvest();
+
+                // Kirim data ke backend menggunakan liveSend
+                liveSend({
+                    jenis: 'investasi_rendah',
+                    jumlah: jumlah
+                });
+            }
+        // Akhir Source Code - JavaScript untuk Investasi Resiko Rendah
+
+        // JavaScript untuk Investasi Resiko Tinggi
+            function tampilkanHistoryInvestasiTinggi(historyJson) {
+                const tbody = document.querySelector("#investasi_tinggi_history");
+                tbody.innerHTML = "";
+
+                const history = JSON.parse(historyJson);
+                if (history.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-muted text-center">Belum ada investasi yang dilakukan.</td></tr>`;
+                    return;
+                }
+
+                history.forEach((item, index) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>Rp. ${item.jumlah.toLocaleString('id-ID')}</td>
+                        <td>Rp. ${item.hasil.toLocaleString('id-ID')}</td>
+                        <td class="${item.status === 'untung' ? 'text-success' : 'text-danger'}">${item.status}</td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+
+            (function () {
+                const items = ['🍎', '🍌', '🍇', '🍓', '🍊', '🍉', '🍍', '🥝', '🥥', '🍑']
+                const doors = document.querySelectorAll('.door');
+                const spinBtn = document.getElementById('spinner');
+                const resetBtn = document.getElementById('resetter');
+                const inputInvest = document.getElementById('id_highinvest');
+
+                // Event handler
+                spinBtn.addEventListener('click', spin);
+                resetBtn.addEventListener('click', resetGame);
+                resetBtn.disabled = true
+
+                function resetGame() {
+                    document.querySelector('.doors').dataset.winningSymbol = "";
+                    inputInvest.value = '';
+                    init(true); // reset posisi simbol
+                    spinBtn.disabled = false;
+                    resetBtn.disabled = true;
+                }
+
+                function init(firstInit = true, groups = 1, duration = 1) {
+                    function shuffle([...arr]) {
+                        let m = arr.length;
+                        while (m) {
+                            const i = Math.floor(Math.random() * m--);
+                            [arr[m], arr[i]] = [arr[i], arr[m]];
+                        }
+                        return arr;
+                    }
+
+                    const isWin = !firstInit && Math.random() < 0.50; // 80% peluang menang
+
+                    for (let i = 0; i < doors.length; i++) {
+                        const door = doors[i];
+
+                        if (firstInit) {
+                            door.dataset.spinned = '0';
+                        }
+                        else if (door.dataset.spinned === '1') {
+                            continue;
+                        }
+
+                        const boxes = door.querySelector('.boxes');
+                        const boxesClone = boxes.cloneNode(false);
+                        const pool = ['❓'];
+
+                        // Jika bukan init pertama, tentukan hasilnya:
+                        if (!firstInit) {
+                            const arr = [];
+                            if (isWin && i >= 5 && i < 10) {
+                                // baris tengah → atur agar ada 3 simbol sama berurutan
+                                if (!document.querySelector('.doors').dataset.winningSymbol) {
+                                    const winningSymbol = items[Math.floor(Math.random() * items.length)];
+                                    document.querySelector('.doors').dataset.winningSymbol = winningSymbol;
+                                }
+
+                                const forcedSymbol = document.querySelector('.doors').dataset.winningSymbol;
+                                const baseIndex = i - 5;
+
+                                if (baseIndex <= 2) {
+                                    // isi dengan 10 item supaya animasi tetap lancar
+                                    for (let j = 0; j < 10; j++) {
+                                        pool.push(forcedSymbol);
+                                    }
+                                }
+                                else {
+                                    for (let j = 0; j < 10; j++) {
+                                        pool.push(items[Math.floor(Math.random() * items.length)]);
+                                    }
+                                }
+                            }
+                            else {
+                                // Acak biasa
+                                for (let n = 0; n < (groups > 0 ? groups : 1); n++) {
+                                    arr.push(...items);
+                                }
+
+                                pool.push(...shuffle(arr));
+                            }
+
+                            boxesClone.addEventListener(
+                                'transitionstart',
+                                function () {
+                                    door.dataset.spinned = '1';
+                                    this.querySelectorAll('.box').forEach((box) => {
+                                        box.style.filter = 'blur(1px)';
+                                    });
+                                },
+                                { once: true }
+                            );
+
+                            boxesClone.addEventListener(
+                                'transitionend',
+                                function () {
+                                    this.querySelectorAll('.box').forEach((box, index) => {
+                                        box.style.filter = 'blur(0)';
+                                        if (index > 0) this.removeChild(box);
+                                    });
+                                },
+                                { once: true }
+                            );
+                        }
+
+                        for (let i = pool.length - 1; i >= 0; i--) {
+                            const box = document.createElement('div');
+                            box.classList.add('box');
+                            box.style.width = '100%';
+                            box.style.height = '109px';
+                            box.textContent = pool[i];
+                            boxesClone.appendChild(box);
+                        }
+
+                        boxesClone.style.transitionDuration = `${duration > 0 ? duration : 1}s`;
+                        boxesClone.style.transform = `translateY(-${door.clientHeight * (pool.length - 1)}px)`;
+                        door.replaceChild(boxesClone, boxes);
+                    }
+                }
+
+
+                async function spin() {
+                    const jumlah = parseInt(inputInvest.value);
+                    const saldoString = document.querySelector('.saldo_digital_display')?.innerText || '0';
+
+                    // Convert "Rp. 15.000" → 15000
+                    const saldo = parseInt(saldoString.replace(/[^\d]/g, ''));
+
+                    if (isNaN(jumlah) || jumlah <= 0) {
+                        Swal.fire("Perhatian", "Masukkan jumlah investasi", "error");
+                        return;
+                    }
+
+                    if (jumlah > saldo) {
+                        Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
+                        return;
+                    }
+
+                    // Disable semua tombol saat spin
+                    spinBtn.disabled = true;
+                    resetBtn.disabled = true;
+
+                    init(false, 1, 2); // animasi dimulai
+
+                    for (const door of doors) {
+                        const boxes = door.querySelector('.boxes');
+                        const duration = parseInt(boxes.style.transitionDuration);
+                        boxes.style.transform = 'translateY(0)';
+                        await new Promise(resolve => setTimeout(resolve, duration * 100));
+                    }
+
+                    // Cek hasil kemenangan
+                    const middleBoxes = Array.from(doors)
+                        .slice(5, 10)
+                        .map(door => door.querySelector('.boxes .box').textContent);
+
+                    let isWinner = false;
+                    for (let i = 0; i <= 2; i++) {
+                        if (
+                            middleBoxes[i] === middleBoxes[i + 1] &&
+                            middleBoxes[i] === middleBoxes[i + 2]
+                        ) {
+                            isWinner = true;
+                            break;
+                        }
+                    }
+
+                    liveRecv = function (data) {
+                        const jumlah = data.jumlah;
+
+                        if (isWinner && data.status === 'untung') {
+                            UpdateSaldoAll(data);
+                            Swal.fire({
+                                position: "top-end",
+                                icon: 'success',
+                                title: 'MENANG 🎉',
+                                html: `
+                                    <p>💰 Investasi Awal: Rp ${jumlah.toLocaleString('id-ID')}</p>
+                                    <p>📈 Hasil Akhir: <strong>Rp ${(jumlah * 2).toLocaleString('id-ID')}</strong></p>
+                                `,
+                                confirmButtonText: 'Lanjut',
+                                allowOutsideClick: false
+                            }).then(() => {
+                                document.getElementById('id_highinvest').value = ''
+                                showForm('investasi_tinggi')
+                                document.getElementById('resetter').disabled = false
+                            });
+                        }
+
+                        else if (data.status === 'rugi') {
+                            UpdateSaldoAll(data);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'KALAH 😢',
+                                html: `
+                                    <p>💰 Investasi Awal: Rp ${jumlah.toLocaleString('id-ID')}</p>
+                                    <p>📉 Hasil Akhir: <strong>Rp 0</strong></p>
+                                `,
+                                confirmButtonText: 'Coba Lagi',
+                                allowOutsideClick: false
+                            }).then(() => {
+                                document.getElementById('id_highinvest').value = ''
+                                showForm('investasi_tinggi')
+                                document.getElementById('resetter').disabled = false
+                            });
+                        }
+                    };
+
+                    // Kirim hasil ke oTree
+                    liveSend({
+                        jenis: 'investasi_tinggi',
+                        jumlah: jumlah,
+                        menang: isWinner
+                    });
+
+                    // Jangan aktifkan tombol di sini — biarkan `liveRecv` yang melakukannya
+                }
+                init();
+            })();
+        // Akhir Source Code - JavaScript untuk Investasi Resiko Tinggi
+
+        // JavaScript untuk Rekap Ronde + Utilitas
+            function mintaRekapRonde() {
+                // Override liveRecv SEBELUM mengirim liveSend
+                liveRecv = function (data) {
+                    if (
+                        data.selected_products_produk_riil !== undefined ||
+                        data.selected_products_produk_digital !== undefined ||
+                        data.lowinvest !== undefined ||
+                        data.highinvest !== undefined
+                    ) {
+                        tampilkanRekapRonde(data);
+                        updateUtilitasView(data);
+                    }
+                };
+
+                liveSend({ jenis: "minta_rekap" });
+
+                // Sembunyikan info_ronde saat rekap diminta
+                document.getElementById('info_ronde').style.display = 'none';
+            }
+
+            function tampilkanRekapRonde(data) {
+                // === Pasar Riil ===
+                const rekapRiil = document.getElementById('rekapRiil');
+                const historyRiil = JSON.parse(data.history_riil || '[]');
+
+                if (historyRiil.length === 0) {
+                    rekapRiil.innerHTML = '<p class="text-muted">Belum ada belanja di pasar riil.</p>';
+                } else {
+                    let totalAll = 0;
+                    const rows = historyRiil.map((entry, i) => {
+                        totalAll += entry.total;
+                        const itemRows = entry.produk.map(p => `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${p.nama}</td>
+                                <td>${p.jumlah} ${p.satuan}</td>
+                                <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
+                            </tr>
+                        `).join('');
+                        return itemRows;
+                    }).join('');
+                    rekapRiil.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <th>#</th>
+                                <th>Produk</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                        <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3" role="alert">
+                            <strong>Total Belanja:</strong>
+                            <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
+                        </div>
+                    `;
+                }
+
+                // === Pasar Digital ===
+                const rekapDigital = document.getElementById('rekapDigital');
+                const historyDigital = JSON.parse(data.history_digital || '[]');
+
+                if (historyDigital.length === 0) {
+                    rekapDigital.innerHTML = '<p class="text-muted">Belum ada belanja di pasar digital.</p>';
+                } else {
+                    let totalAll = 0;
+                    const rows = historyDigital.map((entry, i) => {
+                        totalAll += entry.total;
+                        const itemRows = entry.produk.map(p => `
+                            <tr>
+                                <td>${i + 1}</td>
+                                <td>${p.nama}</td>
+                                <td>${p.jumlah} ${p.satuan}</td>
+                                <td>Rp${(p.harga * p.jumlah).toLocaleString('id-ID')}</td>
+                            </tr>
+                        `).join('');
+                        return itemRows;
+                    }).join('');
+                    rekapDigital.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <th>#</th>
+                                <th>Produk</th>
+                                <th>Jumlah</th>
+                                <th>Subtotal</th>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                        <div class="alert alert-success d-flex flex-row justify-content-between align-items-center p-3" role="alert">
+                            <strong>Total Belanja:</strong>
+                            <strong>Rp. ${totalAll.toLocaleString('id-ID')}</strong>
+                        </div>
+                    `;
+                }
+
+                // === Investasi Risiko Rendah ===
+                const rekapInvestasi = document.getElementById('rekapInvestasiRendah');
+                const historyInvest = JSON.parse(data.history_lowinvest || '[]');
+
+                if (historyInvest.length === 0) {
+                    rekapInvestasi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
+                } else {
+                    let totalJumlah = 0, totalHasil = 0;
+                    let totalUntung = 0, totalRugi = 0;
+
+                    const rows = historyInvest.map((entry, i) => {
+                        totalJumlah += entry.jumlah;
+                        totalHasil += entry.hasil;
+
+                        if (entry.status === 'untung') {
+                            totalUntung += entry.hasil - entry.jumlah;
+                        } else if (entry.status === 'rugi') {
+                            totalRugi += entry.jumlah - entry.hasil;
+                        }
+
+                        return `
+                            <tr>
+                                <td>Investasi ke ${i + 1}</td>
+                                <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
+                                <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
+                                <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                    ${entry.status.toUpperCase()}
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                    rekapInvestasi.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>List Investasi</th>
+                                    <th>Jumlah Investasi</th>
+                                    <th>Hasil</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                        <div class="alert p-0" role="alert">
+                            <h5 class="alert-heading m-0">Total Investasi Risiko Rendah</h5>
+                            <hr>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Total Jumlah Investasi</th>
+                                    <th>Total Hasil Investasi</th>
+                                    <th>Total Keuntungan Investasi</th>
+                                    <th>Total Kerugian Investasi</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                // === Investasi Risiko tinggi ===
+                const rekapInvestasiTinggi = document.getElementById('rekapInvestasiTinggi');
+                const historyInvestTinggi = JSON.parse(data.history_highinvest || '[]');
+
+                if (historyInvestTinggi.length === 0) {
+                    rekapInvestasiTinggi.innerHTML = '<p class="text-muted">Belum ada investasi risiko rendah.</p>';
+                } else {
+                    let totalJumlah = 0, totalHasil = 0;
+                    let totalUntung = 0, totalRugi = 0;
+
+                    const rows = historyInvestTinggi.map((entry, i) => {
+                        totalJumlah += entry.jumlah;
+                        totalHasil += entry.hasil;
+
+                        if (entry.status === 'untung') {
+                            totalUntung += entry.hasil - entry.jumlah;
+                        } else if (entry.status === 'rugi') {
+                            totalRugi += entry.jumlah - entry.hasil;
+                        }
+
+                        return `
+                            <tr>
+                                <td>Investasi ke ${i + 1}</td>
+                                <td>Rp${entry.jumlah.toLocaleString('id-ID')}</td>
+                                <td>Rp${entry.hasil.toLocaleString('id-ID')}</td>
+                                <td class="${entry.status === 'untung' ? 'text-success' : 'text-danger'}">
+                                    ${entry.status.toUpperCase()}
+                                </td>
+                            </tr>
+                        `;
+                    }).join('');
+
+                    rekapInvestasiTinggi.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>List Investasi</th>
+                                    <th>Jumlah Investasi</th>
+                                    <th>Hasil</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                        <div class="alert p-0" role="alert">
+                            <h5 class="alert-heading m-0">Total Investasi Risiko Tinggi</h5>
+                            <hr>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <th>Total Jumlah Investasi</th>
+                                    <th>Total Hasil Investasi</th>
+                                    <th>Total Keuntungan Investasi</th>
+                                    <th>Total Kerugian Investasi</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Rp. ${totalJumlah.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalHasil.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalUntung.toLocaleString('id-ID')}</td>
+                                        <td>Rp. ${totalRugi.toLocaleString('id-ID')}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                }
+
+                // === Penukaran Uang ===
+                const rekapTukar = document.getElementById('rekapPenukaranUang');
+                const historyTukar = JSON.parse(data.history_tukar_uang || '[]');
+                if (historyTukar.length === 0) {
+                    rekapTukar.innerHTML = '<p class="text-muted">Belum ada pertukaran uang.</p>';
+                } else {
+                    const rows = historyTukar.map((entry, i) => `
+                        <tr>
+                            <td>${entry.waktu}</td>
+                            <td>${entry.arah === 'tunai_ke_digital' ? 'Tunai → Digital' : 'Digital → Tunai'}</td>
+                            <td>Rp${parseInt(entry.jumlah).toLocaleString('id-ID')}</td>
+                            <td>Rp${parseInt(entry.admin).toLocaleString('id-ID')}</td>
+                        </tr>
+                    `).join('');
+                    rekapTukar.innerHTML = `
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light">
+                                <tr><th>Waktu</th><th>Jenis</th><th>Jumlah</th><th>Biaya Admin</th></tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    `;
+                }
+
+                showForm('rekap_ronde');
+            }
+
+            function updateUtilitasView(data) {
+                document.getElementById('util_endowment').textContent = `Rp. ${data.endowment.toLocaleString('id-ID')}`;
+                document.getElementById('util_bantuan').textContent = `Rp. ${data.bantuan.toLocaleString('id-ID')}`;
+                document.getElementById('util_konsumsi_dasar').textContent = `Rp. ${data.konsumsi_dasar.toLocaleString('id-ID')}`;
+                document.getElementById('util_total_belanja').textContent = `Rp. ${(data.total_belanja_riil + data.total_belanja_digital).toLocaleString('id-ID')}`;
+                document.getElementById('util_total_invest').textContent = `Rp. ${data.total_invest_all.toLocaleString('id-ID')}`;
+                document.getElementById('util_sisa_uang').textContent = `Rp. ${data.sisa_uang.toLocaleString('id-ID')}`;
+                document.getElementById('util_final_payment').textContent = `Rp. ${data.final_payment.toLocaleString('id-ID')}`;
+            }
+        // Akhir Source Code - JavaScript untuk Rekap ROnde + Utilitas
+    </script>
+{% endblock %}
