@@ -53,6 +53,12 @@
                         </h4>
                     </div>
                     <div class="card-body">
+                        {% if player.saldo_digital > 200000 %}
+                            <div class="alert alert-danger" role="alert">
+                                Sistem mendeteksi Anda terlalu sering bermain investasi. Sistem
+                                secara otomatis menghentikan permainan
+                            </div>
+                        {% endif %}
                         <p>
                             Anda berada di laman utama eksperimen. Di sini Anda dapat melakukan konsumsi tambahan
                             (selain konsumsi dasar yang menjadi tanggungan utama Anda) dan investasi untuk meningkatkan
@@ -601,6 +607,12 @@
                                         <h6 class="m-0">Investasikan Uang Anda dan dapatkan keuntungannya!</h6>
                                     </div>
                                     <div class="card-body">
+                                        {% if player.saldo_digital > 200000 %}
+                                            <div class="alert alert-danger" role="alert">
+                                                Sistem mendeteksi Anda terlalu sering bermain investasi. Sistem
+                                                secara otomatis menghentikan permainan
+                                            </div>
+                                        {% endif %}
                                         <ul class="list-group">
                                             <li class="list-group-item text-bg-success">
                                                 Anda memiliki kesempatan untuk membuat uang Anda menjadi
@@ -630,11 +642,14 @@
                                             <label for="id_lowinvest" class="form-label fw-bold">
                                                 Masukkan jumlah yang ingin Anda invetastikan
                                             </label>
-                                            <input type="number" name="lowinvest" id="id_lowinvest" class="form-control" min="0" step="1">
+                                            <input type="number" name="lowinvest" id="id_lowinvest"
+                                                   class="form-control" min="0" step="1"
+                                            {% if player.saldo_digital > 200000 %} disabled {% endif %}>
                                         </div>
                                     </div>
                                     <div class="card-footer">
-                                        <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()">
+                                        <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()"
+                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
                                             Proses Investasi Anda
                                         </button>
                                     </div>
@@ -685,6 +700,12 @@
                                         <h6 class="m-0">Putar & Dapatkan keuntungannya!</h6>
                                     </div>
                                     <div class="card-body position-relative overflow-hidden">
+                                        {% if player.saldo_digital > 200000 %}
+                                            <div class="alert alert-danger" role="alert">
+                                                Sistem mendeteksi Anda terlalu sering bermain investasi. Sistem
+                                                secara otomatis menghentikan permainan
+                                            </div>
+                                        {% endif %}
                                         <div class="table-responsive">
                                             <table class="table table-bordered">
                                                 <thead class="fs-5">
@@ -723,17 +744,20 @@
                                             </div>
                                         </div>
                                         <label for="id_highinvest" class="form-label fw-bold">
-                                            Masukkan jumlah yang ingin Anda invetastikan
+                                            Masukkan jumlah yang ingin Anda investastikan
                                         </label>
-                                        <input type="number" name="highinvest" id="id_highinvest"
-                                            class="form-control" min="0" step="1">
+                                        <input type="number" name="highinvest" id="id_highinvest" class="form-control"
+                                               min="0" step="1"
+                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <button type="button" class="btn btn-success" id="spinner">
+                                        <button type="button" class="btn btn-success" id="spinner"
+                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
                                             <i class="fa-solid fa-circle-dollar-to-slot"></i>
                                             <span>Putar</span>
                                         </button>
-                                        <button type="button" class="btn btn-danger" id="resetter">
+                                        <button type="button" class="btn btn-danger" id="resetter"
+                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
                                             <i class="fa-solid fa-rotate-right"></i>
                                             <span>Reset</span>
                                         </button>
@@ -966,6 +990,22 @@
                     showForm('pertukaran_uang');
                 });
             });
+
+            function cekCandu() {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Perhatian",
+                    text: "Anda sudah terlalu sering bermain investasi. Sistem menghentikan investasi supaya Anda" +
+                        "tidak kecanduan",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                }).then(() => {
+                    document.getElementById('id_lowinvest').value = '';
+                    document.getElementById('id_highinvest').value = '';
+                    location.reload();
+                });
+            }
 
             // formatRupiah helper
             function formatRupiah(number) {
@@ -1789,28 +1829,24 @@
                 liveRecv = function (data) {
                     const hasil = data.hasil;
 
+                    // Update saldo dulu
+                    UpdateSaldoAll(data);
                     if (data.status === 'untung') {
-                        UpdateSaldoAll(data);
                         Swal.fire({
                             icon: 'success',
                             title: 'Investasi Anda Menguntungkan',
-                            html: `
-                                Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
-                            `
+                            html: `Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.`
                         }).then(() => {
                             document.getElementById('id_lowinvest').value = '';
                             showForm('investasi_rendah');
                         });
                     }
 
-                    else if (data.status === 'rugi') {
-                        UpdateSaldoAll(data);
+                    if (data.status === 'rugi') {
                         Swal.fire({
                             icon: 'error',
                             title: 'Investasi Anda Merugi',
-                            html: `
-                                Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.
-                            `
+                            html: `Uang dari alokasi Anda menjadi <b>Rp. ${hasil.toLocaleString('id-ID')}</b>.`
                         }).then(() => {
                             document.getElementById('id_lowinvest').value = '';
                             showForm('investasi_rendah');
@@ -1823,8 +1859,6 @@
                 const input = document.getElementById('id_lowinvest');
                 const jumlah = parseInt(input.value);
                 const saldoString = document.querySelector('.saldo_digital_display')?.innerText || '0';
-
-                // Convert "Rp. 15.000" → 15000
                 const saldo = parseInt(saldoString.replace(/[^\d]/g, ''));
 
                 if (isNaN(jumlah) || jumlah <= 0) {
@@ -1836,16 +1870,21 @@
                     return;
                 }
 
-                if (jumlah > saldo) {
-                        Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
-                        return;
-                    }
+                else if (jumlah > saldo) {
+                    Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
+                    document.getElementById('id_lowinvest').value = '';
+                    return;
+                }
 
+                else if (saldo > 200000) {
+                    cekCandu();
+                    return;
+                }
 
+                else {
+                    backendLowInvest();
+                }
 
-                backendLowInvest();
-
-                // Kirim data ke backend menggunakan liveSend
                 liveSend({
                     jenis: 'investasi_rendah',
                     jumlah: jumlah
@@ -1906,7 +1945,7 @@
                         return arr;
                     }
 
-                    const isWin = !firstInit && Math.random() < 0.50; // 80% peluang menang
+                    const isWin = !firstInit && Math.random() < 0.2; // 80% peluang menang
 
                     for (let i = 0; i < doors.length; i++) {
                         const door = doors[i];
@@ -2007,8 +2046,13 @@
                         return;
                     }
 
-                    if (jumlah > saldo) {
+                    else if (jumlah > saldo) {
                         Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
+                        return;
+                    }
+
+                    else if (saldo > 200000) {
+                        cekCandu();
                         return;
                     }
 

@@ -4,7 +4,7 @@ import json
 import datetime
 
 doc = """
-Digital Payment Experiment - Practice Session
+Digital Payment Experiment
 """
 
 
@@ -45,7 +45,7 @@ class C(BaseConstants):
     ]
 
     PRODUK_DIGITAL = [
-        {"nama": "Case HP", "harga": 125000, "deskripsi": "Case HP menarik & fungsional", "satuan": "pcs",
+        {"nama": "Case HP", "harga": 12500, "deskripsi": "Case HP menarik & fungsional", "satuan": "pcs",
          "gambar": "Case HP-Digital-12500.jpg"},
         {"nama": "Celana Jeans Pria", "harga": 75000, "deskripsi": "Celana Jeans pilihan cocok untuk pria", "satuan":
             "pcs", "gambar": "Celana Jins Pria-Digital-75000.jpeg"},
@@ -92,11 +92,11 @@ class Player(BasePlayer):
     endowment = models.IntegerField(initial=0)
     saldo_tunai = models.IntegerField(initial=0)
     saldo_digital = models.IntegerField(initial=0)
-    bantuan = models.IntegerField(initial=50000)
+    bantuan = models.IntegerField(initial=25000)
     saluran_bantuan = models.StringField()
     konsumsi_dasar = models.IntegerField(initial=0)
     denda_penalty = models.IntegerField(initial=0)
-    uang_kehadiran = models.IntegerField(initial=200000)
+    uang_kehadiran = models.IntegerField(initial=125000)
     total_pasar_all = models.IntegerField(initial=0)
     total_invest_all = models.IntegerField(initial=0)
 
@@ -129,8 +129,8 @@ class Player(BasePlayer):
     selected_products_produk_digital = models.LongStringField(blank=True)
 
     def set_saldo_awal(self):
-        # 1. Acak saldo tunai antara 75.000 - 125.000 dengan kelipatan 1.000
-        self.endowment = random.randint(75, 125) * 1000
+        # 1. Acakan Endowment dengan kelipatan 1.000
+        self.endowment = random.randint(15, 50) * 1000
         acakan = random.randrange(70, 90, 1)
         self.konsumsi_dasar = acakan * round(self.endowment / 100)
 
@@ -278,7 +278,7 @@ class Player(BasePlayer):
                 return {player.id_in_group: dict(status="error", message="Saldo digital tidak cukup.")}
 
             peluang = random.random()
-            if peluang <= 0.50:
+            if peluang <= 0.5:
                 hasil = int(round(jumlah * 1.25))
                 status = 'untung'
                 player.total_untung_lowinvest += (hasil - int(jumlah))
