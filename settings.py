@@ -46,7 +46,7 @@ ROOMS = [
 ]
 
 USE_LIVE_RELOAD = True
-DEBUG = True
+DEBUG = False
 ADMIN_USERNAME = 'admin'
 # for security, best to set admin password in an environment variable
 ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
