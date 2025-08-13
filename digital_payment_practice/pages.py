@@ -7,6 +7,19 @@ import json
 class InfoPage(Page):
     def vars_for_template(self):
         self.player.set_saldo_awal()
+
+        # Kalau ini ronde pertama, set uang kehadiran awal
+        if self.round_number == 1:
+            self.player.participant.vars['uang_kehadiran'] = 125000  # contoh nilai awal
+            self.player.uang_kehadiran = self.player.participant.vars['uang_kehadiran']
+        else:
+            # Kalau bukan ronde pertama, ambil dari ronde sebelumnya
+            self.player.participant.vars['uang_kehadiran'] = self.player.in_round(self.round_number - 1).uang_kehadiran
+            self.player.uang_kehadiran = self.player.participant.vars['uang_kehadiran']
+
+        # Simpan juga ke player supaya bisa ditampilkan di HTML
+        self.player.uang_kehadiran = self.player.participant.vars['uang_kehadiran']
+
         return dict(
             formatted_endowment="Rp. {:,}".format(self.player.endowment).replace(",", "."),
             formatted_saldo_tunai="Rp. {:,}".format(self.player.saldo_tunai).replace(",", "."),

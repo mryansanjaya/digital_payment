@@ -48,12 +48,12 @@
             <div id="info_ronde">
                 <div class="card">
                     <div class="card-header">
-                        <h4 class="m-0">
+                        <h2 class="fw-bold m-0">
                             Anda sekarang berada di Ronde {{ player.round_number }}
-                        </h4>
+                        </h2>
                     </div>
                     <div class="card-body">
-                        {% if player.saldo_digital > 200000 %}
+                        {% if player.invest_count_total >= 15 %}
                             <div class="alert alert-danger" role="alert">
                                 Sistem mendeteksi Anda terlalu sering bermain investasi. Sistem
                                 secara otomatis menghentikan permainan
@@ -100,7 +100,7 @@
                                     </thead>
                                     <tbody>
                                         <tr>
-                                            <td>Endowment</td>
+                                            <td>Modal Awal</td>
                                             <td id="util_endowment"></td>
                                         </tr>
                                         <tr>
@@ -607,7 +607,7 @@
                                         <h6 class="m-0">Investasikan Uang Anda dan dapatkan keuntungannya!</h6>
                                     </div>
                                     <div class="card-body">
-                                        {% if player.saldo_digital > 200000 %}
+                                        {% if player.invest_count_total >= 15 %}
                                             <div class="alert alert-danger" role="alert">
                                                 Sistem mendeteksi Anda terlalu sering bermain investasi. Sistem
                                                 secara otomatis menghentikan permainan
@@ -644,12 +644,12 @@
                                             </label>
                                             <input type="number" name="lowinvest" id="id_lowinvest"
                                                    class="form-control" min="0" step="1"
-                                            {% if player.saldo_digital > 200000 %} disabled {% endif %}>
+                                            {% if player.invest_count_total >= 15 %} disabled {% endif %}>
                                         </div>
                                     </div>
                                     <div class="card-footer">
                                         <button type="button" class="btn btn-success" onclick="submitInvestasiRendah()"
-                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
+                                        {% if player.invest_count_total >= 15 %} disabled {% endif %}>
                                             Proses Investasi Anda
                                         </button>
                                     </div>
@@ -700,7 +700,7 @@
                                         <h6 class="m-0">Putar & Dapatkan keuntungannya!</h6>
                                     </div>
                                     <div class="card-body position-relative overflow-hidden">
-                                        {% if player.saldo_digital > 200000 %}
+                                        {% if player.invest_count_total >= 15 %}
                                             <div class="alert alert-danger" role="alert">
                                                 Sistem mendeteksi Anda terlalu sering bermain investasi. Sistem
                                                 secara otomatis menghentikan permainan
@@ -748,16 +748,16 @@
                                         </label>
                                         <input type="number" name="highinvest" id="id_highinvest" class="form-control"
                                                min="0" step="1"
-                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
+                                        {% if player.invest_count_total >= 15 %} disabled {% endif %}>
                                     </div>
                                     <div class="card-footer text-center">
                                         <button type="button" class="btn btn-success" id="spinner"
-                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
+                                        {% if player.invest_count_total >= 15 %} disabled {% endif %}>
                                             <i class="fa-solid fa-circle-dollar-to-slot"></i>
                                             <span>Putar</span>
                                         </button>
                                         <button type="button" class="btn btn-danger" id="resetter"
-                                        {% if player.saldo_digital > 200000 %} disabled {% endif %}>
+                                        {% if player.invest_count_total >= 15 %} disabled {% endif %}>
                                             <i class="fa-solid fa-rotate-right"></i>
                                             <span>Reset</span>
                                         </button>
@@ -814,6 +814,11 @@
                                 </tr>
                             </tbody>
                         </table>
+                        <div class="alert alert-success" role="alert">
+                            <h5 class="m-0">
+                                Setiap transaksi Penukaran Uang akan dikenakan biaya admin Rp. 1.000
+                            </h5>
+                        </div>
                         <div class="row row-cols-1 row-cols-md-2 g-4">
                             <div class="col">
                                 <div class="card h-100">
@@ -970,6 +975,9 @@
             const satuanTidakBolehSetengah = ['ikat', 'papan', 'potong', 'bungkus', 'kepala', 'pcs', 'lembar', 'sisir',
                 'butir', 'botol', 'pasang', 'pak', 'sachet'];
 
+            // Variabel global untuk hitung total investasi gabungan
+            let totalInvestCount = 0;
+
             document.addEventListener("DOMContentLoaded", function () {
                 const InfoRondeTab = document.getElementById('home-tab');
                 const menuUtamaTab = document.getElementById('profile-tab');
@@ -990,22 +998,6 @@
                     showForm('pertukaran_uang');
                 });
             });
-
-            function cekCandu() {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Perhatian",
-                    text: "Anda sudah terlalu sering bermain investasi. Sistem menghentikan investasi supaya Anda" +
-                        "tidak kecanduan",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                }).then(() => {
-                    document.getElementById('id_lowinvest').value = '';
-                    document.getElementById('id_highinvest').value = '';
-                    location.reload();
-                });
-            }
 
             // formatRupiah helper
             function formatRupiah(number) {
@@ -1831,7 +1823,21 @@
 
                     // Update saldo dulu
                     UpdateSaldoAll(data);
-                    if (data.status === 'untung') {
+                    if(data.status === 'kecanduan'){
+                        Swal.fire({
+                            icon: "warning",
+                            title: "Perhatian",
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                        }).then(() => {
+                            document.getElementById('id_lowinvest').value = '';
+                            location.reload();
+                        });
+                    }
+
+                    else if (data.status === 'untung') {
                         Swal.fire({
                             icon: 'success',
                             title: 'Investasi Anda Menguntungkan',
@@ -1842,7 +1848,7 @@
                         });
                     }
 
-                    if (data.status === 'rugi') {
+                    else if (data.status === 'rugi') {
                         Swal.fire({
                             icon: 'error',
                             title: 'Investasi Anda Merugi',
@@ -1870,20 +1876,13 @@
                     return;
                 }
 
-                else if (jumlah > saldo) {
+                if (jumlah > saldo) {
                     Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
                     document.getElementById('id_lowinvest').value = '';
                     return;
                 }
 
-                else if (saldo > 200000) {
-                    cekCandu();
-                    return;
-                }
-
-                else {
-                    backendLowInvest();
-                }
+                backendLowInvest();
 
                 liveSend({
                     jenis: 'investasi_rendah',
@@ -2046,13 +2045,8 @@
                         return;
                     }
 
-                    else if (jumlah > saldo) {
+                    if (jumlah > saldo) {
                         Swal.fire("Perhatian", "Jumlah investasi melebihi Saldo Digital Anda!", "warning");
-                        return;
-                    }
-
-                    else if (saldo > 200000) {
-                        cekCandu();
                         return;
                     }
 
@@ -2088,7 +2082,21 @@
                     liveRecv = function (data) {
                         const jumlah = data.jumlah;
 
-                        if (isWinner && data.status === 'untung') {
+                        if(data.status === 'kecanduan'){
+                            Swal.fire({
+                                icon: "warning",
+                                title: "Perhatian",
+                                text: data.message,
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                            }).then(() => {
+                                document.getElementById('id_highinvest').value = '';
+                                location.reload();
+                            });
+                        }
+
+                        else if (isWinner && data.status === 'untung') {
                             UpdateSaldoAll(data);
                             Swal.fire({
                                 position: "top-end",

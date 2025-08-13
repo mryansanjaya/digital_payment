@@ -2,16 +2,17 @@ from otree.api import *
 import random
 import json
 import datetime
+import math
 
 doc = """
-Digital Payment Experiment
+Digital Payment Experiment - Practice Session
 """
 
 
 class C(BaseConstants):
     NAME_IN_URL = 'digital_payment_practice'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 1
+    NUM_ROUNDS = 3
 
     # Daftar produk pasar
     PRODUK_TRADISIONAL = [
@@ -96,7 +97,8 @@ class Player(BasePlayer):
     saluran_bantuan = models.StringField()
     konsumsi_dasar = models.IntegerField(initial=0)
     denda_penalty = models.IntegerField(initial=0)
-    uang_kehadiran = models.IntegerField(initial=125000)
+    uang_kehadiran = models.IntegerField(initial=0)
+    invest_count_total = models.IntegerField(initial=0)
     total_pasar_all = models.IntegerField(initial=0)
     total_invest_all = models.IntegerField(initial=0)
 
@@ -130,9 +132,12 @@ class Player(BasePlayer):
 
     def set_saldo_awal(self):
         # 1. Acakan Endowment dengan kelipatan 1.000
-        self.endowment = random.randint(15, 50) * 1000
-        acakan = random.randrange(70, 90, 1)
-        self.konsumsi_dasar = acakan * round(self.endowment / 100)
+        acakan_angka_endowment = random.randrange(75, 125, 1) / 100
+        hasil_acakan_angka_endowment = acakan_angka_endowment * 50000
+        self.endowment = math.ceil(hasil_acakan_angka_endowment / 100) * 100
+        acakan_konsumsi_dasar = random.randrange(70, 85, 1) / 100
+        hasil_acakan_konsumsi_dasar = acakan_konsumsi_dasar * self.endowment
+        self.konsumsi_dasar = math.ceil(hasil_acakan_konsumsi_dasar / 100) * 100
 
         self.saldo_tunai = self.endowment
         self.saldo_digital = 0
@@ -205,8 +210,7 @@ class Player(BasePlayer):
                                      (self.total_rugi_lowinvest + self.total_rugi_highinvest))
         else:
             self.final_payment = int(self.sisa_uang + (self.total_pasar_all * 1.05) +
-                                     (self.total_untung_lowinvest + self.total_untung_highinvest) -
-                                     (self.total_rugi_lowinvest + self.total_rugi_highinvest))
+                                     (self.total_untung_lowinvest + self.total_untung_highinvest))
 
     def live_handle(player, data):
         jenis = data.get("jenis")
@@ -277,15 +281,27 @@ class Player(BasePlayer):
             if jumlah > player.saldo_digital:
                 return {player.id_in_group: dict(status="error", message="Saldo digital tidak cukup.")}
 
+            # 🚀 Tambahan logika: jika sudah >= 15 kali, hentikan
+            if player.invest_count_total >= 15:
+                return {
+                    player.id_in_group: dict(
+                        status="kecanduan",
+                        message="Anda sudah terlalu sering bermain investasi. "
+                                "Sistem menghentikan investasi supaya Anda tidak kecanduan",
+                    )
+                }
+
             peluang = random.random()
             if peluang <= 0.5:
                 hasil = int(round(jumlah * 1.25))
                 status = 'untung'
                 player.total_untung_lowinvest += (hasil - int(jumlah))
+                player.invest_count_total += 1
             else:
                 hasil = int(round(jumlah * 0.75))
                 status = 'rugi'
                 player.total_rugi_lowinvest += (int(jumlah) - hasil)
+                player.invest_count_total += 1
 
             history = json.loads(player.history_lowinvest or "[]")
             history.append({
@@ -294,6 +310,7 @@ class Player(BasePlayer):
                 "status": status,
                 "round_number": player.round_number
             })
+
             player.history_lowinvest = json.dumps(history)
 
             # Update saldo digital
@@ -310,6 +327,7 @@ class Player(BasePlayer):
                 player.id_in_group: dict(
                     status=status,
                     hasil=hasil,
+                    count_invest=player.invest_count_total,
                     saldo_digital=player.saldo_digital
                 )
             }
@@ -318,14 +336,27 @@ class Player(BasePlayer):
             jumlah = float(data.get("jumlah", 0))
             menang = data.get("menang", False)
 
-            if menang:
+            # 🚀 Tambahan logika: jika sudah >= 15 kali, hentikan
+            if player.invest_count_total >= 15:
+                return {
+                    player.id_in_group: dict(
+                        status="kecanduan",
+                        message="Anda sudah terlalu sering bermain investasi. "
+                                "Sistem menghentikan investasi supaya Anda tidak kecanduan",
+                    )
+                }
+
+            elif menang:
                 hasil = int(round(jumlah * 2))
                 status = 'untung'
                 player.total_untung_highinvest += int(hasil - round(jumlah))
+                player.invest_count_total += 1
+
             else:
                 hasil = 0
                 status = 'rugi'
                 player.total_rugi_highinvest += (int(jumlah) - hasil)
+                player.invest_count_total += 1
 
             # Simpan ke history
             history = json.loads(player.history_highinvest or "[]")
