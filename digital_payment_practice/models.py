@@ -12,7 +12,7 @@ Digital Payment Experiment - Practice Session
 class C(BaseConstants):
     NAME_IN_URL = 'digital_payment_practice'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 1
 
     # Daftar produk pasar
     PRODUK_TRADISIONAL = [
@@ -57,7 +57,7 @@ class C(BaseConstants):
         {"nama": "Dompet Wanita", "harga": 30000, "deskripsi": "Dompet elegan untuk wanita", "satuan": "pcs",
          "gambar": "Dompet Wanita-Digital-30000.jpeg"},
         {"nama": "Jaket ", "harga": 65000, "deskripsi": "Tampil stylish dengan Jaket berbahan kualitas tinggi",
-         "satuan": "pcs", "gambar": "jaket-Digital-65000.jpg"},
+         "satuan": "pcs", "gambar": "Jaket-Digital-65000.jpg"},
         {"nama": "Jam Tangan Unisex", "harga": 60000, "deskripsi": "Jam Tangan elegan dapat dipakai pria maupun wanita",
          "satuan": "pcs", "gambar": "Jam Tangan Unisex-Digital-60000.jpeg"},
         {"nama": "Kacamata Hitam", "harga": 45000, "deskripsi": "Kacamata Hitam tampil menawan", "satuan": "pcs",

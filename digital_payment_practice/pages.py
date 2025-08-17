@@ -21,12 +21,12 @@ class InfoPage(Page):
         self.player.uang_kehadiran = self.player.participant.vars['uang_kehadiran']
 
         return dict(
-            formatted_endowment="Rp. {:,}".format(self.player.endowment).replace(",", "."),
-            formatted_saldo_tunai="Rp. {:,}".format(self.player.saldo_tunai).replace(",", "."),
-            formatted_saldo_digital="Rp. {:,}".format(self.player.saldo_digital).replace(",", "."),
-            formatted_uang_kehadiran="Rp. {:,}".format(self.player.uang_kehadiran).replace(",", "."),
-            formatted_bantuan="Rp. {:,}".format(self.player.bantuan).replace(",", "."),
-            formatted_konsumsi_dasar="Rp. {:,}".format(self.player.konsumsi_dasar).replace(",", "."),
+            formatted_endowment="Rp{:,}".format(self.player.endowment).replace(",", "."),
+            formatted_saldo_tunai="Rp{:,}".format(self.player.saldo_tunai).replace(",", "."),
+            formatted_saldo_digital="Rp{:,}".format(self.player.saldo_digital).replace(",", "."),
+            formatted_uang_kehadiran="Rp{:,}".format(self.player.uang_kehadiran).replace(",", "."),
+            formatted_bantuan="Rp{:,}".format(self.player.bantuan).replace(",", "."),
+            formatted_konsumsi_dasar="Rp{:,}".format(self.player.konsumsi_dasar).replace(",", "."),
             info_bansos="Dompet Tunai" if self.player.saluran_bantuan == "tunai" else "Dompet Digital"
         )
 
