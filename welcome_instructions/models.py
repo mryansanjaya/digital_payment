@@ -95,6 +95,7 @@ class Player(BasePlayer):
             ['bca', 'BCA'],
             ['bni', 'BNI'],
             ['bri', 'BRI'],
+            ['shopee', 'Shopee'],
             ['mandiri', 'Mandiri'],
             ['dana', 'DANA'],
             ['ovo', 'OVO'],
