@@ -10,7 +10,7 @@ class InfoPage(Page):
 
         # Kalau ini ronde pertama, set uang kehadiran awal
         if self.round_number == 1:
-            self.player.participant.vars['uang_kehadiran'] = 125000  # contoh nilai awal
+            self.player.participant.vars['uang_kehadiran'] = 100000  # contoh nilai awal
             self.player.uang_kehadiran = self.player.participant.vars['uang_kehadiran']
         else:
             # Kalau bukan ronde pertama, ambil dari ronde sebelumnya
