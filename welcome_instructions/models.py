@@ -58,6 +58,7 @@ class Player(BasePlayer):
             ['usaha makanan', 'Usaha Makanan (Warung, Kafe, Rumahan, dsb)'],
             ['produksi seni kriya', 'Produksi Karya Seni-Kriya'],
             ['usaha fashion', 'Usaha Fashion (Jahit, Dropshipping, dsb)'],
+            ['usaha workshop','Usaha Workshop (Bengkel Otomotif, Pandai Besi, dsb)],
             ['lainnya', 'Lainnya'],
         ],
     )
