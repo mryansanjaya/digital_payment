@@ -289,7 +289,7 @@ class Player(BasePlayer):
                 return {player.id_in_group: dict(status="error", message="Saldo digital tidak cukup.")}
 
             # 🚀 Tambahan logika: jika sudah >= 15 kali, hentikan
-            if player.invest_count_total >= 15:
+            if player.invest_count_total >= 20:
                 return {
                     player.id_in_group: dict(
                         status="kecanduan",
@@ -344,7 +344,7 @@ class Player(BasePlayer):
             menang = data.get("menang", False)
 
             # 🚀 Tambahan logika: jika sudah >= 15 kali, hentikan
-            if player.invest_count_total >= 15:
+            if player.invest_count_total >= 20:
                 return {
                     player.id_in_group: dict(
                         status="kecanduan",
