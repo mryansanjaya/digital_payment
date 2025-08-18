@@ -12,7 +12,7 @@ Digital Payment Experiment
 class C(BaseConstants):
     NAME_IN_URL = 'digital_payment'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 3
+    NUM_ROUNDS = 2
 
     # Daftar produk pasar
     PRODUK_TRADISIONAL = [
