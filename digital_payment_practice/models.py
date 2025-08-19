@@ -25,7 +25,7 @@ class C(BaseConstants):
         {"nama": "Ikan Kembung Banjar", "harga": 20000, "deskripsi": "Ikan Kembung Banjar segar 500 gr per ekor",
          "satuan": "ekor", "gambar": "Ikan Kembung Banjar 500gr - 20000.jpeg"},
         {"nama": "Kaos Oblong", "harga": 20000, "deskripsi": "Kaos Oblong kualitas terbaik", "satuan": "pcs",
-         "gambar": "kaos Oblong - 20000.jpg"},
+         "gambar": "Kaos Oblong - 20000.jpg"},
         {"nama": "Minyak Goreng Minyakita", "harga": 15000, "deskripsi": "Minyak Goreng Minyakita per Liter",
          "satuan": "liter", "gambar": "Minyak Goreng Minyakita - 15000.jpg"},
         {"nama": "Pasta Gigi", "harga": 13000, "deskripsi": "Pasta Gigi 190 gr", "satuan": "pcs",
@@ -43,9 +43,9 @@ class C(BaseConstants):
         {"nama": "Lifebouy Shampoo", "harga": 14000, "deskripsi": "Shampoo Lifebouy 70 ml", "satuan": "botol",
          "gambar": "Shampoo 70 ml - 14000.jpg"},
         {"nama": "Tepung Bumbu Racik", "harga": 6500, "deskripsi": "Tepung Bumbu Racik Serba Guna 210 gr",
-         "satuan": "pcs", "gambar": "tepung Bumbu Serba Guna 210 gr - 6500.jpg"},
+         "satuan": "pcs", "gambar": "Tepung Bumbu Serba Guna 210 gr - 6500.jpg"},
         {"nama": "Tisu Gulung", "harga": 2500, "deskripsi": "Tisu Gulung Satuan", "satuan": "pcs",
-         "gambar": "Tisu Gulung satuan - 2500.jpg"},
+         "gambar": "Tisu Gulung Satuan - 2500.jpg"},
     ]
 
     PRODUK_DIGITAL = [
