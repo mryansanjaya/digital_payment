@@ -96,6 +96,7 @@ class Player(BasePlayer):
             ['bca', 'BCA'],
             ['bni', 'BNI'],
             ['bri', 'BRI'],
+            ['cimb', 'CIMB Niaga'],
             ['shopee', 'Shopee'],
             ['mandiri', 'Mandiri'],
             ['dana', 'DANA'],

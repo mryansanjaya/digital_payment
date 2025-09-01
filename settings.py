@@ -37,14 +37,24 @@ USE_POINTS = True
 
 ROOMS = [
     dict(
-        name='team_a',
-        display_name='Team A',
-        participant_label_file='_rooms/label_a.txt',
+        name='tengah',
+        display_name='Semarang Tengah',
+        participant_label_file='_rooms/tengah.txt',
     ),
     dict(
-        name='team_b',
-        display_name='Team B',
-        participant_label_file='_rooms/label_b.txt',
+        name='utara',
+        display_name='Semarang Utara',
+        participant_label_file='_rooms/utara.txt',
+    ),
+    dict(
+        name='selatan',
+        display_name='Semarang Selatan',
+        participant_label_file='_rooms/selatan.txt',
+    ),
+    dict(
+        name='timur',
+        display_name='Semarang Timur',
+        participant_label_file='_rooms/timur.txt',
     ),
 ]
 
